@@ -1,0 +1,8 @@
+
+// https://www.youtube.com/watch?v=nLIFMJEANOw
+// https://www.youtube.com/watch?v=rxOeOD98AEU
+
+// https://github.blog/developer-skills/github/how-to-build-a-gpt-3-app-with-nextjs-react-and-github-copilot/
+// https://melodyxpot.medium.com/how-to-create-a-chatgpt-application-using-next-js-and-the-openai-api-63fa3b1cc4a3
+
+

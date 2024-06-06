@@ -1,0 +1,32 @@
+[package]
+name = "app"
+version = "0.1.1"
+description = "the nature's wisdom for modern agriculture"
+authors = ["Jagadish Sau <jay-neo@outlook.com>"]
+edition = "2021"
+rust-version = "1.71"
+license = "MIT"
+license-file = "LICENSE"
+repository = "https://github.com/jay-neo"
+keywords = ["agri-arena", "smart-farming"]
+documentation = "https://github.com/jay-neo/agri-arena/#readme"
+readme = "README.md"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+name = "app_lib"
+crate-type = ["staticlib", "cdylib", "lib"]
+
+[build-dependencies]
+tauri-build = { version = "2.0.0-rc.9", features = [] }
+
+[dependencies]
+serde_json = "1.0"
+serde = { version = "1.0", features = ["derive"] }
+tauri = { version = "2.0.0-rc.10", features = [] }
+
+# Added by jay-neo
+[features]
+# This feature is used for production builds or when a dev server is not specified, DO NOT REMOVE!!
+custom-protocol = ["tauri/custom-protocol"]

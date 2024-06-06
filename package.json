@@ -1,0 +1,39 @@
+{
+  "name": "agri-arena",
+  "description": "the nature's wisdom for modern agriculture",
+  "version": "0.1.0",
+  "author": "Jagadish Sau <jay-neo@outlook.com>",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "build": "turbo build",
+    "dev": "turbo dev",
+    "lint": "turbo lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+  },
+  "devDependencies": {
+    "prettier": "^3.2.5",
+    "turbo": "^2.1.1",
+    "typescript": "^5.4.5"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "packageManager": "yarn@1.22.19",
+  "workspaces": [
+    "apps/app",
+    "apps/web",
+    "packages/*"
+  ],
+  "keywords": [
+    "AgriArena"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jay-neo/agri-arena.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jay-neo/agri-arena/issues"
+  },
+  "homepage": "https://github.com/jay-neo/agri-arena#readme"
+}

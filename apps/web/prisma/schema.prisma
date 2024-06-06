@@ -1,0 +1,250 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
+}
+
+datasource db {
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  // directUrl = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+// https://www.prisma.io/docs/orm/overview/databases/postgresql
+
+model User {
+  id            String    @id @default(cuid())
+  createdAt     DateTime? @default(now())
+  updatedAt     DateTime  @updatedAt
+  name          String
+  email         String    @unique
+  password      String?
+  image         String?
+  emailVerified DateTime?
+  profile       Profile?
+  accounts      Account[]
+  sessions      Session[]
+
+  monitoring  Activity_Monitoring?
+  activities  Activity[]
+  arenas      Arena[]
+  iots        IoT[]
+  experiments Experiments[]
+  predictions Predictions[]
+  images      Images[]
+}
+
+model Profile {
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  username  String?  @unique @default(cuid())
+  address   String?
+  city      String?
+  state     String?
+  country   String?
+  pincode   String?
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String   @unique
+}
+
+model Account {
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([provider, providerAccountId])
+}
+
+model Session {
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@id([identifier, token])
+}
+
+model Arena {
+  id          String        @id @default(cuid())
+  idx         Int
+  title       String
+  image       String        @default("https://editor.analyticsvidhya.com/uploads/96804AI_Image_7.PNG")
+  description String?
+  location    String?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  user        User          @relation(fields: [userId], references: [id])
+  userId      String
+  iot         IoT[]
+  experiments Experiments[]
+  images      Images[]
+  predictions Predictions[]
+
+  @@unique([idx, userId])
+}
+
+model Activity {
+  id            String       @id @default(cuid())
+  idx           Int
+  title         String       @default("Untitled Activity")
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  type          Type
+  user          User         @relation(fields: [userId], references: [id])
+  userId        String
+  experiments   Experiments? @relation(fields: [experimentsId], references: [id])
+  experimentsId String?      @unique
+  predictions   Predictions? @relation(fields: [predictionsId], references: [id])
+  predictionsId String?      @unique
+  images        Images?      @relation(fields: [imagesId], references: [id])
+  imagesId      String?      @unique
+
+  @@unique([idx, userId])
+}
+
+model Activity_Monitoring {
+  id          String @id @default(cuid())
+  activities  Int    @default(0)
+  iots        Int    @default(0)
+  arenas      Int    @default(0)
+  predictions Int    @default(0)
+  images      Int    @default(0)
+  experiments Int    @default(0)
+  user        User   @relation(fields: [userId], references: [id])
+  userId      String @unique
+}
+
+enum Type {
+  images
+  predictions
+  experiments
+}
+
+model IoT {
+  id            String       @id @default(cuid())
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  interval      Int
+  title         String
+  device        String       @unique
+  status        String?
+  location      String?
+  description   String?
+  user          User         @relation(fields: [userId], references: [id])
+  userId        String
+  arena         Arena?       @relation(fields: [arenaId], references: [id])
+  arenaId       String?
+  experiments   Experiments? @relation(fields: [experimentsId], references: [id])
+  experimentsId String?      @unique
+
+  @@unique([device, userId])
+}
+
+model Experiments {
+  id          String             @id @default(cuid())
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+  count       Int                @default(1)
+  device      String
+  user        User               @relation(fields: [userId], references: [id])
+  userId      String
+  arena       Arena?             @relation(fields: [arenaId], references: [id])
+  arenaId     String?
+  iot         IoT?
+  activity    Activity?
+  expData     Experiments_Data[]
+  predictions Predictions[]
+}
+
+model Experiments_Data {
+  id            String      @id @default(cuid())
+  createdAt     DateTime    @default(now())
+  ipAddress     String?
+  nitrogen      Float       @default(0)
+  phosphorus    Float       @default(0)
+  potassium     Float       @default(0)
+  ph            Float       @default(0)
+  moisture      Float       @default(0)
+  temperature   Float       @default(0)
+  humidity      Float       @default(0)
+  experiments   Experiments @relation(fields: [experimentsId], references: [id])
+  experimentsId String
+}
+
+model Predictions {
+  id              String             @id @default(cuid())
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
+  user            User               @relation(fields: [userId], references: [id])
+  userId          String             @unique
+  arena           Arena?             @relation(fields: [arenaId], references: [id])
+  arenaId         String?
+  experiments     Experiments        @relation(fields: [experimentsId], references: [id])
+  experimentsId   String
+  predictionsData Predictions_Data[]
+  activity        Activity?
+}
+
+model Predictions_Data {
+  id            String      @id @default(cuid())
+  text          String
+  role          String
+  predictions   Predictions @relation(fields: [predictionsId], references: [id])
+  predictionsId String
+}
+
+model Images {
+  id         String        @id @default(cuid())
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+  user       User          @relation(fields: [userId], references: [id])
+  userId     String
+  arena      Arena?        @relation(fields: [arenaId], references: [id])
+  arenaId    String?
+  imagesData Images_Data[]
+  activity   Activity?
+}
+
+model Images_Data {
+  id        String           @id @default(cuid())
+  createdAt DateTime         @default(now())
+  type      Images_Data_Type
+  image     String?
+  text      String?
+  role      String?
+  images    Images           @relation(fields: [imagesId], references: [id])
+  imagesId  String
+}
+
+enum Images_Data_Type {
+  image
+  text
+}
+
+model Share {
+  id String @id @default(cuid())
+}
+
+// https://www.prisma.io/data-platform/pulse

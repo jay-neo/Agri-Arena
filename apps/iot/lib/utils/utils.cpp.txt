@@ -1,0 +1,60 @@
+#include <SPIFFS.h>
+#include <ArduinoJson.h>
+
+bool mountSPIFFS() {
+  if (!SPIFFS.begin(true)) {
+    Serial.println("An Error has occurred while mounting SPIFFS");
+    return false;
+  }
+  return true;
+}
+
+String getEndpoint(const String &path) {
+  File file = SPIFFS.open(path, "r");
+  if (!file) {
+    Serial.println("Failed to open file for reading");
+    return "";
+  }
+
+  StaticJsonDocument<256> doc;
+
+  if (!deserializeJson(doc, file)) {
+    Serial.print("Failed to read file, using default configuration");
+    file.close();
+    return "";
+  }
+  file.close();
+  return doc["endpoint"].as<String>();
+}
+
+String getCertificate(const String &path) {
+  File file = SPIFFS.open(path, "r");
+  if (!file) {
+    Serial.println("Failed to open certificate file for reading");
+    return "";
+  }
+  String certificate = file.readString();
+  file.close();
+  return certificate;
+}
+
+
+std::pair<String, String> getWifiCredential(const String &path) {
+  File file = SPIFFS.open(path, "r");
+  if (!file) {
+    Serial.println("Failed to open file for reading");
+    return {"", ""};
+  }
+
+  StaticJsonDocument<256> doc;
+
+  if (!deserializeJson(doc, file)) {
+    Serial.print("Failed to read file, using default configuration");
+    file.close();
+    return {"", ""};
+  }
+  file.close();
+
+  return {doc["ssid"].as<String>(), doc["password"].as<String>()};
+}
+

@@ -1,0 +1,12 @@
+{
+  "timestamp": "2024-09-07T21:21:21.152Z",
+  "ip": "abff:18da:3dca:ebd7:22a0:14fe:e50c:ca22",
+  "nitrogen": 14.42,
+  "phosphorus": 55.96,
+  "potassium": 48.56,
+  "ph": 8.25,
+  "moisture": 22.78,
+  "temperature": 96.51,
+  "humidity": 63.51,
+  "device": "123456"
+}

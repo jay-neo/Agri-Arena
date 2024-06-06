@@ -1,0 +1,14 @@
+[
+  {
+    "question": "How do I connect my IoT devices to Agri Arena?",
+    "answer": "To connect your IoT devices, go to the 'Devices' section in your dashboard and follow the setup instructions. Ensure your devices are properly configured and connected to the internet."
+  },
+  {
+    "question": "How does the crop recommendation system work?",
+    "answer": "Our crop recommendation system uses Machine Learning algorithms to analyze data from your IoT devices. Based on this analysis, it suggests the best crops to plant for optimal growth and yield."
+  },
+  {
+    "question": "How can I report a problem or bug?",
+    "answer": "If you encounter any issues, please contact our support team using the contact form below or email us directly at support@agriarena.com. We’ll be happy to help resolve any problems you might be facing."
+  }
+]

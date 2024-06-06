@@ -1,0 +1,25 @@
+{
+  "files.exclude": {
+    "**/node_modules/**": true,
+    "**/.next/**": true,
+    "**/build/**": true,
+    "**/target/**": true,
+    ".turbo": true
+    // ".vscode": true,
+  },
+  "editor.formatOnSave": true,
+  "[prisma]": {
+    "editor.defaultFormatter": "Prisma.prisma"
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "livePreview.defaultPreviewPath": "/workflow/hello.html",
+  "[xml]": {
+    "editor.defaultFormatter": "redhat.vscode-xml"
+  },
+  "[dockercompose]": {
+    "editor.defaultFormatter": "ms-azuretools.vscode-docker"
+  }
+}

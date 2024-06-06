@@ -1,0 +1,1 @@
+export { contactWithCompany } from "./contact"
