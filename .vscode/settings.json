@@ -2,6 +2,7 @@
   "files.exclude": {
     "**/node_modules/**": true,
     "**/.next/**": true,
+    "**/out/**": true,
     "**/build/**": true,
     "**/target/**": true,
     ".turbo": true
@@ -21,5 +22,9 @@
   },
   "[dockercompose]": {
     "editor.defaultFormatter": "ms-azuretools.vscode-docker"
-  }
+  },
+  "[rust]": {
+    "editor.defaultFormatter": "rust-lang.rust-analyzer"
+  },
+  "rust-analyzer.linkedProjects": ["./apps/app/src/Cargo.toml"]
 }

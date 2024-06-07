@@ -16,7 +16,7 @@ export const Navbar: React.FC = async () => {
         <Logo />
 
         <div className="flex items-center md:order-2 space-x-5 ">
-          <MuiThemeToggleButton/>
+          {/* <MuiThemeToggleButton/> */}
           {user ? <Avatar user={user} /> : <LoginButton />}
         </div>
       </div>

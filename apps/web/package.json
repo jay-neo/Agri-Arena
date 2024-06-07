@@ -1,7 +1,7 @@
 {
   "name": "agri-arena-web",
   "description": "the nature's wisdom for modern agriculture",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "Jagadish Sau <jay-neo@outlook.com>",
   "private": true,
   "license": "MIT",

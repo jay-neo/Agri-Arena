@@ -6,11 +6,13 @@ export default auth((req) => {
   const currentPath = req.nextUrl.pathname;
 
   if (!req.auth) {
-    return NextResponse.redirect(new URL(`/auth/login?next=${currentPath}`, req.url));
+    return NextResponse.redirect(
+      new URL(`/login?next=${currentPath}`, req.url)
+    );
   }
 });
 
 // Configure protected routes
 export const config = {
-  matcher: ["/social/:path*", "/arena/:path*"],
+  matcher: ["/social/:path*"],
 };

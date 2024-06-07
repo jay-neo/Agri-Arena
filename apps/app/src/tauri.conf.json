@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "identifier": "com.agri.arena",
   "build": {
-    "frontendDist": "../../web/.next",
+    "frontendDist": "../../web/out",
     "devUrl": "http://localhost:3000",
     "beforeDevCommand": "cd ../web && npm run dev",
     "beforeBuildCommand": "npm run build"
