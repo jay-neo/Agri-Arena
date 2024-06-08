@@ -1,10 +1,4 @@
-enum MyEnv {
-  development = "development",
-  production = "production",
-  test = "test",
-}
-
-export const myenv: MyEnv = MyEnv.test;
+export const myenv: string = process.env.MYENV || "test";
 
 export const awsS3region = process.env.AWS_S3_REGION;
 export const awsS3accessKeyId = process.env.AWS_S3_ACCESS_KEY_ID;

@@ -5,10 +5,10 @@ import { getUser } from "~/app/server/user";
 
 export async function getArenasWithId(query?: string): Promise<ArenaIds[]> {
   try {
-    const { id } = await getUser();
+    const user = await getUser();
     const arenas = await db.arena.findMany({
       where: {
-        userId: id,
+        userId: user.id,
       },
       select: {
         id: true,
