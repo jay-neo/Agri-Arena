@@ -31,6 +31,7 @@ export type SignupFormState =
       };
       error?: string;
       message?: string;
+      success?: string;
     }
   | undefined;
 

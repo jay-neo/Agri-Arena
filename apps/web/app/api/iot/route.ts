@@ -17,7 +17,8 @@ export async function POST(request: NextRequest) {
     const device = await db.ioT.findUnique({
       where: { device: data.device },
       select: {
-        id: true,
+        title: true,
+        device: true,
         userId: true,
         arenaId: true,
         interval: true,
@@ -25,7 +26,7 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    if (!device) {
+    if (!device || !device?.arenaId) {
       return NextResponse.json({
         error: "Device not registered!",
         status: 404,
@@ -39,10 +40,11 @@ export async function POST(request: NextRequest) {
     };
 
     if (!device?.experimentsId) {
-      console.log("Logic - 1");
+      // console.log("Logic - 1");
       experiment = await createExperiment(
         device.userId,
-        device.id,
+        device.device,
+        device.title,
         device?.arenaId,
         "Innovation Unleashed"
       );
@@ -59,20 +61,22 @@ export async function POST(request: NextRequest) {
       });
 
       if (!existedExperiments) {
-        console.log("Logic - 2");
+        // console.log("Logic - 2");
         experiment = await createExperiment(
           device.userId,
-          device.id,
+          device.device,
+          device.title,
           device?.arenaId,
           "Frontline Discoveries"
         );
       } else if (
         isValidExperimentInterval(existedExperiments.createdAt, device.interval)
       ) {
-        console.log("Logic - 3");
+        // console.log("Logic - 3");
         experiment = await createExperiment(
           device.userId,
-          device.id,
+          device.device,
+          device.title,
           device?.arenaId,
           "Experiment Chronicles"
         );
@@ -80,15 +84,16 @@ export async function POST(request: NextRequest) {
         device?.arenaId &&
         device.arenaId !== existedExperiments.arenaId
       ) {
-        console.log("Logic - 4");
+        // console.log("Logic - 4");
         experiment = await createExperiment(
           device.userId,
-          device.id,
+          device.device,
+          device.title,
           device?.arenaId,
           "Groundbreaking Experiments"
         );
       } else {
-        console.log("Logic - 5");
+        // console.log("Logic - 5");
         await db.experiments.update({
           where: {
             id: existedExperiments.id,
@@ -110,7 +115,7 @@ export async function POST(request: NextRequest) {
 
     await db.ioT.update({
       where: {
-        id: device.id,
+        device: device.device,
       },
       data: {
         experimentsId: experiment.experimentId,
@@ -119,7 +124,7 @@ export async function POST(request: NextRequest) {
 
     const insertedData = await db.experiments_Data.create({
       data: {
-        // createdAt: data.timestamp,
+        createdAt: data.timestamp,
         ph: parseFloat(data.ph),
         ipAddress: String(data.ip),
         nitrogen: parseFloat(data.nitrogen),
@@ -133,12 +138,10 @@ export async function POST(request: NextRequest) {
     });
 
     if (isNewActivity) {
-      console.log(`/activity`);
       revalidatePath(`/activity`);
     }
 
     if (!isNewActivity && insertedData) {
-      console.log(`/activity/${experiment.activityIdx}`);
       revalidatePath(`/activity/${experiment.activityIdx}`);
     }
 
@@ -147,7 +150,7 @@ export async function POST(request: NextRequest) {
       status: 200,
     });
   } catch (error) {
-    console.error(error);
+    // console.error(error);
     return NextResponse.json({ error: "Error occurred!", status: 500 });
   }
 }
@@ -164,15 +167,17 @@ function isValidExperimentInterval(
 
 const createExperiment = async (
   userId: string,
-  deviceId: string,
+  device: string,
+  deviceTitle: string,
   arenaId?: string,
-  activityTitle?: string,
+  activityTitle?: string
 ) => {
   try {
     const experiment = await db.experiments.create({
       data: {
         userId: userId,
-        device: deviceId,
+        device: device,
+        iotTitle: deviceTitle,
         arenaId: arenaId || null,
       },
       select: {
@@ -199,9 +204,3 @@ const createExperiment = async (
     return null;
   }
 };
-
-/*
-https://nextjs.org/docs/pages/building-your-application/routing/api-routes
-https://nextjs.org/docs/app/building-your-application/routing/route-handlers#request-body
-https://github.com/vercel/next.js/discussions/44212
-*/

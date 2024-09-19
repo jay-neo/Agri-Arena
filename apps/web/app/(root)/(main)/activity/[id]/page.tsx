@@ -32,7 +32,7 @@ export default async ({ params }: { params: { id: string } }) => {
   // await new Promise((resolve) => setTimeout(resolve, 7000));
 
   return (
-    <div className="mt-2 md:mx-3">
+    <div className="mt-2 md:mx-12">
       <Header data={data} idx={Number(params.id)} />
 
       {data.type === "experiments" ? (

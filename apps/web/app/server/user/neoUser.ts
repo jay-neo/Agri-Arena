@@ -3,12 +3,8 @@ import { neoUserSeeds } from "./neoUserSeeds";
 
 export const neoUser = async (userId: string): Promise<boolean> => {
   try {
-    const profile = await db.profile.upsert({
-      where: {
-        userId: userId,
-      },
-      update: {},
-      create: {
+    const profile = await db.profile.create({
+      data: {
         userId: userId,
       },
     });

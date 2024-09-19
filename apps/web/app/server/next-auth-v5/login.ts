@@ -3,6 +3,7 @@
 import { signIn } from "~/auth";
 import { SignupFormState, LoginFormSchema } from "./validation";
 import { AuthError, CredentialsSignin } from "next-auth";
+import { db } from "~/lib/prisma";
 
 export async function login(
   state: SignupFormState,
@@ -19,16 +20,34 @@ export async function login(
     };
   }
 
-  const { email, password } = validatedFields.data;
-
   try {
+    const { email, password } = validatedFields.data;
+    const user = await db.user.findUnique({
+      where: {
+        email: email,
+      },
+    });
+
+    if (!user) {
+      return {
+        errors: {
+          email: ["This email could not register yet."],
+        },
+      };
+    }
+
     await signIn("credentials", {
       email,
       password,
-      redirect: true,
-      redirectTo: "/activity",
+      redirect: false,
+      // redirectTo: "/activity",
     });
+
+    return {
+      success: "Wellcome back in AgriArena!",
+    };
   } catch (error) {
+    console.log(error);
     const err = error as CredentialsSignin;
 
     let errorMessage: string;
@@ -43,7 +62,10 @@ export async function login(
     }
 
     return {
-      error: errorMessage,
+      errors: {
+        email: [errorMessage],
+        password: [errorMessage],
+      },
     };
   }
 }

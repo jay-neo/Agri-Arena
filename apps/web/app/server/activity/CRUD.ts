@@ -61,10 +61,11 @@ export const getActivity = async (idx: number) => {
         imagesId: true,
         experiments: {
           select: {
+            device: true,
+            iotTitle: true,
             iot: {
               select: {
                 title: true,
-                device: true,
               },
             },
             arena: {
@@ -105,6 +106,26 @@ export const getActivity = async (idx: number) => {
       return null;
     }
 
+    let iot = res?.experiments?.iotTitle;
+    if (res.type === "experiments") {
+      const neoTitle = res?.experiments?.iot?.title;
+      if (neoTitle && neoTitle !== iot) {
+        const updatedExperiment = await db.experiments.update({
+          where: {
+            id: res?.experimentsId,
+          },
+          data: {
+            iotTitle: neoTitle,
+          },
+          select: {
+            iotTitle: true,
+          },
+        });
+
+        iot = updatedExperiment.iotTitle;
+      }
+    }
+
     return {
       title: res.title,
       type: res.type,
@@ -126,8 +147,8 @@ export const getActivity = async (idx: number) => {
         res?.images?.arena?.location ||
         res?.predictions?.arena?.location ||
         null,
-      iot: res?.experiments?.iot?.title || null,
-      device: res?.experiments?.iot?.device || null,
+      iot: iot || null,
+      device: res?.experiments?.device || null,
     };
   } catch (error) {
     return null;

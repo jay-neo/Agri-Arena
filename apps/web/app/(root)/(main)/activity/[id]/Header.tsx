@@ -191,7 +191,7 @@ export default ({ data, idx }: { data: Activity_Header; idx: number }) => {
             <div>
               <span className="font-bold text-lg">{"Device: "}</span>
               <span className="truncate">{data.iot}</span>
-              <span className="text-gray-700/80 truncate">
+              <span className="text-gray-700/80 dark:text-gray-300/60 truncate">
                 {" ("}
                 {data.device}
                 {")"}

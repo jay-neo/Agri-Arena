@@ -1,37 +1,34 @@
 "use server";
 
-import { db } from "~/lib/prisma";
 import { getUser } from "./user";
+import { db } from "~/lib/prisma";
+import { unstable_update } from "~/auth";
 import { uploadInPublicS3Bucket } from "~/lib/aws/s3";
 import { FormState, FormSchema } from "./profile-validation";
+import { revalidatePath } from "next/cache";
 
 ///////////////////////////////////// GETTER ///////////////////////////////////
 export async function getProfile(): Promise<Profile> {
   try {
-    const user = await getUser();
-    const { id, name, email, image } = user;
+    const sessionUser = await getUser();
 
     const profile = await db.profile.findUnique({
-      where: { userId: id },
+      where: { userId: sessionUser.id },
     });
 
-    if (!profile) {
-    }
-
     const res = {
-      name: name,
-      email: email,
-      image: image,
+      name: sessionUser.name,
+      email: sessionUser.email,
+      image: sessionUser.image,
       address: profile?.address,
       city: profile?.city,
       state: profile?.state,
       country: profile?.country,
       pincode: profile?.pincode,
     } as Profile;
-    console.log(res);
+
     return res;
   } catch (error) {
-    console.log(error);
     return null;
   }
 }
@@ -58,12 +55,12 @@ export async function setProfile(
   }
 
   try {
-    const { id, email, image: currentImage } = await getUser();
-
+    const sessionUser = await getUser();
+    const currentImage = sessionUser.image;
     let avatar: any = currentImage;
 
     const profile = await db.profile.update({
-      where: { userId: id },
+      where: { userId: sessionUser.id },
       data: {
         address: validatedFields.data.address,
         city: validatedFields.data.city,
@@ -83,32 +80,44 @@ export async function setProfile(
     }
 
     if (validatedFields.data?.image.size > 0) {
-      const filePath = `${email}/avatar`;
+      const filePath = `${sessionUser.email}/avatar`;
       avatar = await uploadInPublicS3Bucket(
         validatedFields.data?.image,
         filePath
       );
     }
 
-    const updatedUser = await db.user.update({
-      where: {
-        id: id,
-      },
-      data: {
-        name: validatedFields.data.name,
-        ...(avatar !== currentImage && { image: avatar }),
-      },
-      select: {
-        id: true,
-      },
-    });
+    if (
+      avatar !== currentImage ||
+      sessionUser.name !== validatedFields.data.name
+    ) {
+      const updatedUser = await db.user.update({
+        where: {
+          id: sessionUser.id,
+        },
+        data: {
+          name: validatedFields.data.name,
+          image: avatar,
+        },
+        select: {
+          id: true,
+          name: true,
+          image: true,
+          email: true,
+        },
+      });
 
-    // revalidatePath(`/social/myprofile`);
+      if (!updatedUser) {
+        return {
+          error: "Oops! Something went wrong.",
+        };
+      }
 
-    if (!updatedUser) {
-      return {
-        error: "Oops! Something went wrong.",
-      };
+      await unstable_update({
+        user: updatedUser,
+      });
+
+      revalidatePath(`/social/myprofile`);
     }
 
     return {

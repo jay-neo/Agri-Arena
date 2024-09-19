@@ -8,7 +8,6 @@ import { getUser } from "~/app/server/user";
 export async function getArenas(query?: string): Promise<Arenas[] | null> {
   try {
     const user = await getUser();
-    console.log("user ==>", user);
 
     const whereClause: Prisma.ArenaWhereInput = {
       userId: user.id,

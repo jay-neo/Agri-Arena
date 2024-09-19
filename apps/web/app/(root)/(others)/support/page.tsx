@@ -17,7 +17,7 @@ export default async () => {
     <div className="min-h-screen py-16 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <h1 className="text-2xl font-bold text-teal-500 dark:text-fuchsia-400 mb-8">
-          Support Center 🤞
+          Support Center 🐦‍
         </h1>
         <p className="mt-4 text-lg text-gray-600 dark:text-gray-300">
           Welcome to our Support Center.

@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import { Toaster } from "~/components/ui/sonner";
 import { MuiThemeProvider } from "~/components/providers/mui/themeProvider";
+import { SessionProvider } from "next-auth/react";
 
 const font = Roboto({
   weight: "400",
@@ -58,8 +59,10 @@ export default async function RootLayout({
   return (
     <html lang="en" className={font.className}>
       <body>
-        <MuiThemeProvider>{children}</MuiThemeProvider>
-        <Toaster />
+        <SessionProvider>
+          <MuiThemeProvider>{children}</MuiThemeProvider>
+          <Toaster />
+        </SessionProvider>
       </body>
     </html>
   );

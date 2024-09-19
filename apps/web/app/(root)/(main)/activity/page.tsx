@@ -1,6 +1,6 @@
 import {
-  ActivitySearchBar,
   SearchTopics,
+  ActivitySearchBar,
   ImageProcessingButton,
 } from "~/components/ui/activity";
 import type { Metadata } from "next";

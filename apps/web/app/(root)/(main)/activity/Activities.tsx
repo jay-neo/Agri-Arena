@@ -13,7 +13,7 @@ export default async ({ topic, query }: { topic?: string; query?: string }) => {
     <>
       {activities ? (
         activities.map((activity) => (
-            <ActivityPreview key={activity.idx} activity={activity} />
+          <ActivityPreview key={activity.idx} activity={activity} />
         ))
       ) : (
         <></>
