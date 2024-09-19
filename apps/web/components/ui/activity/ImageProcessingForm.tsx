@@ -72,7 +72,7 @@ export default () => {
 
   return (
     <form className="border-none" action={action}>
-      <div className="container mx-auto p-6 bg-[#f7ecfa] dark:bg-slate-800">
+      <div className="container mx-auto p-6">
         <input
           type="file"
           id="image"
@@ -90,7 +90,9 @@ export default () => {
           {!formData?.image ? (
             <>
               <i className="bx bxs-cloud-upload icon text-6xl"></i>
-              <h3 className="text-xl font-semibold">Upload Image</h3>
+              <h3 className="text-xl text-gray-400 font-semibold">
+                Upload Image
+              </h3>
               <p className="text-gray-600 dark:text-gray-400">
                 Image size must be less than <span>2MB</span>
               </p>
