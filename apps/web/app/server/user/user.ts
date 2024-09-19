@@ -1,9 +1,10 @@
 "use server";
 
+import { cache } from "react";
 import { auth } from "~/auth";
 
 ///////////////////////////////////// GETTER ///////////////////////////////////
-export async function getUser() {
+export const getUser = cache(async () => {
   try {
     const session = await auth();
     if (session?.user) {
@@ -18,6 +19,6 @@ export async function getUser() {
   } catch (error) {
     return null;
   }
-}
+});
 
 ///////////////////////////////////// SETTER ///////////////////////////////////

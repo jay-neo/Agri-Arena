@@ -6,7 +6,7 @@ import {
 import type { Metadata } from "next";
 import Activities from "./Activities";
 
-export const dynamic = "force-static";
+// export const dynamic = "force-static";
 
 export const metadata: Metadata = {
   title: "Activity",

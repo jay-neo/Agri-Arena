@@ -1,12 +1,12 @@
 {
-  "timestamp": "2024-09-07T21:21:21.152Z",
-  "ip": "abff:18da:3dca:ebd7:22a0:14fe:e50c:ca22",
-  "nitrogen": 14.42,
-  "phosphorus": 55.96,
-  "potassium": 48.56,
-  "ph": 8.25,
-  "moisture": 22.78,
-  "temperature": 96.51,
-  "humidity": 63.51,
+  "timestamp": "2024-09-17T17:37:05.338Z",
+  "ip": "f300:d8a5:4e0e:2ba8:2ef5:30cf:bc8f:18f5",
+  "nitrogen": 93.57,
+  "phosphorus": 94.28,
+  "potassium": 3.77,
+  "ph": 10.76,
+  "moisture": 74.86,
+  "temperature": 35.45,
+  "humidity": 19.02,
   "device": "123456"
 }

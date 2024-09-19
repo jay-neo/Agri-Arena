@@ -5,11 +5,13 @@ import { Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { getUser } from "~/app/server/user";
 
-export async function getArenas(query?: string) {
+export async function getArenas(query?: string): Promise<Arenas[] | null> {
   try {
-    const { id } = await getUser();
+    const user = await getUser();
+    console.log("user ==>", user);
+
     const whereClause: Prisma.ArenaWhereInput = {
-      userId: id,
+      userId: user.id,
       OR: query
         ? [
             { title: { contains: query, mode: Prisma.QueryMode.insensitive } },

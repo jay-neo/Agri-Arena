@@ -2,7 +2,6 @@
 
 import { db } from "~/lib/prisma";
 import { getUser } from "./user";
-import { revalidatePath } from "next/cache";
 import { uploadInPublicS3Bucket } from "~/lib/aws/s3";
 import { FormState, FormSchema } from "./profile-validation";
 
@@ -10,7 +9,6 @@ import { FormState, FormSchema } from "./profile-validation";
 export async function getProfile(): Promise<Profile> {
   try {
     const user = await getUser();
-    console.log(user);
     const { id, name, email, image } = user;
 
     const profile = await db.profile.findUnique({

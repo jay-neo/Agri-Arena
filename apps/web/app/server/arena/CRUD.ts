@@ -25,6 +25,7 @@ export const createArena = async (
       errors: validatedFields.error.flatten().fieldErrors,
     };
   }
+
   try {
     const { title, location, description } = validatedFields.data;
     const { id } = await getUser();
