@@ -4,11 +4,9 @@
 const uint64_t chipId = ESP.getEfuseMac();
 uint8_t retries = 0;
 
-
 WifiConfiguration Wifi(SSID, PASSWORD);
 AgriArenaClient Client;
 Sensors Sensor(DHT_PIN, DHT_TYPE, SOIL_MOISTURE_PIN, PH_PIN, NPK_PIN);
-
 
 void setup() {
     Serial.begin(115200);
@@ -20,7 +18,9 @@ void setup() {
     Serial.println("Starting...");
     // setColor(10, 0, 0); setColor(0, 10, 0); setColor(0, 0, 10);
 
-    if (!Wifi.config(R)) { return; }
+    if(!Wifi.config(R)) {
+        return;
+    }
     Client.config(ENDPOINT, TLS_CERTIFICATE);
 }
 
@@ -46,13 +46,12 @@ void loop() {
         Serial.print("Endpoint = ");
         Serial.println(ENDPOINT);
     }
-    
-    if (!Wifi.isAlive(R)) {
+
+    if(!Wifi.isAlive(R)) {
         Serial.println("Wifi Disconnectd");
     }
 
     Sensor.read();
     Client.send(Sensor.get(), chipId);
     delay(5000);
-
 }

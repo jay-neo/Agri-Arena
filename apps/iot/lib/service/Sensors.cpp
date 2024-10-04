@@ -1,24 +1,26 @@
-#include <ArduinoJson.h>
-#include <Arduino.h>
 #include "Sensors.h"
+
+#include <Arduino.h>
+#include <ArduinoJson.h>
 #include <DHT.h>
 
-Sensors::Sensors(const uint8_t _dht_pin, const uint8_t _dht_type, const uint8_t _moisture_pin, const uint8_t _ph_pin, uint8_t _npk_pin)
+Sensors::Sensors(const uint8_t _dht_pin, const uint8_t _dht_type, const uint8_t _moisture_pin,
+                 const uint8_t _ph_pin, uint8_t _npk_pin)
     : dht_pin(_dht_pin), dht_type(_dht_pin), moisture_pin(_moisture_pin), ph_pin(_ph_pin), npk_pin(_npk_pin) {
-        // if (_dht_pin != 0) {
-        //     dht(dht_pin, dht_type);
-        //     dht.begin();
-        // }
-        if(_moisture_pin != 0) {
-            pinMode(_moisture_pin, INPUT);
-        }
-        if (_ph_pin != 0 ) {
-            pinMode(_ph_pin, INPUT);
-        }
-        if (_npk_pin != 0) {
-            pinMode(_npk_pin, INPUT);
-        }
+    // if (_dht_pin != 0) {
+    //     dht(dht_pin, dht_type);
+    //     dht.begin();
+    // }
+    if(_moisture_pin != 0) {
+        pinMode(_moisture_pin, INPUT);
     }
+    if(_ph_pin != 0) {
+        pinMode(_ph_pin, INPUT);
+    }
+    if(_npk_pin != 0) {
+        pinMode(_npk_pin, INPUT);
+    }
+}
 
 // Sensors::~Sensors() {}
 
@@ -38,14 +40,12 @@ Sensors::Sensors(const uint8_t _dht_pin, const uint8_t _dht_type, const uint8_t 
 //     return temperature;
 // }
 
-
 void Sensors::read_dht(float res[]) {
     DHT dht(dht_pin, dht_type);
     dht.begin();
     res[0] = dht.readHumidity();
     res[1] = dht.readTemperature();
 }
-
 
 float Sensors::get_moisture() {
     int soilMoistureValue = analogRead(moisture_pin);
@@ -54,17 +54,12 @@ float Sensors::get_moisture() {
     return moisture;
 }
 
+float Sensors::get_ph() {}
 
-float Sensors::get_ph() {
-    
-}
-
-void Sensors::get_npk(float res[]) {
-
-}
+void Sensors::get_npk(float res[]) {}
 
 void Sensors::read() {
-    if (dht_pin != 0) {
+    if(dht_pin != 0) {
         // res["humidity"] = get_humidity();
         // res["temperature"] = get_temperature();
         float dht[2];
@@ -72,13 +67,13 @@ void Sensors::read() {
         res["humidity"] = dht[0];
         res["temperature"] = dht[1];
     }
-    if (moisture_pin != 0) {
+    if(moisture_pin != 0) {
         res["moisture"] = get_moisture();
     }
-    if (ph_pin != 0) {
+    if(ph_pin != 0) {
         res["ph"] = get_ph();
     }
-    if (npk_pin != 0) {
+    if(npk_pin != 0) {
         float npk[3];
         res["nitrogen"] = npk[0];
         res["phosphorus"] = npk[1];
@@ -88,7 +83,7 @@ void Sensors::read() {
 
 DynamicJsonDocument Sensors::get() {
     DynamicJsonDocument doc(JSON_OBJECT_SIZE(res.size() + 4));
-    for (const auto &kv : res) {
+    for(const auto &kv : res) {
         doc[kv.first.c_str()] = kv.second;
     }
     return doc;

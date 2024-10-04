@@ -9,20 +9,20 @@
 // #include <WiFi.h>
 // #endif
 
-
 class WifiConfiguration {
     String ssid;
     String password;
-public:
+
+   public:
     WifiConfiguration();
     WifiConfiguration(String ssid, String password);
 
-    bool isEmpty() ;
-    bool connect(const uint8_t&);
-    IPAddress reconnect(const uint8_t&);
-    bool config(const uint8_t&);
-    bool isAlive(const uint8_t&);
+    bool isEmpty();
     IPAddress getIP();
+    bool config(const uint8_t&);
+    bool connect(const uint8_t&);
+    bool isAlive(const uint8_t&);
+    IPAddress reconnect(const uint8_t&);
 };
 
 #endif
