@@ -29,7 +29,7 @@ export default async () => (
         </button>
       </Tooltip>
     </DialogTrigger>
-    <DialogContent className="border-none bg-[#f7ecfa] dark:bg-gray-300">
+    <DialogContent className="border-none bg-[#f7ecfa] dark:bg-[#212146]">
       <ImageProcessingForm />
     </DialogContent>
   </Dialog>

@@ -11,9 +11,9 @@ export default function () {
         />
         <div>
           <ul className="list-disc mt-4 space-y-2">
-            {[...Array(20).keys()].map((i) => (
+            {[...Array(3).keys()].map((i) => (
               <span
-              key={i}
+                key={i}
                 className="inline-block h-60 rounded-2xl animate-pulse w-full bg-gray-300 dark:bg-slate-700/70 mb-2"
                 style={{
                   animationDelay: `${i * 0.05}s`,

@@ -8,7 +8,6 @@ export default async ({ query }: { query?: string }) => {
     myenv == "test" ? getFakeArenas() : await getArenas(query);
 
   // await new Promise((resolve) => setTimeout(resolve, 5000));
-  console.log(arenas);
 
   return (
     <>

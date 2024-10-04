@@ -37,6 +37,7 @@ next-env.d.ts
 
 
 # -------------------
+migrations
 zoo
 tmp
 temp

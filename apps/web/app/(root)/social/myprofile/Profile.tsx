@@ -15,7 +15,7 @@ export default ({ myprofile }: { myprofile: Profile | null }) => {
   useEffect(() => {
     if (state?.success) {
       toast.success(state.success);
-      (async () => setFormData(await getProfile()))();
+      // (async () => setFormData(await getProfile()))();
       setIsEditMode(false);
     } else if (state?.error) {
       toast.error(state.error);

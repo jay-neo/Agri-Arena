@@ -2,11 +2,10 @@ import { myenv } from "~/lib/myenv";
 import type { Metadata } from "next";
 import ArenaDetails from "./ArenaDetails";
 import { redirect } from "next/navigation";
-import { getArena } from "~/app/server/arena";
 import { isNumber } from "~/lib/utils/checker";
 import { getAssignedIoTs } from "~/app/server/iot";
+import { getArena, getArenaDataCount } from "~/app/server/arena";
 import { fakeAssignedIoTs, getFakeArenaDetails } from "~/test/data/faker";
-import { getArenaDataCount } from "~/app/server/arena/getArenaDataCount";
 
 export const metadata: Metadata = {
   title: "Arena",

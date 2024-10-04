@@ -1,13 +1,13 @@
-"use server";
+// "use server";
 
 import SocialSpace from "./SocialSpace";
 import UserSpace from "./UserSpace";
 import Footer from "./Footer";
 
-export default async () => {
+export default () => {
   return (
     <aside className="h-full w-full px-2xl py-2xl md:pl-2xl md:pr-lg border-r border-black">
-      <nav className="flex !min-h-full flex-col justify-between">
+      <nav className="flex md:!min-h-full h-[calc(100vh_-_4rem)] px-2 flex-col justify-between">
         <div className="pt-6">
           <SocialSpace />
 

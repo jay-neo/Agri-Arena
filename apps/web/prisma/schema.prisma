@@ -1,5 +1,5 @@
 generator client {
-  provider      = "prisma-client-js"
+  provider = "prisma-client-js"
   // binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
 }
 
@@ -69,7 +69,7 @@ model Account {
 }
 
 model Session {
-  sessionToken String   @unique
+  sessionToken String   @unique @default(cuid())
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -90,7 +90,7 @@ model Arena {
   id          String        @id @default(cuid())
   idx         Int
   title       String
-  image       String        @default("https://editor.analyticsvidhya.com/uploads/96804AI_Image_7.PNG")
+  image       String
   description String?
   location    String?
   createdAt   DateTime      @default(now())
@@ -148,7 +148,7 @@ model IoT {
   updatedAt     DateTime     @updatedAt
   interval      Int
   title         String
-  device        String       @unique
+  device        String       @unique @default(cuid())
   status        String?
   location      String?
   description   String?
@@ -168,6 +168,7 @@ model Experiments {
   updatedAt   DateTime           @updatedAt
   count       Int                @default(1)
   device      String
+  iotTitle    String
   user        User               @relation(fields: [userId], references: [id])
   userId      String
   arena       Arena?             @relation(fields: [arenaId], references: [id])

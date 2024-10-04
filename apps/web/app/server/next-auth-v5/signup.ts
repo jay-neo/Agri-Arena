@@ -1,11 +1,12 @@
 "use server";
 
-import { db } from "~/lib/prisma";
-import { SignupFormState, SignupFormSchema } from "./validation";
+import bcrypt from "bcrypt";
 import { signIn } from "~/auth";
+import { db } from "~/lib/prisma";
 import { AuthError } from "next-auth";
-import { defaultUserAvatar } from "~/lib/constants";
-import { neoUser } from "../user";
+import { getRandomString } from "~/lib/utils/random";
+import { SignupFormState, SignupFormSchema } from "./validation";
+import { defaultUserAvatar, defaultUserAvatars } from "~/lib/constants";
 
 export async function signup(
   state: SignupFormState,
@@ -39,33 +40,56 @@ export async function signup(
       };
     }
 
-    const hashedPassword = password;
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-    const newUser = await db.user.create({
-      data: {
-        name: name,
-        email: email,
-        password: hashedPassword,
-        image: defaultUserAvatar,
-      },
+    // const newUser = await db.user.create({
+    //   data: {
+    //     name: name,
+    //     email: email,
+    //     password: hashedPassword,
+    //     image: defaultUserAvatar,
+    //   },
+    // });
+
+    // if (!newUser) {
+    //   return {
+    //     error: "Oops! Something went wrong.",
+    //   };
+    // }
+
+    await db.$transaction(async (tx) => {
+      const { id } = await tx.user.create({
+        data: {
+          email,
+          name: name,
+          password: hashedPassword,
+          image: getRandomString(defaultUserAvatars) || defaultUserAvatar,
+        },
+      });
+
+      await tx.account.create({
+        data: {
+          userId: id,
+          type: "credentials",
+          provider: "credentials",
+          providerAccountId: id,
+        },
+      });
     });
-
-    if (!newUser) {
-      return {
-        error: "Oops! Something went wrong.",
-      };
-    }
 
     // Implement Email Varification OTP
 
-    await neoUser(newUser.id);
+    // await neoUser(newUser.id);
 
     await signIn("credentials", {
       email,
       password,
-      redirect: true,
-      redirectTo: "/activity",
+      redirect: false,
     });
+
+    return {
+      success: "Wellcome to AgriArena!",
+    };
   } catch (error) {
     console.log(error);
     if (error instanceof Error) {

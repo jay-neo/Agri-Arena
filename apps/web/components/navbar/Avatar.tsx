@@ -3,6 +3,7 @@
 import { logout } from "~/app/server/next-auth-v5/logout";
 import React, { useState, useEffect, useRef, MutableRefObject } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 export default ({
   user,
@@ -49,7 +50,13 @@ export default ({
         onClick={toggleDropdown}
       >
         <span className="sr-only">Open user menu</span>
-        <img className="w-8 h-8 rounded-full" src={user?.image} alt="Avatar" />
+        <Image
+          className="w-8 h-8 rounded-full"
+          src={user?.image}
+          alt="Avatar"
+          height={20}
+          width={20}
+        />
       </button>
 
       {isDropdownOpen && (

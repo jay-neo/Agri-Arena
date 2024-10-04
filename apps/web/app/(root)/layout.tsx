@@ -4,6 +4,7 @@ import { Navbar } from "~/components/navbar";
 import { MobileNavBar } from "~/components/navbar/MobileNavBar";
 import Sidebar from "~/components/sidebar";
 import { getUser } from "../server/user";
+import { isMobile } from "~/lib/utils/checker";
 
 interface LayoutProps {
   children: React.ReactNode;

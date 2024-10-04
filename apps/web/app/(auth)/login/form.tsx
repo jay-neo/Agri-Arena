@@ -3,20 +3,32 @@
 import Link from "next/link";
 import Image from "next/image";
 import { toast } from "sonner";
-import { useState } from "react";
-
 import { login } from "~/app/server/auth";
+import { redirect } from "next/navigation";
+import { useEffect, useState } from "react";
 import { Button } from "~/components/ui/form/button";
 import { useFormState, useFormStatus } from "react-dom";
-
 import { OpenedEye, ClosedEye } from "~/lib/arena-icons";
-
 
 export function LoginForm() {
   const [state, action] = useFormState(login, undefined);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+
+  useEffect(() => {
+    if (state?.error) {
+      toast.error(state.error);
+      state.error = null;
+    } else if (state?.message) {
+      toast.message(state.message);
+      state.message = null;
+    } else if (state?.success) {
+      toast.success(state.success);
+      state.success = null;
+      redirect(`/activity`);
+    }
+  }, [state?.error, state?.message, state?.success]);
 
   return (
     <>
@@ -47,7 +59,7 @@ export function LoginForm() {
           </label>
         </div>
         {state?.errors?.email && (
-          <p className="text-sm text-red-500">{state.errors.email}</p>
+          <p className="text-sm text-red-800">{state.errors.email}</p>
         )}
         <div className="relative border-b-2 border-gray-300 mt-6">
           <input
@@ -77,12 +89,16 @@ export function LoginForm() {
                 setShowPassword(!showPassword);
               }}
             >
-              {showPassword ? <Image src={ClosedEye} alt="" width={20} height={20} /> : <Image src={OpenedEye} alt="" width={20} height={20}  />}
+              {showPassword ? (
+                <Image src={ClosedEye} alt="" width={20} height={20} />
+              ) : (
+                <Image src={OpenedEye} alt="" width={20} height={20} />
+              )}
             </div>
           )}
         </div>
         {state?.errors?.password && (
-          <p className="text-sm text-red-500">{state.errors.password}</p>
+          <p className="text-sm text-red-800">{state.errors.password}</p>
         )}
         {/* <div className="flex items-center justify-end mb-8 text-white">
           <Link href="/forgot-password" className="hover:underline">
@@ -103,9 +119,6 @@ export function LoginForm() {
           </p>
         </div>
       </form>
-      {state?.error && (
-        <div className="hidden">{toast.error(state?.error)}</div>
-      )}
     </>
   );
 }
