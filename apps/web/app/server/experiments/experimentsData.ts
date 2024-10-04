@@ -2,7 +2,6 @@
 
 import { revalidatePath } from "next/cache";
 import { db } from "~/lib/prisma";
-import { deleteActivity } from "../activity";
 import { deleteExperiments } from "./experiments";
 import { ExperimentFormSchema, ExperimentFormState } from "./validation";
 

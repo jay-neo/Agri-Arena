@@ -1,11 +1,11 @@
 "use client";
 
-import { redirect } from "next/navigation";
-import { useState, useRef, ChangeEvent, DragEvent, useEffect } from "react";
-import { useFormState, useFormStatus } from "react-dom";
 import { toast } from "sonner";
-import { uploadS3 } from "~/app/server/ip/upload-s3";
+import { redirect } from "next/navigation";
+import { imageUploadS3 } from "~/app/server/ip";
 import { Button } from "~/components/ui/form/button";
+import { useFormState, useFormStatus } from "react-dom";
+import { useState, useRef, ChangeEvent, DragEvent, useEffect } from "react";
 
 type Image = {
   image: string;
@@ -60,7 +60,7 @@ export default () => {
     setFormData(null);
   };
 
-  const [state, action] = useFormState(uploadS3, undefined);
+  const [state, action] = useFormState(imageUploadS3, undefined);
 
   useEffect(() => {
     if (state?.error) {

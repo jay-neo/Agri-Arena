@@ -5,8 +5,9 @@ import { updateMonitor } from "../activity";
 import { getUser } from "~/app/server/user";
 import { uploadInPublicS3Bucket } from "~/lib/aws/s3";
 import { ImageUploadSchema, ImageUploadState } from "./validation";
+import { imageProcessing } from "./imageProcessing";
 
-export async function uploadS3(
+export async function imageUploadS3(
   state: ImageUploadState,
   formData: FormData
 ): Promise<ImageUploadState> {
@@ -47,12 +48,19 @@ export async function uploadS3(
     const storedImage = await db.images_Data.create({
       data: {
         type: "image",
+        groupId: 0,
         image: imageUrl,
         imagesId: images.id,
       },
     });
 
     if (!storedImage) {
+      return {
+        error: "An error occurred while creating processing your image",
+      };
+    }
+
+    if (!(await imageProcessing(images.id, 0))) {
       return {
         error: "An error occurred while creating processing your image",
       };
