@@ -1,16 +1,16 @@
 "use client";
 
 import {
-  createContext,
-  useContext,
-  useState,
   useMemo,
-  ReactNode,
+  useState,
   useEffect,
+  ReactNode,
+  useContext,
+  createContext,
 } from "react";
-import { ThemeProvider, createTheme, Theme } from "@mui/material/styles";
 import { CssBaseline } from "@mui/material";
 import { StyledEngineProvider } from "@mui/material/styles";
+import { ThemeProvider, createTheme, Theme } from "@mui/material/styles";
 
 interface ThemeContextType {
   toggleTheme: () => void;
@@ -28,7 +28,11 @@ export const useThemeContext = () => {
   return context;
 };
 
-export const ThemeContextProvider = ({ children }: { children: ReactNode }) => {
+export const MuiThemeContextProvider = ({
+  children,
+}: {
+  children: ReactNode;
+}) => {
   const [mode, setMode] = useState<"light" | "dark">(() => {
     if (typeof window !== "undefined") {
       return (localStorage.getItem("theme") as "light" | "dark") || "light";

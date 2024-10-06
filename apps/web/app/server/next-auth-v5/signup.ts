@@ -42,21 +42,6 @@ export async function signup(
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // const newUser = await db.user.create({
-    //   data: {
-    //     name: name,
-    //     email: email,
-    //     password: hashedPassword,
-    //     image: defaultUserAvatar,
-    //   },
-    // });
-
-    // if (!newUser) {
-    //   return {
-    //     error: "Oops! Something went wrong.",
-    //   };
-    // }
-
     await db.$transaction(async (tx) => {
       const { id } = await tx.user.create({
         data: {
@@ -78,8 +63,6 @@ export async function signup(
     });
 
     // Implement Email Varification OTP
-
-    // await neoUser(newUser.id);
 
     await signIn("credentials", {
       email,

@@ -1,9 +1,8 @@
 "use client";
 
-import { useTheme } from "./themeProvider";
-import { Button } from "@mui/material";
-
 import Image from "next/image";
+import { Button } from "@mui/material";
+import { useTheme } from "./MuiThemeProvider";
 import { ThemeSun, ThemeMoon } from "~/lib/arena-icons";
 
 export default () => {

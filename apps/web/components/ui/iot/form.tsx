@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { GridRowsProp } from "@mui/x-data-grid";
 import { getArenasWithId } from "~/app/server/arena";
 import { Button } from "~/components/ui/form/button";
-import { TextField, Autocomplete } from "@mui/material";
+import { TextField, Autocomplete, Tooltip, Fade } from "@mui/material";
 import { useFormState, useFormStatus } from "react-dom";
 import { IoTFormState } from "~/app/server/iot/validation";
 
@@ -26,9 +26,10 @@ export const IoTForm = ({
 }) => {
   const [state, neoAction] = useFormState(action, undefined);
   const [arenas, setArenas] = useState<ArenaIds[]>([]);
-  const [selectedArena, setSelectedArena] = useState<
-    { arena: string; arenaId: string } | undefined
-  >({ arena: data?.arena, arenaId: data?.arenaId } || undefined);
+  const [selectedArena, setSelectedArena] = useState<{
+    arena: string;
+    arenaId: string;
+  } | null>({ arena: data?.arena, arenaId: data?.arenaId } || null);
 
   useEffect(() => {
     (async () => setArenas(await getArenasWithId()))();
@@ -55,71 +56,103 @@ export const IoTForm = ({
   }, [state]);
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center z-50 md:py-6 bg-yellow-400/40">
+    <div className="fixed inset-0 flex items-center justify-center z-50 md:py-6">
       <div
-        className="fixed inset-0 bg-gray-800 opacity-50"
+        className="fixed inset-0 bg-black/70"
         onClick={() => setIsOpen(false)}
       ></div>
 
-      <div className="relative bg-yellow-50 dark:bg-amber-500 p-5 md:p-10 scrollbar-hide rounded-lg shadow-lg w-full  max-w-2xl max-h-full h-auto overflow-auto">
+      <div className="relative bg-white dark:bg-teal-500 p-5 md:p-10 scrollbar-hide rounded-lg shadow-lg w-full  max-w-2xl max-h-full h-auto overflow-auto">
         <button
           className="absolute top-2 right-5 font-bold text-gray-600 hover:text-gray-900 text-3xl"
           onClick={() => setIsOpen(false)}
         >
           &times;
         </button>
-        <form action={neoAction}>
-          <TextField
-            margin="dense"
-            label="Title"
-            name="title"
-            fullWidth
-            defaultValue={data?.title}
-            className="dark:invert"
-          />
+        <form action={neoAction} className="mt-6 md:mt-1">
+          <Tooltip
+            disableFocusListener
+            followCursor
+            describeChild
+            TransitionComponent={Fade}
+            title="This is you custom IoT identification title"
+          >
+            <TextField
+              margin="dense"
+              label="Title"
+              name="title"
+              fullWidth
+              defaultValue={data?.title}
+              className="dark:invert"
+            />
+          </Tooltip>
           {state?.errors?.title && (
             <div className="text-red-500 text-sm mb-1">
               {state.errors.title}
             </div>
           )}
-          <TextField
-            margin="dense"
-            label="Device ID"
-            name="device"
-            type="text"
-            disabled={formType === "edit"}
-            fullWidth
-            defaultValue={data?.device}
-            className="dark:invert"
-          />
+          <Tooltip
+            disableFocusListener
+            followCursor
+            describeChild
+            TransitionComponent={Fade}
+            title="Device ID is unique code provided with AgriArena IoT"
+          >
+            <TextField
+              margin="dense"
+              label="Device ID"
+              name="device"
+              type="text"
+              disabled={formType === "edit"}
+              fullWidth
+              defaultValue={data?.device}
+              className="dark:invert"
+            />
+          </Tooltip>
           {state?.errors?.device && (
             <div className="text-red-500 text-sm mb-1">
               {state.errors.device}
             </div>
           )}
-          <TextField
-            margin="dense"
-            label="Interval (in Days)"
-            name="interval"
-            type="number"
-            fullWidth
-            defaultValue={data?.interval || 1}
-            className="dark:invert"
-          />
+          <Tooltip
+            disableFocusListener
+            followCursor
+            describeChild
+            TransitionComponent={Fade}
+            title="Interval used to group the experiments in a single unit"
+          >
+            <TextField
+              margin="dense"
+              label="Interval (in Days)"
+              name="interval"
+              type="number"
+              fullWidth
+              defaultValue={data?.interval || 1}
+              className="dark:invert"
+            />
+          </Tooltip>
           {state?.errors?.interval && (
             <div className="text-red-500 text-sm mb-1">
               {state.errors?.interval}
             </div>
           )}
-          <TextField
-            margin="dense"
-            label="Location"
-            name="location"
-            type="text"
-            fullWidth
-            defaultValue={data?.location}
-            className="dark:invert"
-          />
+          <Tooltip
+            disableFocusListener
+            followCursor
+            describeChild
+            TransitionComponent={Fade}
+            title="This is your accurate IoT location deploed in an arena."
+          >
+            <TextField
+              margin="dense"
+              label="Location"
+              name="location"
+              type="text"
+              fullWidth
+              defaultValue={data?.location}
+              className="dark:invert"
+            />
+          </Tooltip>
           {state?.errors?.location && (
             <div className="text-red-500 text-sm mb-1">
               {state.errors.location}

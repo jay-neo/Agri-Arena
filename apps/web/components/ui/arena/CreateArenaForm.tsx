@@ -5,6 +5,9 @@ import { useEffect } from "react";
 import { createArena } from "~/app/server/arena";
 import { useFormState, useFormStatus } from "react-dom";
 
+const LABEL = "flex w-full font-semibold text-black pb-1";
+const ERROR = "text-sm text-red-500 dark:text-yellow-400";
+
 export const CreateArenaForm = ({ onClose }: { onClose: () => void }) => {
   const [state, action] = useFormState(createArena, undefined);
 
@@ -18,57 +21,51 @@ export const CreateArenaForm = ({ onClose }: { onClose: () => void }) => {
   }, [state, onClose]);
 
   return (
-    <form action={action} className="dark:bg-amber-500">
+    <form action={action} className="dark:bg-cyan-600 p-2 rounded-lg">
       <div className="container">
-        <label className="flex w-full dark:text-black font-bold pb-1">
-          Name
-        </label>
+        <label className={LABEL}>Name</label>
         <textarea
           id="title"
           name="title"
           autoComplete="off"
           placeholder={""}
           rows={1}
-          className={`text-black text-sm focus:ring-blue-500 focus:border-blue-500 block ps-3 p-2.5  bg-slate-300 dark:bg-sky-600/30 w-full border border-gray-300 dark:border-gray-600 rounded-md`}
+          className={`text-sm focus:ring-blue-500 focus:border-blue-500 block ps-3 p-2.5  bg-slate-300 dark:bg-sky-600/30 w-full border border-gray-300 dark:border-gray-600 rounded-md`}
         />
-        {state?.errors?.title && (
-          <p className="text-sm text-red-500">{state.errors.title}</p>
-        )}
+        {state?.errors?.title && <p className={ERROR}>{state.errors.title}</p>}
       </div>
 
       <div className="container mt-5">
-        <label className="flex text-black font-bold pb-1">Location</label>
+        <label className={LABEL}>Location</label>
         <textarea
           id="location"
           name="location"
           autoComplete="off"
           placeholder={""}
           rows={1}
-          className={`text-black text-sm focus:ring-blue-500 focus:border-blue-500 block ps-3 p-2.5 bg-slate-300 dark:bg-sky-600/30 w-full border border-gray-300 dark:border-gray-600 rounded-md`}
+          className={`text-sm focus:ring-blue-500 focus:border-blue-500 block ps-3 p-2.5 bg-slate-300 dark:bg-sky-600/30 w-full border border-gray-300 dark:border-gray-600 rounded-md`}
         />
         {state?.errors?.location && (
-          <p className="text-sm text-red-500">{state.errors.location}</p>
+          <p className={ERROR}>{state.errors.location}</p>
         )}
       </div>
 
       <div className="container mt-5">
-        <label className="flex dark:text-black font-bold  pb-1">
-          Description:
-        </label>
+        <label className={LABEL}>Description:</label>
         <div className="truncate">
           <textarea
             id="description"
             name="description"
             autoComplete="off"
             placeholder={""}
-            className={`flex flex-col text-gray-900 text-sm text-wrap focus:ring-blue-500 focus:border-blue-500  ps-3 p-2.5 dark:text-black h-24 bg-slate-300 dark:bg-sky-600/30 w-full border border-gray-300 dark:border-gray-600 rounded-md`}
+            className={`flex flex-col text-sm text-wrap focus:ring-blue-500 focus:border-blue-500  ps-3 p-2.5 h-24 bg-slate-300 dark:bg-sky-600/30 w-full border border-gray-300 dark:border-gray-600 rounded-md`}
           />
         </div>
         {state?.errors?.description && (
-          <p className="text-sm text-red-500">{state.errors.description}</p>
+          <p className={ERROR}>{state.errors.description}</p>
         )}
       </div>
-      <div className="flex items-center justify-center pt-4">
+      <div className="flex items-center justify-center mt-4">
         <CreatButton />
       </div>
     </form>
@@ -82,7 +79,7 @@ const CreatButton = () => {
     <button
       type="submit"
       disabled={pending}
-      className="m-1 px-3 py-1.5 border flex flex-row-reverse text-black border-black rounded-md hover:bg-orange-400"
+      className="m-1 px-6 py-1.5 font-bold min-w-40 border border-2 rounded-3xl hover:bg-orange-400 hover:text-black hover:border-black"
     >
       {pending ? "Creating..." : "Create"}
     </button>

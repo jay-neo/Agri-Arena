@@ -3,12 +3,12 @@ import { getProfile } from "~/app/server/user";
 
 export default async () => {
   const myprofile: Profile = await getProfile();
-  console.log()
+  console.log();
   return (
     <div>
-      <div className="max-h-screen overflow-hidden relative max-w-full">
-        <div className="flex flex-row items-center justify-center mt-10 relative ">
-          <div className="z-10 backdrop-blur-3xl m-2 md:mt-10 p-4 min-w-96 md:w-[30rem] h-[40rem] border-2 border-black dark:border dark:border-white rounded-lg">
+      <div className="max-w-full">
+        <div className="flex flex-row items-center justify-center mt-10 ">
+          <div className="backdrop-blur-3xl m-2 md:mt-10 p-4 min-w-96 w-[25rem] md:w-[30rem] h-[40rem] border-2 border-black dark:border dark:border-white rounded-lg">
             <ProfileForm myprofile={myprofile} />
           </div>
         </div>

@@ -83,16 +83,14 @@ export default () => {
           ref={fileInputRef}
         />
         <div
-          className="img-area relative w-full h-60 bg-fuchsia-300/30 dark:bg-gray-700  mb-6 rounded-lg overflow-hidden flex justify-center items-center flex-col"
+          className="img-area relative w-full h-60 bg-fuchsia-300/30 dark:bg-cyan-700  mb-6 rounded-lg overflow-hidden flex justify-center items-center flex-col"
           onDragOver={handleDragOver}
           onDrop={handleDrop}
         >
           {!formData?.image ? (
             <>
               <i className="bx bxs-cloud-upload icon text-6xl"></i>
-              <h3 className="text-xl text-gray-400 font-semibold">
-                Upload Image
-              </h3>
+              <h3 className="text-xl font-semibold">Upload Image</h3>
               <p className="text-gray-600 dark:text-gray-400">
                 Image size must be less than <span>2MB</span>
               </p>
@@ -109,7 +107,7 @@ export default () => {
           {!formData?.image ? (
             <button
               type="button"
-              className="select-image text-sm px-4 py-2 bg-purple-600 text-white font-semibold rounded-lg transition duration-300 hover:bg-purple-700"
+              className="select-image text-sm text-white px-4 py-2 bg-purple-600 dark:bg-rose-600/70 font-semibold rounded-lg transition duration-300 hover:bg-purple-700 dark:hover:bg-fuchsia-600"
               onClick={(e: React.FormEvent) => {
                 e.preventDefault();
                 fileInputRef.current?.click();

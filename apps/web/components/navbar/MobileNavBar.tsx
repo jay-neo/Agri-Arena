@@ -1,23 +1,22 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { motion } from "framer-motion";
-
 import {
-  PhoneNavBarActivity,
-  PhoneNavBarArena,
   PhoneNavBarChat,
-  PhoneNavBarCalender,
+  PhoneNavBarArena,
   PhoneNavBarSocial,
+  PhoneNavBarCalender,
+  PhoneNavBarActivity,
 } from "~/lib/arena-icons";
+import Link from "next/link";
 import Image from "next/image";
+import { motion } from "framer-motion";
+import { usePathname } from "next/navigation";
 import { isMobile } from "~/lib/utils/checker";
+import React, { useEffect, useState } from "react";
 
 interface MobileNavBarItem {
-  title: string;
   path: string;
+  title: string;
   icon: JSX.Element;
 }
 
