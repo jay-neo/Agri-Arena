@@ -34,14 +34,15 @@ export default async ({ params }: { params: { id: string } }) => {
   return (
     <div className="mt-2 md:mx-12">
       <Header data={data} idx={Number(params.id)} />
-
-      {data.type === "experiments" ? (
-        <Experiments dataId={data.experimentsId} />
-      ) : data.type === "predictions" ? (
-        <Predictions dataId={data.predictionssId} />
-      ) : (
-        data.type === "images" && <Images dataId={data.imagesId} />
-      )}
+      <div className="mt-2">
+        {data.type === "experiments" ? (
+          <Experiments experimentsId={data.experimentsId} />
+        ) : data.type === "predictions" ? (
+          <Predictions predictionssId={data.predictionssId} />
+        ) : (
+          data.type === "images" && <Images imagesId={data.imagesId} />
+        )}
+      </div>
     </div>
   );
 };

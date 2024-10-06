@@ -229,19 +229,29 @@ model Images {
 }
 
 model Images_Data {
-  id        String           @id @default(cuid())
-  createdAt DateTime         @default(now())
-  type      Images_Data_Type
-  image     String?
-  text      String?
-  role      String?
-  images    Images           @relation(fields: [imagesId], references: [id])
-  imagesId  String
+  id                 String           @id @default(cuid())
+  createdAt          DateTime         @default(now())
+  groupId            Int
+  type               Images_Data_Type
+  image              String?
+  processingCode     Int?
+  processingResponse String?
+  role               Role_Type?
+  text               String[]
+  images             Images           @relation(fields: [imagesId], references: [id])
+  imagesId           String
+}
+
+enum Role_Type {
+  ai
+  user
+  model
 }
 
 enum Images_Data_Type {
   image
   text
+  processingResponse
 }
 
 model Share {

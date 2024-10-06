@@ -1,5 +1,3 @@
-export default async ({ dataId }: { dataId: string }) => {
-  return (
-    <></>
-  );
+export default async ({ predictionssId }: { predictionssId: string }) => {
+  return <></>;
 };

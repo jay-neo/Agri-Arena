@@ -115,10 +115,9 @@ type Activity_Header = {
   imagesId?: string;
 };
 
-
 type Events = {
   title: string;
   start: Date;
   end: Date;
   allDay?: boolean;
-}
+};

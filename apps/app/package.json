@@ -12,10 +12,10 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "@tauri-apps/api": ">=2.0.0-rc.0",
-    "@tauri-apps/plugin-shell": ">=2.0.0-rc.0"
+    "@tauri-apps/api": "^2.0.0-rc.4",
+    "@tauri-apps/plugin-shell": "^2.0.0-rc.1"
   },
   "devDependencies": {
-    "@tauri-apps/cli": ">=2.0.0-rc.0"
+    "@tauri-apps/cli": "^2.0.0-rc.15"
   }
 }

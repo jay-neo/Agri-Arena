@@ -14,13 +14,13 @@ import {
   getExperimentsData,
 } from "~/app/server/experiments";
 
-export default async ({ dataId }: { dataId: string }) => {
+export default async ({ experimentsId }: { experimentsId: string }) => {
   // const eventSource = new EventSource(`/api/iot`)
 
   const data: Experiments_Data[] =
     myenv === "test"
       ? await getFakeIotData()
-      : await getExperimentsData(dataId);
+      : await getExperimentsData(experimentsId);
 
   const temperatureData = data.map((item) => ({
     temperature: item.temperature,
