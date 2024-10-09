@@ -41,8 +41,13 @@ export default async ({ activity }: { activity: Activities }) => {
               robotoMono.className
             )}
           >
-            <span>Type of </span>
-            <span>{activity.type}</span>
+            {activity.type === "experiments" ? (
+              <span>{`Experiments captured from IoT`}</span>
+            ) : activity.type === "predictions" ? (
+              <span>{`Crop prediction`}</span>
+            ) : (
+              <span>{`Disease detection`}</span>
+            )}
           </h2>
           <div></div>
           <div className="flex flex-row-reverse">
@@ -54,10 +59,10 @@ export default async ({ activity }: { activity: Activities }) => {
             <ExperimentsPreview dataId={activity.experimentsId} />
           ) : activity.type === "predictions" ? (
             <PredictionsPreview dataId={activity.predictionsId} />
-          ) : activity.type === "images" ? (
-            <ImagesPreview dataId={activity.imagesId} />
           ) : (
-            <></>
+            activity.type === "images" && (
+              <ImagesPreview dataId={activity.imagesId} />
+            )
           )}
         </Link>
       </div>

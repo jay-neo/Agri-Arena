@@ -95,7 +95,7 @@ model Arena {
   location    String?
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
-  user        User          @relation(fields: [userId], references: [id])
+  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      String
   iot         IoT[]
   experiments Experiments[]
@@ -112,13 +112,13 @@ model Activity {
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
   type          Type
-  user          User         @relation(fields: [userId], references: [id])
+  user          User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId        String
-  experiments   Experiments? @relation(fields: [experimentsId], references: [id])
+  experiments   Experiments? @relation(fields: [experimentsId], references: [id], onDelete: Cascade)
   experimentsId String?      @unique
-  predictions   Predictions? @relation(fields: [predictionsId], references: [id])
+  predictions   Predictions? @relation(fields: [predictionsId], references: [id], onDelete: Cascade)
   predictionsId String?      @unique
-  images        Images?      @relation(fields: [imagesId], references: [id])
+  images        Images?      @relation(fields: [imagesId], references: [id], onDelete: Cascade)
   imagesId      String?      @unique
 
   @@unique([idx, userId])
@@ -132,7 +132,7 @@ model Activity_Monitoring {
   predictions Int    @default(0)
   images      Int    @default(0)
   experiments Int    @default(0)
-  user        User   @relation(fields: [userId], references: [id])
+  user        User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      String @unique
 }
 
@@ -152,11 +152,11 @@ model IoT {
   status        String?
   location      String?
   description   String?
-  user          User         @relation(fields: [userId], references: [id])
+  user          User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId        String
-  arena         Arena?       @relation(fields: [arenaId], references: [id])
+  arena         Arena?       @relation(fields: [arenaId], references: [id], onDelete: Cascade)
   arenaId       String?
-  experiments   Experiments? @relation(fields: [experimentsId], references: [id])
+  experiments   Experiments? @relation(fields: [experimentsId], references: [id], onDelete: Cascade)
   experimentsId String?      @unique
 
   @@unique([device, userId])
@@ -169,14 +169,15 @@ model Experiments {
   count       Int                @default(1)
   device      String
   iotTitle    String
-  user        User               @relation(fields: [userId], references: [id])
+  isPredicted Boolean            @default(false)
+  user        User               @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      String
-  arena       Arena?             @relation(fields: [arenaId], references: [id])
+  arena       Arena?             @relation(fields: [arenaId], references: [id], onDelete: Cascade)
   arenaId     String?
   iot         IoT?
   activity    Activity?
   expData     Experiments_Data[]
-  predictions Predictions[]
+  predictions Predictions?
 }
 
 model Experiments_Data {
@@ -190,7 +191,7 @@ model Experiments_Data {
   moisture      Float       @default(0)
   temperature   Float       @default(0)
   humidity      Float       @default(0)
-  experiments   Experiments @relation(fields: [experimentsId], references: [id])
+  experiments   Experiments @relation(fields: [experimentsId], references: [id], onDelete: Cascade)
   experimentsId String
 }
 
@@ -198,48 +199,61 @@ model Predictions {
   id              String             @id @default(cuid())
   createdAt       DateTime           @default(now())
   updatedAt       DateTime           @updatedAt
-  user            User               @relation(fields: [userId], references: [id])
-  userId          String             @unique
-  arena           Arena?             @relation(fields: [arenaId], references: [id])
+  user            User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId          String
+  arena           Arena?             @relation(fields: [arenaId], references: [id], onDelete: Cascade)
   arenaId         String?
-  experiments     Experiments        @relation(fields: [experimentsId], references: [id])
-  experimentsId   String
-  predictionsData Predictions_Data[]
+  experiments     Experiments        @relation(fields: [experimentsId], references: [id], onDelete: Cascade)
+  experimentsId   String             @unique
   activity        Activity?
+  predictionsData Predictions_Data[]
 }
 
 model Predictions_Data {
-  id            String      @id @default(cuid())
-  text          String
-  role          String
-  predictions   Predictions @relation(fields: [predictionsId], references: [id])
-  predictionsId String
+  id              String      @id @default(cuid())
+  createdAt       DateTime    @default(now())
+  role            Role_Type
+  text            String[]
+  modelResponse   model_v1?   @relation(fields: [modelResponseId], references: [id], onDelete: Cascade)
+  modelResponseId String?     @unique
+  predictions     Predictions @relation(fields: [predictionsId], references: [id], onDelete: Cascade)
+  predictionsId   String
 }
 
 model Images {
   id         String        @id @default(cuid())
   createdAt  DateTime      @default(now())
   updatedAt  DateTime      @updatedAt
-  user       User          @relation(fields: [userId], references: [id])
+  user       User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     String
-  arena      Arena?        @relation(fields: [arenaId], references: [id])
+  arena      Arena?        @relation(fields: [arenaId], references: [id], onDelete: Cascade)
   arenaId    String?
-  imagesData Images_Data[]
   activity   Activity?
+  imagesData Images_Data[]
 }
 
 model Images_Data {
-  id                 String           @id @default(cuid())
-  createdAt          DateTime         @default(now())
-  groupId            Int
-  type               Images_Data_Type
-  image              String?
-  processingCode     Int?
-  processingResponse String?
-  role               Role_Type?
-  text               String[]
-  images             Images           @relation(fields: [imagesId], references: [id])
-  imagesId           String
+  id              String            @id @default(cuid())
+  createdAt       DateTime          @default(now())
+  role            Role_Type
+  type            Images_Data_Type? // if "user" then check type "image" or "text"
+  image           String?
+  text            String[]
+  modelResponse   model_v1?         @relation(fields: [modelResponseId], references: [id], onDelete: Cascade)
+  modelResponseId String?           @unique
+  images          Images            @relation(fields: [imagesId], references: [id], onDelete: Cascade)
+  imagesId        String
+}
+
+model model_v1 {
+  id       String   @id @default(cuid())
+  name     String
+  number   Int
+  result   String[]
+  accuracy String[]
+
+  imagesData      Images_Data?
+  predictionsData Predictions_Data?
 }
 
 enum Role_Type {
@@ -251,7 +265,6 @@ enum Role_Type {
 enum Images_Data_Type {
   image
   text
-  processingResponse
 }
 
 model Share {

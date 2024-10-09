@@ -14,13 +14,13 @@ export const { auth, handlers, signIn, signOut, unstable_update } = NextAuth({
 
   callbacks: {
     authorized({ auth }) {
-      console.log(">>>=========================> Callback Authorize");
+      print("Callback Authorize");
 
       const isAuthenticated = !!auth?.user;
       return isAuthenticated;
     },
     async jwt({ token, user, account, trigger, session }) {
-      console.log(">>>=========================> Callback JWT");
+      print("Callback JWT");
       // console.log("User ==> ", user);
       // console.log("Session ==> ", session);
       // console.log("Token ==> ", token);
@@ -51,7 +51,7 @@ export const { auth, handlers, signIn, signOut, unstable_update } = NextAuth({
       }
 
       if (trigger === "update") {
-        console.log(">>>=========================> JWT Trigger");
+        print("JWT Trigger");
         if (session?.user?.email) {
           token.email = session.user.email;
         }
@@ -69,7 +69,7 @@ export const { auth, handlers, signIn, signOut, unstable_update } = NextAuth({
       return token;
     },
     session({ session, token, trigger }) {
-      console.log(">>>=========================> Callback Session");
+      print("Callback Session");
       // console.log("Session ==> ", session);
       // console.log("Token ==> ", token);
 
@@ -85,7 +85,7 @@ export const { auth, handlers, signIn, signOut, unstable_update } = NextAuth({
 
   events: {
     async signOut(message) {
-      console.log(">>>=========================> Events SignOut");
+      print("Events SignOut");
       // console.log(message);
 
       try {
@@ -115,7 +115,7 @@ export const { auth, handlers, signIn, signOut, unstable_update } = NextAuth({
         },
       },
       authorize: async (credentials) => {
-        console.log(">>>=========================> Authorize");
+        print("Authorize");
         // console.log("Credentials ==> ", credentials);
 
         const email: string = credentials.email as string;
@@ -142,3 +142,9 @@ export const { auth, handlers, signIn, signOut, unstable_update } = NextAuth({
     }),
   ],
 });
+
+const print = (str: string) => {
+  if (process.env.NODE_ENV !== "production") {
+    // console.log(">>>=========================> ", str);
+  }
+};

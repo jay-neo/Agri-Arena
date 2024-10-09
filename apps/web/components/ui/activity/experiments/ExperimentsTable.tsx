@@ -176,7 +176,6 @@ function EnhancedTableHead(props: EnhancedTableProps) {
     </TableHead>
   );
 }
-
 function EnhancedTableToolbar({
   data,
   numSelected,
@@ -189,13 +188,13 @@ function EnhancedTableToolbar({
   actionOnData: (
     state: ExperimentFormState,
     formData: FormData
-  ) => Promise<ExperimentFormState>;
+  ) => Promise<ExperimentFormState> | null;
   numSelected: number;
   startDate: string;
   endDate: string;
   setNumSelected: React.Dispatch<React.SetStateAction<string[]>>;
 }) {
-  const [state, action] = useFormState(actionOnData, undefined);
+  const [state, action] = useFormState(actionOnData || undefined, undefined); // If actionOnData is null, set undefined
   React.useEffect(() => {
     if (state?.success) {
       toast.success(state.success);
@@ -210,6 +209,8 @@ function EnhancedTableToolbar({
   }, [state?.success, state?.error, setNumSelected]);
 
   const neoAction = async () => {
+    if (!actionOnData) return; // If actionOnData is null, simply return and do nothing.
+
     const formData = new FormData();
     data.forEach((id) => {
       formData.append("experiment", id);
@@ -252,7 +253,7 @@ function EnhancedTableToolbar({
           </div>
         </div>
       )}
-      {numSelected > 0 ? (
+      {numSelected > 0 && actionOnData ? (
         <form action={neoAction}>
           <Tooltip title="Delete">
             <DeleteButton />
@@ -281,17 +282,17 @@ const DeleteButton: React.FC = () => {
 
 export default function MainTable({
   data,
-  actionOnData,
   startDate,
   endDate,
+  actionOnData = null,
 }: {
   data: Experiments_Data[];
-  actionOnData: (
+  startDate: string;
+  endDate: string;
+  actionOnData?: (
     state: ExperimentFormState,
     formData: FormData
   ) => Promise<ExperimentFormState>;
-  startDate: string;
-  endDate: string;
 }) {
   const isSmallScreen = useMediaQuery("(max-width: 1024px)");
   const [order, setOrder] = React.useState<Order>("desc");
@@ -359,14 +360,16 @@ export default function MainTable({
   return (
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2, backgroundColor: "inherit" }}>
-        <EnhancedTableToolbar
-          data={selected}
-          actionOnData={actionOnData}
-          numSelected={selected.length}
-          startDate={startDate}
-          endDate={endDate}
-          setNumSelected={setSelected}
-        />
+        {actionOnData && (
+          <EnhancedTableToolbar
+            data={selected}
+            actionOnData={actionOnData}
+            numSelected={selected.length}
+            startDate={startDate}
+            endDate={endDate}
+            setNumSelected={setSelected}
+          />
+        )}
         <TableContainer>
           <Table
             sx={{ minWidth: isSmallScreen ? 200 : 750 }}
@@ -377,7 +380,7 @@ export default function MainTable({
               numSelected={selected.length}
               order={order}
               orderBy={orderBy}
-              onSelectAllClick={handleSelectAllClick}
+              onSelectAllClick={actionOnData ? handleSelectAllClick : undefined}
               onRequestSort={handleRequestSort}
               rowCount={data.length}
             />
@@ -391,15 +394,19 @@ export default function MainTable({
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, row.id)}
+                      onClick={
+                        actionOnData
+                          ? (event) => handleClick(event, row.id)
+                          : undefined
+                      }
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
                       key={row.id}
-                      selected={isItemSelected}
-                      sx={{ cursor: "pointer" }}
+                      selected={actionOnData ? isItemSelected : false} // Disable row selection if no action
+                      sx={{ cursor: actionOnData ? "pointer" : "default" }}
                     >
-                      {selected.length > 0 && (
+                      {actionOnData && selected.length > 0 && (
                         <TableCell padding="checkbox">
                           <Checkbox
                             color="primary"
@@ -414,7 +421,6 @@ export default function MainTable({
                         component="th"
                         id={labelId}
                         scope="row"
-                        // padding="none"
                         align="left"
                       >
                         {row.nitrogen}

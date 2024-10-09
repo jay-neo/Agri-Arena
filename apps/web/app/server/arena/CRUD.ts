@@ -178,8 +178,12 @@ export const updateArena = async (
 };
 
 ///////////////////////////////////// DELETE ///////////////////////////////////
-export const deleteArena = async (arenaId: string) => {
+export const deleteArena = async (
+  _state: FormState,
+  formData: FormData
+): Promise<FormState> => {
   try {
+    const arenaId = formData.get("arenaId") as string;
     const { id } = await getUser();
     await db.arena.delete({
       where: {
@@ -187,9 +191,14 @@ export const deleteArena = async (arenaId: string) => {
         userId: id,
       },
     });
-    redirect(`/arena`);
-    return true;
+    return {
+      success: "Arena deleted successfully.",
+      next: "/arena",
+    };
   } catch (error) {
-    return false;
+    console.log(error);
+    return {
+      error: "Error! We couldn't process your request.",
+    };
   }
 };

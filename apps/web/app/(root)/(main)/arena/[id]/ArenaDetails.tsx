@@ -1,14 +1,13 @@
 "use client";
 
 import { toast } from "sonner";
-import { useFormState, useFormStatus } from "react-dom";
-import { useEffect, useState } from "react";
-
 import ArenaForm from "./ArenaForm";
 import DataLinks from "./DataLinks";
 import IoTsDetails from "./IoTsDetails";
 import SettingButton from "./SettingButton";
+import { useEffect, useState } from "react";
 import { updateArena } from "~/app/server/arena";
+import { useFormState, useFormStatus } from "react-dom";
 
 export default ({
   arenaIdx,

@@ -63,6 +63,7 @@ export const getActivity = async (idx: number) => {
           select: {
             device: true,
             iotTitle: true,
+            isPredicted: true,
             iot: {
               select: {
                 title: true,
@@ -73,6 +74,11 @@ export const getActivity = async (idx: number) => {
                 id: true,
                 title: true,
                 location: true,
+              },
+            },
+            predictions: {
+              select: {
+                id: true,
               },
             },
           },
@@ -90,6 +96,7 @@ export const getActivity = async (idx: number) => {
         },
         predictions: {
           select: {
+            experimentsId: true,
             arena: {
               select: {
                 id: true,
@@ -106,6 +113,8 @@ export const getActivity = async (idx: number) => {
       return null;
     }
 
+    // If device name is changed
+    // If previously used Device is deleted but the experiments by that device is not deleted
     let iot = res?.experiments?.iotTitle;
     if (res.type === "experiments") {
       const neoTitle = res?.experiments?.iot?.title;
@@ -126,12 +135,54 @@ export const getActivity = async (idx: number) => {
       }
     }
 
+    // For Predictions type activity find idx of that exeperiment
+    const experimentsIdx =
+      res.type === "predictions"
+        ? await db.activity.findUnique({
+            where: {
+              experimentsId: res?.predictions?.experimentsId,
+            },
+            select: {
+              idx: true,
+            },
+          })
+        : null;
+
+    const predictionIdx =
+      res.type === "experiments" && res.experiments.isPredicted
+        ? await db.activity.findUnique({
+            where: {
+              predictionsId: res.experiments.predictions?.id,
+            },
+            select: {
+              idx: true,
+            },
+          })
+        : null;
+
     return {
       title: res.title,
       type: res.type,
-      experimentsId: res?.experimentsId || null,
-      predictionssId: res?.predictionsId || null,
+
+      experimentsId:
+        res.type === "experiments"
+          ? res?.experimentsId
+          : res.type === "predictions"
+            ? res.predictions.experimentsId
+            : null,
+      isPredicted: res?.experiments?.isPredicted || null,
+
+      predictionsId: res?.predictionsId || null,
+
+      ref:
+        res.type === "experiments"
+          ? (predictionIdx?.idx as number)
+          : res.type === "predictions"
+            ? (experimentsIdx?.idx as number)
+            : null,
+
       imagesId: res?.imagesId || null,
+
       arenaId:
         res?.experiments?.arena?.id ||
         res?.images?.arena?.id ||
@@ -147,9 +198,10 @@ export const getActivity = async (idx: number) => {
         res?.images?.arena?.location ||
         res?.predictions?.arena?.location ||
         null,
+
       iot: iot || null,
       device: res?.experiments?.device || null,
-    };
+    } as Activity_Header;
   } catch (error) {
     return null;
   }
@@ -242,7 +294,7 @@ export const updateActivity = async (
 export const deleteActivity = async (idx: number) => {
   try {
     const { id } = await getUser();
-    await db.activity.delete({
+    const deletedActivity = await db.activity.delete({
       where: {
         idx_userId: {
           idx: idx,
@@ -250,9 +302,64 @@ export const deleteActivity = async (idx: number) => {
         },
       },
     });
-    // redirect(`/activity`);
+    if (deletedActivity.type === "experiments") {
+      await db.experiments.delete({
+        where: {
+          id: deletedActivity.experimentsId,
+        },
+        include: {
+          expData: true,
+          predictions: {
+            include: {
+              predictionsData: {
+                include: {
+                  modelResponse: true,
+                },
+              },
+            },
+          },
+        },
+      });
+    } else if (deletedActivity.type === "predictions") {
+      const deletedPredictions = await db.predictions.delete({
+        where: {
+          id: deletedActivity.predictionsId,
+        },
+        include: {
+          predictionsData: {
+            include: {
+              modelResponse: true,
+            },
+          },
+        },
+      });
+      await db.experiments.update({
+        where: {
+          id: deletedPredictions.experimentsId,
+        },
+        data: {
+          isPredicted: false,
+        },
+      });
+    } else if (deletedActivity.type === "images") {
+      await db.images.delete({
+        where: {
+          id: deletedActivity.imagesId,
+        },
+        include: {
+          imagesData: {
+            include: {
+              modelResponse: true,
+            },
+          },
+        },
+      });
+    }
+
+    revalidatePath(`/activity`);
     return true;
   } catch (error) {
+    console.log(error);
     return false;
   }
 };

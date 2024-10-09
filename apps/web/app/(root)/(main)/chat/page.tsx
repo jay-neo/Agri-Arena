@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { ChatPage } from "~/app/server/ai";
+import ChatPage from "./ChatPage";
 
 export const metadata: Metadata = {
   title: "Activity",

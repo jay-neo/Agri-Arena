@@ -7,6 +7,8 @@ import Tooltip from "@mui/material/Tooltip";
 import { Setting } from "~/lib/arena-icons";
 import { deleteArena } from "~/app/server/arena";
 import React, { useState, useEffect, useRef, MutableRefObject } from "react";
+import { useFormState } from "react-dom";
+import { redirect } from "next/navigation";
 
 export default ({
   arenaId,
@@ -19,6 +21,20 @@ export default ({
 }) => {
   const [ifSettingButtonClicked, setIfSettingButtonClicked] = useState(false);
   const dropdownRef: MutableRefObject<HTMLDivElement | null> = useRef(null);
+
+  const [state, action] = useFormState(deleteArena, undefined);
+  useEffect(() => {
+    if (state?.success) {
+      toast.success(state.success);
+      if (state?.next) {
+        redirect(state.next);
+      }
+    } else if (state?.message) {
+      toast.message(state.message);
+    } else if (state?.error) {
+      toast.error(state.error);
+    }
+  }, [state]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -85,16 +101,20 @@ export default ({
                 Edit
               </button>
             )}
-            <button
-              type="button"
-              onClick={async () => {
-                await deleteArena(arenaId);
-                toast.success("Arena deleted successfully.");
-              }}
-              className="flex w-full rounded-md cursor-pointer px-4 py-2 text-sm text-gray-700 hover:bg-red-600 focus:bg-gray-100 focus:outline-none dark:text-gray-200 dark:hover:bg-red-600 dark:hover:text-white dark:focus:bg-gray-600 dark:focus:text-white"
-            >
-              Delete
-            </button>
+            <form action={action}>
+              <input
+                type="text"
+                name="arenaId"
+                defaultValue={arenaId}
+                className="hidden"
+              />
+              <button
+                type="submit"
+                className="flex w-full rounded-md cursor-pointer px-4 py-2 text-sm text-gray-700 hover:bg-red-600 focus:bg-gray-100 focus:outline-none dark:text-gray-200 dark:hover:bg-red-600 dark:hover:text-white dark:focus:bg-gray-600 dark:focus:text-white"
+              >
+                Delete
+              </button>
+            </form>
           </div>
         </div>
       )}

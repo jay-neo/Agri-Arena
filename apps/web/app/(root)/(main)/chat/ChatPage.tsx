@@ -2,17 +2,7 @@
 
 import ReactMarkdown from "react-markdown";
 import { useState, useEffect, useRef } from "react";
-import { GoogleGenerativeAI } from "@google/generative-ai";
-import { geminiApiKey, openaiApiKey } from "~/lib/myenv";
-
-// import OpenAI from "openai";
-// export const openai = new OpenAI({
-//   apiKey:
-//     openaiApiKey,
-//   dangerouslyAllowBrowser: true,
-// });
-
-const gemini = new GoogleGenerativeAI(geminiApiKey);
+import { chatWithGemini } from "~/app/server/models/gemini";
 
 export default () => {
   const [prompt, setPrompt] = useState<string>("");
@@ -32,15 +22,7 @@ export default () => {
     setMessages((prev) => [...prev, { role: "user", content: prompt }]);
 
     try {
-      const model = gemini.getGenerativeModel({ model: "gemini-1.5-flash" });
-
-      const chat = model.startChat({
-        history: [],
-        generationConfig: {
-          maxOutputTokens: 500,
-        },
-      });
-      const result = await chat.sendMessageStream(prompt);
+      const result = await chatWithGemini(prompt);
       setPrompt("");
       for await (const chunk of result.stream) {
         const chunkText = chunk.text();
@@ -56,16 +38,6 @@ export default () => {
     } finally {
       setIsLoading(false);
     }
-
-    // For testing
-    // setPrompt("");
-    // setIsLoading(false);
-    // aiResponse +=
-    //   "asdfasfasfasdfasdfsdafsdafsdfsfsd dsfgartwrerw dsdafasdfdfasdfasf ewrawera";
-    // setMessages((prev) => [
-    //   ...prev,
-    //   { role: "assistant", content: aiResponse },
-    // ]);
   };
 
   useEffect(() => {
@@ -86,14 +58,6 @@ export default () => {
               <p
                 className={`border-2 p-2 rounded-3xl whitespace-pre-wrap md:max-w-[28rem] max-w-80 w-[${message.content.length}] ${message.role === "user" ? "border-purple-500" : "border-rose-500"}`}
               >
-                {/* {isLoading && (
-                  <div className="flex space-x-2 justify-center items-center bg-white h-screen dark:invert">
-                    <span className="sr-only">Loading...</span>
-                    <div className="h-8 w-8 bg-black rounded-full animate-bounce [animation-delay:-0.3s]"></div>
-                    <div className="h-8 w-8 bg-black rounded-full animate-bounce [animation-delay:-0.15s]"></div>
-                    <div className="h-8 w-8 bg-black rounded-full animate-bounce"></div>
-                  </div>
-                )} */}
                 <ReactMarkdown>{message.content}</ReactMarkdown>
               </p>
             </div>
