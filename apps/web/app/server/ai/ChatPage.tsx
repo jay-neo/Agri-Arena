@@ -46,13 +46,11 @@ export default () => {
         const chunkText = chunk.text();
         aiResponse += chunkText;
       }
-      
+
       setMessages((prev) => [
         ...prev,
         { role: "assistant", content: aiResponse },
       ]);
-
-
     } catch (error) {
       setError(error);
     } finally {

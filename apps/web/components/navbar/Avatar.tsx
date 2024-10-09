@@ -1,9 +1,16 @@
 "use client";
 
-import { logout } from "~/app/server/next-auth-v5/logout";
-import React, { useState, useEffect, useRef, MutableRefObject } from "react";
+import clsx from "clsx";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
+import { isMobile } from "~/lib/utils/checker";
+import { logout } from "~/app/server/next-auth-v5/logout";
+import { NavbarThemeToggleButton } from "./NavbarThemeToggleButton";
+import React, { useState, useEffect, useRef, MutableRefObject } from "react";
+
+const LIST =
+  "flex w-full cursor-pointer items-center justify-start px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:bg-gray-600 dark:focus:text-white";
 
 export default ({
   user,
@@ -14,6 +21,13 @@ export default ({
     image: string;
   };
 }) => {
+  const pathname = usePathname();
+  const [isMobileDevice, setIsMobileDevice] = useState(false);
+
+  useEffect(() => {
+    setIsMobileDevice(isMobile());
+  }, []);
+
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef: MutableRefObject<HTMLDivElement | null> = useRef(null);
 
@@ -40,6 +54,10 @@ export default ({
   const toggleDropdown = () => {
     setDropdownOpen(!isDropdownOpen);
   };
+
+  useEffect(() => {
+    setDropdownOpen(false);
+  }, [pathname]);
 
   return (
     <div className="relative" ref={dropdownRef}>
@@ -74,36 +92,34 @@ export default ({
 
           <ul className="py-1">
             <li role="menuitem">
-              <Link
-                href={`/social/myprofile`}
-                className="flex w-full cursor-pointer items-center justify-start px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:bg-gray-600 dark:focus:text-white"
-              >
+              <Link href={`/social/myprofile`} className={LIST}>
                 My Profile
               </Link>
             </li>
             <li role="menuitem">
-              <Link
-                href={`/arena/iots`}
-                className="flex w-full cursor-pointer items-center justify-start px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:bg-gray-600 dark:focus:text-white"
-              >
+              <Link href={`/arena/iots`} className={LIST}>
                 IoT Management
               </Link>
             </li>
             {/* <li role="menuitem">
               <Link
                 href="/notifications"
-                className="flex w-full cursor-pointer items-center justify-start px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:bg-gray-600 dark:focus:text-white"
+                className={LIST}
               >
                 Notifications
               </Link>
             </li> */}
+            {isMobileDevice && (
+              <div className="lg:hidden">
+                <li role="menuitem" className={clsx(LIST, "gap-4")}>
+                  {"Dark mode"} <NavbarThemeToggleButton />
+                </li>
+              </div>
+            )}
             <div className="my-1 h-px bg-gray-100 dark:bg-gray-600"></div>
             <li role="menuitem">
               <form action={logout}>
-                <button
-                  type="submit"
-                  className="flex w-full cursor-pointer items-center justify-start px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:bg-gray-600 dark:focus:text-white"
-                >
+                <button type="submit" className={LIST}>
                   {" "}
                   Logout
                 </button>

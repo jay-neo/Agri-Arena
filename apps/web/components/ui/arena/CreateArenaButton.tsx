@@ -33,20 +33,17 @@ export const CreateArenaButton = () => {
       </button>
 
       {isOpen && (
-        <div className="fixed inset-0 flex items-center justify-center z-50 md:py-6 bg-yellow-400/40">
-          <div
-            className="fixed inset-0 bg-gray-800 opacity-50"
-            onClick={onClose}
-          ></div>
+        <div className="fixed inset-0 flex items-center justify-center z-50 md:py-6">
+          <div className="fixed inset-0 bg-black/70" onClick={onClose}></div>
 
-          <div className="relative bg-yellow-50 dark:bg-amber-500 p-5 md:p-10 scrollbar-hide rounded-lg shadow-lg w-full  max-w-2xl max-h-full h-auto overflow-auto">
+          <div className="relative bg-yellow-50 dark:bg-cyan-600 p-5 md:p-10 scrollbar-hide rounded-lg shadow-lg w-full max-w-2xl max-h-full h-auto overflow-auto">
             <button
-              className="absolute top-2 right-5 font-bold text-gray-600 hover:text-gray-900 text-3xl"
+              className="absolute top-2 right-5 font-bold text-gray-600 hover:text-gray-900 text-3xl dark:invert"
               onClick={onClose}
             >
               &times;
             </button>
-            
+
             {/* Dialog Content */}
             <CreateArenaForm onClose={onClose} />
           </div>

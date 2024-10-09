@@ -7,9 +7,9 @@ import { usePathname } from "next/navigation";
 import { isMobile } from "~/lib/utils/checker";
 
 export const ToggleMenuButton = () => {
-  const [isMobileDevice, setIsMobileDevice] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
+  const [isOpen, setIsOpen] = useState(false);
+  const [isMobileDevice, setIsMobileDevice] = useState(false);
 
   useEffect(() => {
     setIsMobileDevice(isMobile());

@@ -45,7 +45,7 @@ export default ({ myprofile }: { myprofile: Profile | null }) => {
 
   return (
     <form action={action}>
-      <div className="flex justify-center mb-10 relative">
+      <div className="flex justify-center mb-10 ">
         {isEditMode ? (
           <div className="flex flex-col items-center">
             <label htmlFor="avatar-upload" className="relative cursor-pointer">

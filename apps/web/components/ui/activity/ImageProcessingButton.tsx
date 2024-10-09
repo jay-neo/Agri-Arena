@@ -1,23 +1,24 @@
 "use client";
 
 import Image from "next/image";
+import { useState } from "react";
 import { Camera } from "~/lib/arena-icons";
 import Tooltip from "@mui/material/Tooltip";
 import ImageProcessingForm from "./ImageProcessingForm";
 
-import {
-  Dialog,
-  DialogContent,
-  DialogTrigger,
-} from "~/components/ui/redix/dialog";
+export default () => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const onClose = () => {
+    setIsOpen(false);
+  };
 
-export default async () => (
-  <Dialog>
-    <DialogTrigger asChild>
+  return (
+    <div className="block">
       <Tooltip describeChild title="Detect disease using Image Processing">
         <button
           type="button"
-          className="flex flex-row text-sm px-2.5 py-2 text-white font-semibold rounded-lg transition duration-300 bg-rose-700/70 hover:bg-rose-600 "
+          onClick={() => setIsOpen(true)}
+          className="flex flex-row text-sm px-2.5 py-2 text-white font-semibold rounded-lg transition duration-300 bg-rose-700/70 hover:bg-rose-600"
         >
           <Image
             src={Camera}
@@ -28,9 +29,22 @@ export default async () => (
           />
         </button>
       </Tooltip>
-    </DialogTrigger>
-    <DialogContent className="border-none bg-[#f7ecfa] dark:bg-[#212146]">
-      <ImageProcessingForm />
-    </DialogContent>
-  </Dialog>
-);
+
+      {isOpen && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 md:py-6">
+          <div className="fixed inset-0 bg-black/70" onClick={onClose}></div>
+
+          <div className="relative bg-yellow-50 dark:bg-cyan-800 p-5 md:p-10 scrollbar-hide rounded-lg shadow-lg w-full max-w-xl max-h-full h-auto overflow-auto">
+            <button
+              onClick={onClose}
+              className="absolute top-2 right-5 font-bold text-gray-600 hover:text-gray-900 text-3xl dark:invert"
+            >
+              &times;
+            </button>
+            <ImageProcessingForm />
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
