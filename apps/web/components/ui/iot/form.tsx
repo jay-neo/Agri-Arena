@@ -5,23 +5,23 @@ import { useEffect, useState } from "react";
 import { GridRowsProp } from "@mui/x-data-grid";
 import { getArenasWithId } from "~/app/server/arena";
 import { Button } from "~/components/ui/form/button";
-import { TextField, Autocomplete, Tooltip, Fade } from "@mui/material";
 import { useFormState, useFormStatus } from "react-dom";
 import { IoTFormState } from "~/app/server/iot/validation";
+import { TextField, Autocomplete, Tooltip, Fade } from "@mui/material";
 
 export const IoTForm = ({
-  setIsOpen,
   data,
-  setRows,
-  setNewRow,
-  formType,
   action,
+  setRows,
+  formType,
+  setIsOpen,
+  setNewRow,
 }: {
+  data?: IoT;
+  formType: "create" | "edit";
+  setRows?: React.Dispatch<React.SetStateAction<IoT[]>>;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setNewRow?: (newRows: (oldRows: GridRowsProp) => GridRowsProp) => void;
-  data?: IoT;
-  setRows?: React.Dispatch<React.SetStateAction<IoT[]>>;
-  formType: "create" | "edit";
   action: (_state: IoTFormState, formData: FormData) => Promise<IoTFormState>;
 }) => {
   const [state, neoAction] = useFormState(action, undefined);
@@ -29,7 +29,7 @@ export const IoTForm = ({
   const [selectedArena, setSelectedArena] = useState<{
     arena: string;
     arenaId: string;
-  } | null>({ arena: data?.arena, arenaId: data?.arenaId } || null);
+  } | null>(data ? { arena: data.arena, arenaId: data.arenaId } : null);
 
   useEffect(() => {
     (async () => setArenas(await getArenasWithId()))();
@@ -38,7 +38,6 @@ export const IoTForm = ({
   useEffect(() => {
     if (state?.success) {
       toast.success(state.success);
-
       const neoData = JSON.parse(state.code);
       if (formType === "create") {
         setNewRow((oldRows) => [...oldRows, neoData as GridRowsProp]);
@@ -230,6 +229,5 @@ export const IoTForm = ({
 
 const SubmitButton: React.FC = () => {
   const { pending } = useFormStatus();
-
   return <Button type="submit">{pending ? "Saving..." : "Save"}</Button>;
 };

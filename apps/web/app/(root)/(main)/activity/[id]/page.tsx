@@ -36,11 +36,17 @@ export default async ({ params }: { params: { id: string } }) => {
       <Header data={data} idx={Number(params.id)} />
       <div className="mt-2">
         {data.type === "experiments" ? (
-          <Experiments experimentsId={data.experimentsId} />
+          <Experiments
+            experimentsId={data?.experimentsId}
+            isNotPredicted={!data?.isPredicted}
+          />
         ) : data.type === "predictions" ? (
-          <Predictions predictionssId={data.predictionssId} />
+          <Predictions
+            predictionsId={data?.predictionsId}
+            experimentsId={data?.experimentsId}
+          />
         ) : (
-          data.type === "images" && <Images imagesId={data.imagesId} />
+          data.type === "images" && <Images imagesId={data?.imagesId} />
         )}
       </div>
     </div>

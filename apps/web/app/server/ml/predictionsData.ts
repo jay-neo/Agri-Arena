@@ -1,10 +1,10 @@
 import { db } from "~/lib/prisma";
 
-export const getImagesData = async (id: string) => {
+export const getPredictionsData = async (id: string) => {
   try {
-    return await db.images_Data.findMany({
+    return await db.predictions_Data.findMany({
       where: {
-        imagesId: id,
+        predictionsId: id,
       },
       include: {
         modelResponse: true,

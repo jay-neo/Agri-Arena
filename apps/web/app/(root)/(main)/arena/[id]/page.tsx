@@ -22,6 +22,10 @@ export default async ({ params }: { params: { id: string } }) => {
       ? await getFakeArenaDetails(arenaIdx)
       : await getArena(arenaIdx);
 
+  if (!arena) {
+    redirect(`/arena`);
+  }
+
   const assignedIoTsData: IoTIds[] =
     myenv === "test" ? fakeAssignedIoTs : await getAssignedIoTs(arena.id);
 

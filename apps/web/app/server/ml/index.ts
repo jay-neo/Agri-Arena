@@ -1,0 +1,1 @@
+export { getPredictionsData } from "./predictionsData";

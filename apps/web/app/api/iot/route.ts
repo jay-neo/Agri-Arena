@@ -26,9 +26,16 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    if (!device || !device?.arenaId) {
+    if (!device) {
       return NextResponse.json({
-        error: "Device not registered!",
+        error: "Device is not registered!",
+        status: 404,
+      });
+    }
+
+    if (!device?.arenaId) {
+      return NextResponse.json({
+        error: "Device is not active yet!",
         status: 404,
       });
     }
@@ -57,6 +64,7 @@ export async function POST(request: NextRequest) {
           id: true,
           createdAt: true,
           arenaId: true,
+          isPredicted: true,
         },
       });
 
@@ -69,10 +77,19 @@ export async function POST(request: NextRequest) {
           device?.arenaId,
           "Frontline Discoveries"
         );
+      } else if (existedExperiments.isPredicted) {
+        // console.log("Logic - 3")
+        experiment = await createExperiment(
+          device.userId,
+          device.device,
+          device.title,
+          device?.arenaId,
+          "Stream Experiment"
+        );
       } else if (
         isValidExperimentInterval(existedExperiments.createdAt, device.interval)
       ) {
-        // console.log("Logic - 3");
+        // console.log("Logic - 4");
         experiment = await createExperiment(
           device.userId,
           device.device,
@@ -84,7 +101,7 @@ export async function POST(request: NextRequest) {
         device?.arenaId &&
         device.arenaId !== existedExperiments.arenaId
       ) {
-        // console.log("Logic - 4");
+        // console.log("Logic - 5");
         experiment = await createExperiment(
           device.userId,
           device.device,
@@ -93,7 +110,7 @@ export async function POST(request: NextRequest) {
           "Groundbreaking Experiments"
         );
       } else {
-        // console.log("Logic - 5");
+        // console.log("Logic - 6");
         await db.experiments.update({
           where: {
             id: existedExperiments.id,

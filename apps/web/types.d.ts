@@ -1,3 +1,12 @@
+type FormState =
+  | {
+      error?: string;
+      message?: string;
+      success?: string;
+      next?: string;
+    }
+  | undefined;
+
 type Profile = {
   name: string;
   email: string;
@@ -110,8 +119,10 @@ type Activity_Header = {
   type: string;
   iot?: string;
   device?: string;
+  ref?: number;
   experimentsId?: string;
-  predictionssId?: string;
+  isPredicted?: boolean;
+  predictionsId?: string;
   imagesId?: string;
 };
 
@@ -120,4 +131,21 @@ type Events = {
   start: Date;
   end: Date;
   allDay?: boolean;
+};
+
+// For AI Model
+type Experiments_Data_T1V1 = {
+  nitrogen: number;
+  phosphorus: number;
+  potassium: number;
+  temperature: number;
+  humidity: number;
+  ph: number;
+};
+
+type Model_Response_T1V1 = {
+  name: string;
+  number: number;
+  result: string[];
+  accuracy: string[];
 };

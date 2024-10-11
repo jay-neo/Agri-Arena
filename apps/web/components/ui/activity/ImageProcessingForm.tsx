@@ -2,9 +2,9 @@
 
 import { toast } from "sonner";
 import { redirect } from "next/navigation";
-import { imageUploadS3 } from "~/app/server/ip";
 import { Button } from "~/components/ui/form/button";
 import { useFormState, useFormStatus } from "react-dom";
+import { modelDD1V1 } from "~/app/server/models/agriarena";
 import { useState, useRef, ChangeEvent, DragEvent, useEffect } from "react";
 
 type Image = {
@@ -60,13 +60,15 @@ export default () => {
     setFormData(null);
   };
 
-  const [state, action] = useFormState(imageUploadS3, undefined);
+  const [state, action] = useFormState(modelDD1V1, undefined);
 
   useEffect(() => {
     if (state?.error) {
       toast.error(state.error);
     } else if (state?.message) {
-      redirect(`${state.message}`);
+      toast.message(state.message);
+    } else if (state?.success) {
+      redirect(`${state.success}`);
     }
   }, [state]);
 

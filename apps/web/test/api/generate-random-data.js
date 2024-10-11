@@ -15,6 +15,6 @@ const data = {
   device: "123456",
 };
 
-const filePath = path.join(__dirname, "02-random-data.json");
+const filePath = path.join(__dirname, "random-data.json");
 
 fs.writeFileSync(filePath, JSON.stringify(data, null, 2));

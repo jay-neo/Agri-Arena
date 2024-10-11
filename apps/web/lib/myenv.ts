@@ -7,3 +7,6 @@ export const awsS3publicBucket = process.env.AWS_S3_PUBLIC_BUCKET;
 
 export const openaiApiKey = process.env.NEXT_PUBLIC_OPENAI_API_KEY;
 export const geminiApiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
+
+export const cp1v1ModelEndpoint = process.env.AGRIARENA_MODEL_CP1V1;
+export const dd1v1ModelEndpoint = process.env.AGRIARENA_MODEL_DD1V1;

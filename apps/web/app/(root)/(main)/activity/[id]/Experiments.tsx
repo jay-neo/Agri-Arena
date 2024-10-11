@@ -14,7 +14,13 @@ import {
   getExperimentsData,
 } from "~/app/server/experiments";
 
-export default async ({ experimentsId }: { experimentsId: string }) => {
+export default async ({
+  experimentsId,
+  isNotPredicted,
+}: {
+  experimentsId: string;
+  isNotPredicted: boolean;
+}) => {
   // const eventSource = new EventSource(`/api/iot`)
 
   const data: Experiments_Data[] =
@@ -104,9 +110,9 @@ export default async ({ experimentsId }: { experimentsId: string }) => {
         </div>
         <ExperimentsTable
           data={data}
-          actionOnData={deleteExperimentsData}
           startDate={startDate}
           endDate={endDate}
+          actionOnData={isNotPredicted ? deleteExperimentsData : null}
         />
       </div>
     </>

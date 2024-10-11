@@ -2,6 +2,7 @@
 
 import { getUser } from "../user";
 import { db } from "~/lib/prisma";
+import { revalidatePath } from "next/cache";
 import { formatDateToDDMMYYYY } from "~/lib/formatters";
 import { IoTFormState, IoTFormSchema } from "./validation";
 
@@ -76,6 +77,8 @@ export const createIot = async (
         error: "Oops! Something went wrong.",
       };
     }
+
+    revalidatePath(`/arena`);
 
     return {
       success: "IoT created successfully.",
@@ -255,6 +258,8 @@ export const deleteIot = async (iotId: string) => {
         userId: id,
       },
     });
+
+    revalidatePath(`/arena`);
 
     return true;
   } catch (error) {

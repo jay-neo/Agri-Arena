@@ -1,24 +1,22 @@
 "use client";
 
-import * as React from "react";
-import Image from "next/image";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import {
+  DataGrid,
+  GridRowId,
+  GridColDef,
   GridRowsProp,
   GridRowModesModel,
-  DataGrid,
-  GridColDef,
-  GridToolbarContainer,
   GridActionsCellItem,
-  GridRowId,
+  GridToolbarContainer,
 } from "@mui/x-data-grid";
+import * as React from "react";
+import Image from "next/image";
+import { IoTForm } from "./form";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
-
 import { Add, Edit, Delete } from "~/lib/arena-icons";
 import { updateIot, deleteIot, createIot } from "~/app/server/iot";
-
-import { IoTForm } from "./form";
 
 interface EditToolbarProps {
   setRows: (newRows: (oldRows: GridRowsProp) => GridRowsProp) => void;
@@ -32,7 +30,6 @@ const statusColors: { [key: string]: string } = {
   inactive: "red",
   maintenance: "orange",
 };
-
 
 const StatusCell = styled("div")<{ status: string }>(({ status }) => ({
   backgroundColor: "inherit",
@@ -286,4 +283,4 @@ export const IoTsTable = ({ initialData }: { initialData: IoT[] }) => {
       )}
     </>
   );
-}
+};
