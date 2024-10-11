@@ -9,5 +9,5 @@ export const PUBLIC_ROUTES = [
   "/signup",
   "/about",
   "/support",
-  "/social/share/:path*",
+  "/share/:id",
 ];

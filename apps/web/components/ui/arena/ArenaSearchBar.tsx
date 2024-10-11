@@ -12,7 +12,7 @@ export const ArenaSearchBar = ({ placeholder }: { placeholder: string }) => {
   async function handleSearch(term: string) {
     // const query = useDebounce(term, 300);
     const query = term;
-    
+
     const params = new URLSearchParams(searchParams);
     if (query) {
       params.set("query", query);
