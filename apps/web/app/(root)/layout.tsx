@@ -4,7 +4,6 @@ import { Navbar } from "~/components/navbar";
 import { MobileNavBar } from "~/components/navbar/MobileNavBar";
 import Sidebar from "~/components/sidebar";
 import { getUser } from "../server/user";
-import { isMobile } from "~/lib/utils/checker";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -22,15 +21,19 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-const Layout: React.FC<LayoutProps> = ({ children }) => {
+const Layout: React.FC<LayoutProps> = async ({ children }) => {
+  const user = await getUser();
+
   return (
     <div className="sticky container mx-auto min-h-screen">
-      <div className="sticky top-0 z-30 h-[4rem] max-w-[1600px] items-center justify-between bg-gray-dark-0 px-2xl py-lg">
+      <div className="sticky top-0 z-30 h-[3.9rem] max-w-[1600px] items-center justify-between bg-gray-dark-0 px-2xl">
         <Navbar />
       </div>
 
       <div className="relative mx-auto flex h-full w-full max-w-[1600px]">
-        <aside className="sticky top-[4rem] hidden h-[calc(100vh_-_4rem)] max-h-screen w-1/5 shrink-0 basis-1/5 bg-gray-dark-0 lg:block">
+        <aside
+          className={`sticky top-[4rem] hidden h-[calc(100vh_-_4rem)] max-h-screen w-1/5 shrink-0 basis-1/5 bg-gray-dark-0 lg:block ${user ? `` : `blur-sm backdrop-blur-sm pointer-events-none`}`}
+        >
           <Sidebar />
         </aside>
 
@@ -39,7 +42,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         </div>
       </div>
 
-      <div className="block md:hidden">
+      <div className={`block md:hidden `}>
         <MobileNavBar />
       </div>
     </div>

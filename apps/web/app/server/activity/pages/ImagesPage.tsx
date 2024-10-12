@@ -1,8 +1,10 @@
+"use server";
+
 import Image from "next/image";
 import ReactMarkdown from "react-markdown";
 import { getImagesData } from "~/app/server/ip";
 
-export default async ({ imagesId }: { imagesId: string }) => {
+export const ImagesPage = async ({ imagesId }: { imagesId: string }) => {
   const data = await getImagesData(imagesId);
 
   return (

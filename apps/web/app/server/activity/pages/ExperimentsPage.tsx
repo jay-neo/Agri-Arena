@@ -1,3 +1,5 @@
+"use server";
+
 import {
   PHAnalytics,
   NPKAnalytics,
@@ -14,12 +16,14 @@ import {
   getExperimentsData,
 } from "~/app/server/experiments";
 
-export default async ({
+export const ExperimentsPage = async ({
   experimentsId,
-  isNotPredicted,
+  isPredicted,
+  share = false,
 }: {
   experimentsId: string;
-  isNotPredicted: boolean;
+  isPredicted: boolean;
+  share?: boolean;
 }) => {
   // const eventSource = new EventSource(`/api/iot`)
 
@@ -112,7 +116,7 @@ export default async ({
           data={data}
           startDate={startDate}
           endDate={endDate}
-          actionOnData={isNotPredicted ? deleteExperimentsData : null}
+          actionOnData={!isPredicted && !share ? deleteExperimentsData : null}
         />
       </div>
     </>

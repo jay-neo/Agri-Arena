@@ -1,14 +1,13 @@
 "use client";
 
-import { toast } from "sonner";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import Tooltip from "@mui/material/Tooltip";
 import { Setting } from "~/lib/arena-icons";
+import { neoFormAction } from "~/lib/hooks";
+import { ReactButton } from "~/lib/neo/button";
 import { deleteArena } from "~/app/server/arena";
 import React, { useState, useEffect, useRef, MutableRefObject } from "react";
-import { useFormState } from "react-dom";
-import { redirect } from "next/navigation";
 
 export default ({
   arenaId,
@@ -19,22 +18,9 @@ export default ({
   isEditing: boolean;
   setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
+  const [_, action] = neoFormAction(deleteArena);
   const [ifSettingButtonClicked, setIfSettingButtonClicked] = useState(false);
   const dropdownRef: MutableRefObject<HTMLDivElement | null> = useRef(null);
-
-  const [state, action] = useFormState(deleteArena, undefined);
-  useEffect(() => {
-    if (state?.success) {
-      toast.success(state.success);
-      if (state?.next) {
-        redirect(state.next);
-      }
-    } else if (state?.message) {
-      toast.message(state.message);
-    } else if (state?.error) {
-      toast.error(state.error);
-    }
-  }, [state]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -64,7 +50,7 @@ export default ({
   };
 
   return (
-    <div className="mr-0.5">
+    <div className="mr-[0.30rem]">
       <Tooltip describeChild placement="left-start" title="Settings">
         <motion.button
           type="button"
@@ -86,7 +72,7 @@ export default ({
 
       {ifSettingButtonClicked && (
         <div
-          className="absolute right-0 mt-8 mr-2 xl:mr-40 w-32 divide-gray-100 rounded-lg shadow bg-white text-gray-900 dark:bg-gray-700 dark:text-white"
+          className="absolute right-0 mt-4 mr-1 lg:mr-8 w-32 divide-gray-100 rounded-lg shadow bg-white text-gray-900 dark:bg-gray-700 dark:text-white"
           role="menu"
           aria-orientation="vertical"
           ref={dropdownRef}
@@ -108,12 +94,11 @@ export default ({
                 defaultValue={arenaId}
                 className="hidden"
               />
-              <button
-                type="submit"
-                className="flex w-full rounded-md cursor-pointer px-4 py-2 text-sm text-gray-700 hover:bg-red-600 focus:bg-gray-100 focus:outline-none dark:text-gray-200 dark:hover:bg-red-600 dark:hover:text-white dark:focus:bg-gray-600 dark:focus:text-white"
-              >
-                Delete
-              </button>
+              <ReactButton
+                onStatic={"Delete"}
+                onAction={"Deleting.."}
+                className="flex w-full rounded-md cursor-pointer px-4 py-2 text-sm text-gray-700 hover:bg-red-400 focus:bg-gray-100 focus:outline-none dark:text-gray-200 dark:hover:bg-red-600 dark:hover:text-white dark:focus:bg-gray-600 dark:focus:text-white"
+              />
             </form>
           </div>
         </div>

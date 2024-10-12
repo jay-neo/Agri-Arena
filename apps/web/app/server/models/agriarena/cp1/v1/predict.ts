@@ -4,7 +4,7 @@ import { cp1v1ModelEndpoint } from "~/lib/myenv";
 
 export const predict = async (
   data: Experiments_Data_T1V1[]
-): Promise<Model_Response_T1V1 | null> => {
+): Promise<Model_Response_V1 | null> => {
   try {
     // const response = await fetch(cp1v1ModelEndpoint, {
     //   method: "POST",
@@ -34,7 +34,7 @@ export const predict = async (
       number: 4,
       result: ["Rice", "Banana", "Potato", "Carrot"],
       accuracy: ["70", "20.2", "12", "5"],
-    } as Model_Response_T1V1;
+    } as Model_Response_V1;
   } catch (error) {
     return null;
   }

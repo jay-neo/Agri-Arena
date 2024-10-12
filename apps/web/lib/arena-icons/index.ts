@@ -29,16 +29,21 @@ export * as ThemeMoon from "./theme/moon.svg";
 
 // For Others Third Party Company
 export * as Google from "./company/google.svg";
-
+export * as GmailIcon from "./company/gmail.svg";
+export * as TwitterIcon from "./company/twitter.svg";
+export * as WhatsAppIcon from "./company/whatsapp.svg";
+export * as FacebookIcon from "./company/facebook.svg";
+export * as LinkedInIcon from "./company/linkedin.svg";
+export * as TelegramIcon from "./company/telegram.svg";
 
 // Other Utils
-export * as OpenedEye from "./openedEye.svg"
-export * as ClosedEye from "./closedEye.svg"
-export * as Setting from "./setting.svg"
-export * as Location from "./location.svg"
-export * as IotSvg from "./iot.svg"
-export * as Recent from "./recent.svg"
-export * as Add from "./add.svg"
-export * as Delete from "./delete.svg"
-export * as Save from "./save.svg"
-export * as Cancel from "./cancel.svg"
+export * as OpenedEye from "./openedEye.svg";
+export * as ClosedEye from "./closedEye.svg";
+export * as Setting from "./setting.svg";
+export * as Location from "./location.svg";
+export * as IotSvg from "./iot.svg";
+export * as Recent from "./recent.svg";
+export * as Add from "./add.svg";
+export * as Delete from "./delete.svg";
+export * as Save from "./save.svg";
+export * as Cancel from "./cancel.svg";

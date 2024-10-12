@@ -1,4 +1,5 @@
 export const myenv: string = process.env.NEXT_PUBLIC_MYENV || "test";
+export const myUrl = process.env.NEXT_PUBLIC_SITE_URL;
 
 export const awsS3region = process.env.AWS_S3_REGION;
 export const awsS3accessKeyId = process.env.AWS_S3_ACCESS_KEY_ID;

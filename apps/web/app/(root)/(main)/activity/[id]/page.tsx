@@ -1,15 +1,15 @@
+import {
+  ImagesPage,
+  getActivity,
+  PredictionsPage,
+  ExperimentsPage,
+} from "~/app/server/activity";
+import Header from "./Header";
 import { myenv } from "~/lib/myenv";
-import { getFakeActivity } from "~/test/data/faker";
-import { getActivity } from "~/app/server/activity";
-
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { isNumber } from "~/lib/utils/checker";
-
-import Header from "./Header";
-import Images from "./Images";
-import Predictions from "./Predictions";
-import Experiments from "./Experiments";
+import { getFakeActivity } from "~/test/data/faker";
 
 export const metadata: Metadata = {
   title: "Activity",
@@ -36,17 +36,17 @@ export default async ({ params }: { params: { id: string } }) => {
       <Header data={data} idx={Number(params.id)} />
       <div className="mt-2">
         {data.type === "experiments" ? (
-          <Experiments
+          <ExperimentsPage
             experimentsId={data?.experimentsId}
-            isNotPredicted={!data?.isPredicted}
+            isPredicted={data?.isPredicted}
           />
         ) : data.type === "predictions" ? (
-          <Predictions
+          <PredictionsPage
             predictionsId={data?.predictionsId}
             experimentsId={data?.experimentsId}
           />
         ) : (
-          data.type === "images" && <Images imagesId={data?.imagesId} />
+          data.type === "images" && <ImagesPage imagesId={data?.imagesId} />
         )}
       </div>
     </div>

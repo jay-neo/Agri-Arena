@@ -143,7 +143,7 @@ type Experiments_Data_T1V1 = {
   ph: number;
 };
 
-type Model_Response_T1V1 = {
+type Model_Response_V1 = {
   name: string;
   number: number;
   result: string[];

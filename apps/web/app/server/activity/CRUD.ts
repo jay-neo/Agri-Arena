@@ -42,15 +42,15 @@ export const createActivity = async (
 };
 
 ///////////////////////////////////// READ ///////////////////////////////////
-export const getActivity = async (idx: number) => {
+export const getActivity = async (idx: number, userId?: string) => {
   try {
-    const { id } = await getUser();
+    userId = !userId ? (await getUser()).id : userId;
 
     const res = await db.activity.findUnique({
       where: {
         idx_userId: {
           idx: idx,
-          userId: id,
+          userId: userId,
         },
       },
       select: {
@@ -280,7 +280,7 @@ export const updateActivity = async (
     revalidatePath(`/activity/${validatedFields.data.idx}`);
 
     return {
-      message: "Arena updated successfully.",
+      success: "Arena updated successfully.",
     };
   } catch (error) {
     console.log(error);
@@ -291,13 +291,17 @@ export const updateActivity = async (
 };
 
 ///////////////////////////////////// DELETE ///////////////////////////////////
-export const deleteActivity = async (idx: number) => {
+export const deleteActivity = async (
+  _state: FormState,
+  formData: FormData
+): Promise<FormState> => {
   try {
+    const idx = formData.get("idx") as string;
     const { id } = await getUser();
     const deletedActivity = await db.activity.delete({
       where: {
         idx_userId: {
-          idx: idx,
+          idx: Number(idx),
           userId: id,
         },
       },
@@ -357,9 +361,14 @@ export const deleteActivity = async (idx: number) => {
     }
 
     revalidatePath(`/activity`);
-    return true;
+    return {
+      success: "",
+      next: "/activity",
+    };
   } catch (error) {
     console.log(error);
-    return false;
+    return {
+      error: "",
+    };
   }
 };

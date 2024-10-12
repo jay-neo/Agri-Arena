@@ -34,7 +34,7 @@ export async function diseaseDetection(
     check(imageUrl);
 
     // 3. All types of operations (Processing & Prompting)
-    const res: Model_Response_T1V1 = await processing(imageUrl);
+    const res: Model_Response_V1 = await processing(imageUrl);
     check(res);
 
     const promptResponse: string[] = await prompting(res);

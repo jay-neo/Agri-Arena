@@ -6,7 +6,11 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { isMobile } from "~/lib/utils/checker";
 
-export const ToggleMenuButton = () => {
+export const ToggleMenuButton = ({
+  isAuthenticated,
+}: {
+  isAuthenticated: boolean;
+}) => {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [isMobileDevice, setIsMobileDevice] = useState(false);
@@ -78,7 +82,9 @@ export const ToggleMenuButton = () => {
               variants={sidebarVariants}
               transition={{ duration: 0.2 }}
             >
-              <div className="bg-[#f7ecfa] dark:bg-[#212146]">
+              <div
+                className={`bg-[#f7ecfa] dark:bg-[#212146] ${isAuthenticated ? `` : `blur-sm backdrop-blur-md pointer-events-none`}`}
+              >
                 <Sidebar />
               </div>
             </motion.div>

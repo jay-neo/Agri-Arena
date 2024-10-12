@@ -32,6 +32,7 @@ model User {
   experiments Experiments[]
   predictions Predictions[]
   images      Images[]
+  shares      Share[]
 }
 
 model Profile {
@@ -268,7 +269,12 @@ enum Images_Data_Type {
 }
 
 model Share {
-  id String @id @default(cuid())
+  id     String  @id @default(uuid())
+  idx    Int
+  User   User?   @relation(fields: [userId], references: [id])
+  userId String?
+
+  @@unique([idx, userId])
 }
 
 // https://www.prisma.io/data-platform/pulse

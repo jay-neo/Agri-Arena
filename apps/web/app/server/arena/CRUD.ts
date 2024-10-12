@@ -51,7 +51,7 @@ export const createArena = async (
 
     if (!arena) {
       return {
-        error: "Oops! Something went wrong",
+        error: "Oops! Something went wrong.",
       };
     }
 

@@ -19,7 +19,7 @@ const s3Client = new S3Client({
 export const uploadInPublicS3Bucket = async (
   image: File,
   filePath: string
-): Promise<string | null> => {
+): Promise<string> => {
   try {
     const imageFile = Buffer.from(await (image as Blob).arrayBuffer());
     const imageFileName = `${filePath}/${Date.now()}-${(image as File).name}`;

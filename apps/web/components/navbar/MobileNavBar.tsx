@@ -82,14 +82,6 @@ export const MobileNavBar = () => {
     setIsMobileDevice(isMobile());
   }, []);
 
-  // const [mounted, setMounted] = useState(false);
-  // useEffect(() => {
-  //   setMounted(true);
-  // }, []);
-  // if (!mounted) {
-  //   return null;
-  // }
-
   return (
     <>
       {isMobileDevice && (

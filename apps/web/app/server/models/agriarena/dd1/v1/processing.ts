@@ -2,7 +2,7 @@ import { dd1v1ModelEndpoint } from "~/lib/myenv";
 
 export const processing = async (
   image: string
-): Promise<Model_Response_T1V1 | null> => {
+): Promise<Model_Response_V1 | null> => {
   try {
     // const response = await fetch(dd1v1ModelEndpoint, {
     //   method: "POST",
@@ -35,7 +35,7 @@ export const processing = async (
       number: 4,
       result: ["Rice", "Banana", "Potato", "Carrot"],
       accuracy: ["70", "20.2", "12", "5"],
-    } as Model_Response_T1V1;
+    } as Model_Response_V1;
   } catch (error) {
     return null;
   }

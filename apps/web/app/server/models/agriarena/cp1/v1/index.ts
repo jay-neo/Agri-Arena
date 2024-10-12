@@ -8,9 +8,9 @@ import { createActivity } from "~/app/server/activity";
 import { revalidatePath } from "next/cache";
 
 export const cropPredict = async (
-  state: PredictionState,
+  state: FormState,
   formData: FormData
-): Promise<PredictionState> => {
+): Promise<FormState> => {
   try {
     const user = await getUser();
     const idx = formData.get("idx");
@@ -28,7 +28,7 @@ export const cropPredict = async (
       };
     }
 
-    const res: Model_Response_T1V1 = await predict(data);
+    const res: Model_Response_V1 = await predict(data);
     if (!res) {
       return {
         error: "Oops! Something went wrong.",
@@ -129,7 +129,8 @@ export const cropPredict = async (
 
     revalidatePath(`/activity/${idx}`);
     return {
-      success: `/activity/${activity}`,
+      success: "Successfully predict crops for your arena.",
+      next: `/activity/${activity}`,
     };
   } catch (error) {
     console.log(error);
@@ -138,12 +139,3 @@ export const cropPredict = async (
     };
   }
 };
-
-type PredictionState =
-  | {
-      error?: string;
-      pending?: string;
-      message?: string;
-      success?: string;
-    }
-  | undefined;

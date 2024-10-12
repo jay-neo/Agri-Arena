@@ -3,9 +3,7 @@ import { GenerateContentStreamResult } from "@google/generative-ai";
 
 const model = geminiModel();
 
-export const prompting = async (
-  data: Model_Response_T1V1
-): Promise<string[]> => {
+export const prompting = async (data: Model_Response_V1): Promise<string[]> => {
   try {
     const query = [
       {

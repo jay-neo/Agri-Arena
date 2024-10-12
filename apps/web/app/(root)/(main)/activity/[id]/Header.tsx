@@ -10,16 +10,18 @@ import {
   SelectChangeEvent,
 } from "@mui/material";
 import Link from "next/link";
-import { toast } from "sonner";
 import Image from "next/image";
+import { myUrl } from "~/lib/myenv";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { redirect, useRouter } from "next/navigation";
+import { neoFormAction } from "~/lib/hooks";
+import { ReactButton } from "~/lib/neo/button";
+import { createLink } from "~/app/server/share";
 import { getArenasWithId } from "~/app/server/arena";
-import { useFormState, useFormStatus } from "react-dom";
 import { modelCP1V1 } from "~/app/server/models/agriarena";
 import { Share, Edit, ExternalLink, Predict } from "~/lib/arena-icons";
 import { deleteActivity, updateActivity } from "~/app/server/activity/CRUD";
+import { SharePopUp } from "~/components/SharePopUp";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -50,10 +52,8 @@ const MenuProps = {
 };
 
 export default ({ data, idx }: { data: Activity_Header; idx: number }) => {
-  const router = useRouter();
+  const [isShare, setShare] = useState<boolean>(false);
   const [isEditing, setIsEditing] = useState<boolean>(false);
-  const [state, action] = useFormState(updateActivity, undefined);
-  const [statePredict, actionPredict] = useFormState(modelCP1V1, undefined);
   const [arenas, setArenas] = useState<ArenaIds[] | undefined>();
   const [arena, setArena] = useState<ArenaIds>({
     id: data.arenaId,
@@ -61,9 +61,19 @@ export default ({ data, idx }: { data: Activity_Header; idx: number }) => {
     location: data.arenaLocation,
   });
 
+  const [_statePredict, actionPredict] = neoFormAction(modelCP1V1);
+  const [_stateDelete, actionDelete] = neoFormAction(deleteActivity);
+  const [stateEdit, actionEdit] = neoFormAction(updateActivity, setIsEditing);
+  const [_stateShare, actionShare, _isSharePending, sharingUrl] = neoFormAction(
+    createLink,
+    setShare,
+    false
+  );
+
+  const [sharingLink, setSharingLink] = useState<string | null>(null);
+
   const handleChange = (event: SelectChangeEvent<string>) => {
     const selectedArenaId = event.target.value;
-
     const selectedArena = arenas?.find((a) => a.id === selectedArenaId);
     if (selectedArena) {
       setArena(selectedArena);
@@ -79,88 +89,81 @@ export default ({ data, idx }: { data: Activity_Header; idx: number }) => {
   }, [isEditing]);
 
   useEffect(() => {
-    if (statePredict?.success) {
-      redirect(statePredict.success);
-    } else if (statePredict?.message) {
-      toast.message(statePredict.message);
-    } else if (statePredict?.error) {
-      toast.error(statePredict.error);
+    if (sharingUrl !== null) {
+      setSharingLink(sharingUrl);
     }
-  }, [statePredict]);
-
-  useEffect(() => {
-    if (state?.message) {
-      toast.success(state.message);
-      setIsEditing(false);
-    } else if (state?.error) {
-      toast.error(state.error);
-    }
-  }, [state]);
+    setShare(true);
+  }, [isShare]);
 
   return (
     <>
-      <form className="mb-3 ml-2" action={action}>
-        <input type="number" name="idx" defaultValue={idx} className="hidden" />
-        <input
-          type="string"
-          name="arena"
-          value={arena.id}
-          readOnly
-          className="hidden"
-        />
+      <div className="mb-3 ml-2">
         {isEditing ? (
-          <div className="relative flex justify-center items-center">
-            <div className="container flex flex-col w-full justify-center items-center">
+          <div className="relative">
+            <form className="mb-3 ml-2" action={actionEdit}>
               <input
-                type="text"
-                name="title"
-                className="text-2xl bg-inherit border-2 border-pink-500 rounded-2xl font-bold mb-1 ps-2 py-0.5 w-1/2 truncate"
-                defaultValue={data.title}
-                placeholder="Enter your awesome activity name ..."
+                type="number"
+                name="idx"
+                defaultValue={idx}
+                className="hidden"
               />
-              {state?.errors?.title && (
-                <p className="text-sm text-red-500">{state.errors.title}</p>
-              )}
-            </div>
-            <div className="">
-              <SaveButton />
-
-              <button
-                className="absolute top-12 right-2 py-1 px-2.5 bg-orange-500/50 rounded-md font-bold flex items-center justify-center"
-                type="button"
-                onClick={(e) => {
-                  e.preventDefault();
-                  setIsEditing(false);
-                  if (state?.errors) {
-                    state.errors = null;
-                  }
-                  if (state?.message) {
-                    state.message = null;
-                  }
-                  if (state?.error) {
-                    state.error = null;
-                  }
-                }}
-              >
-                {"Cancel"}
-              </button>
-              <button
+              <input
+                type="string"
+                name="arena"
+                value={arena.id}
+                readOnly
+                className="hidden"
+              />
+              <div className="relative flex justify-center items-center">
+                <div className="container flex flex-col w-full justify-center items-center">
+                  <input
+                    type="text"
+                    name="title"
+                    className="text-2xl bg-inherit border-2 border-pink-500 rounded-2xl font-bold mb-1 ps-2 py-0.5 w-1/2 truncate"
+                    defaultValue={data.title}
+                    placeholder="Enter your awesome activity name ..."
+                  />
+                  {stateEdit?.errors?.title && (
+                    <p className="text-sm text-red-500">
+                      {stateEdit.errors.title}
+                    </p>
+                  )}
+                </div>
+              </div>
+              <ReactButton className="absolute top-1 right-2 py-1 px-4 bg-teal-500/50 rounded-md font-bold flex items-center justify-center" />
+            </form>
+            <button
+              className="absolute top-12 right-2 py-1 px-2.5 bg-orange-500/50 rounded-md font-bold flex items-center justify-center"
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                setIsEditing(false);
+                if (stateEdit?.errors) {
+                  stateEdit.errors = null;
+                }
+                if (stateEdit?.message) {
+                  stateEdit.message = null;
+                }
+                if (stateEdit?.error) {
+                  stateEdit.error = null;
+                }
+              }}
+            >
+              {"Cancel"}
+            </button>
+            <form action={actionDelete}>
+              <input
+                type="number"
+                name="idx"
+                defaultValue={idx}
+                className="hidden"
+              />
+              <ReactButton
                 className="absolute top-24 right-2 py-1 px-3 bg-red-500/50 rounded-md font-bold flex items-center justify-center"
-                type="button"
-                onClick={async (e) => {
-                  if (await deleteActivity(idx)) {
-                    toast.success("Activity deleted successfully");
-                    router.push("/activity");
-                  } else {
-                    setIsEditing(false);
-                    toast.error("Something haappes wrong");
-                    e.preventDefault();
-                  }
-                }}
-              >
-                {"Delete"}
-              </button>
-            </div>
+                onAction="Deleting.."
+                onStatic="Delete"
+              />
+            </form>
           </div>
         ) : (
           <div className="relative">
@@ -187,129 +190,168 @@ export default ({ data, idx }: { data: Activity_Header; idx: number }) => {
             </Tooltip>
           </div>
         )}
-      </form>
+      </div>
 
-      <form action={actionPredict}>
-        <input type="number" name="idx" defaultValue={idx} className="hidden" />
-        <input
-          type="text"
-          name="experimentsId"
-          defaultValue={data?.experimentsId}
-          className="hidden"
-        />
-        <input
-          type="text"
-          name="arenaId"
-          defaultValue={data?.arenaId}
-          className="hidden"
-        />
-        <div className="flex justify-between container mt-1">
-          <div className="container mb-2">
-            {data.type === "experiments" && (
-              <div>
-                <span className="font-bold text-lg">{"Device: "}</span>
-                <span className="truncate">{data.iot}</span>
-                <span className="text-gray-700/80 dark:text-gray-300/60 truncate">
-                  {" ("}
-                  {data.device}
-                  {")"}
-                </span>
-              </div>
-            )}
-            {data.type === "predictions" && (
-              <div className="flex items-center mb-2">
-                <span className="font-bold text-lg">Experiments:</span>
-                <Link
-                  href={`/activity/${data.ref}`}
-                  className="truncate text-blue-500 underline underline-offset-2 flex items-center ml-2 mr-1"
-                >
-                  View
-                  <Image
-                    className="dark:invert text-blue-500 underline underline-offset-2"
-                    src={ExternalLink}
-                    alt="Link"
-                  />
-                </Link>
-              </div>
-            )}
-
-            <div className="container flex items-center gap-2">
-              <span className={`font-bold text-lg`}>{"Arena:"}</span>
-              {isEditing ? (
-                <FormControl
-                  sx={{
-                    m: 1,
-                    width: 200,
-                    fontSize: 12,
-                    "& .MuiInputBase-root": {
-                      height: 30,
-                    },
-                    "& .MuiInputLabel-root": {
-                      fontSize: 12,
-                      lineHeight: 1,
-                    },
-                  }}
-                  size="small"
-                >
-                  <InputLabel id="demo-single-select-label">Arena</InputLabel>
-                  <Select
-                    labelId="demo-single-select-label"
-                    id="demo-single-select"
-                    value={arena.id}
-                    onChange={handleChange}
-                    input={<OutlinedInput label="Arena" />}
-                    MenuProps={MenuProps}
-                  >
-                    {arenas ? (
-                      arenas.map((a) => (
-                        <MenuItem key={a.id} value={a.id}>
-                          {a.title}
-                        </MenuItem>
-                      ))
-                    ) : (
-                      <div className="px-2">No arena found</div>
-                    )}
-                  </Select>
-                </FormControl>
-              ) : (
-                <span className="truncate">
-                  {data.arena ? data.arena : "not assigned"}
-                </span>
-              )}
+      <div className="flex justify-between container mt-1">
+        <div className="container mb-2">
+          {data.type === "experiments" && (
+            <div>
+              <span className="font-bold text-lg">{"Device: "}</span>
+              <span className="truncate">{data.iot}</span>
+              <span className="text-gray-700/80 dark:text-gray-300/60 truncate">
+                {" ("}
+                {data.device}
+                {")"}
+              </span>
             </div>
-          </div>
+          )}
+          {data.type === "predictions" && (
+            <div className="flex items-center mb-2">
+              <span className="font-bold text-lg">Experiments:</span>
+              <Link
+                href={`/activity/${data.ref}`}
+                className="truncate text-blue-500 underline underline-offset-2 flex items-center ml-2 mr-1"
+              >
+                View
+                <Image
+                  className="dark:invert text-blue-500 underline underline-offset-2"
+                  src={ExternalLink}
+                  alt="Link"
+                />
+              </Link>
+            </div>
+          )}
 
-          <div className="">
-            {data.type === "experiments" && !isEditing && (
-              <div className="m-1 p-1">
-                <Tooltip disableFocusListener placement="left" title="Predict">
-                  {data.isPredicted ? (
-                    <Link
-                      href={`/activity/${data.ref}`}
-                      className="flex items-center p-1.5 font-bold bg-blue-500/50 rounded-md"
-                    >
-                      <Image
-                        className="dark:invert"
-                        src={Predict}
-                        alt="predict"
-                      />
-                    </Link>
+          <div className="container flex items-center gap-2">
+            <span className={`font-bold text-lg`}>{"Arena:"}</span>
+            {isEditing ? (
+              <FormControl
+                sx={{
+                  m: 1,
+                  width: 200,
+                  fontSize: 12,
+                  "& .MuiInputBase-root": {
+                    height: 30,
+                  },
+                  "& .MuiInputLabel-root": {
+                    fontSize: 12,
+                    lineHeight: 1,
+                  },
+                }}
+                size="small"
+              >
+                <InputLabel id="demo-single-select-label">Arena</InputLabel>
+                <Select
+                  labelId="demo-single-select-label"
+                  id="demo-single-select"
+                  value={arena.id}
+                  onChange={handleChange}
+                  input={<OutlinedInput label="Arena" />}
+                  MenuProps={MenuProps}
+                >
+                  {arenas ? (
+                    arenas.map((a) => (
+                      <MenuItem key={a.id} value={a.id}>
+                        {a.title}
+                      </MenuItem>
+                    ))
                   ) : (
-                    <PredictButton />
+                    <div className="px-2">No arena found</div>
                   )}
-                </Tooltip>
-              </div>
+                </Select>
+              </FormControl>
+            ) : (
+              <span className="truncate">
+                {data.arena ? data.arena : "not assigned"}
+              </span>
             )}
+          </div>
+        </div>
 
-            {!isEditing && (
-              <div className="m-1 p-1">
-                <Tooltip disableFocusListener placement="left" title="Share">
+        <div className="">
+          {data.type === "experiments" && !isEditing && (
+            <div className="m-1 p-1">
+              <Tooltip disableFocusListener placement="left" title="Predict">
+                {data.isPredicted ? (
+                  <Link
+                    href={`/activity/${data.ref}`}
+                    className="flex items-center p-1.5 font-bold bg-blue-500/50 rounded-md"
+                  >
+                    <Image
+                      className="dark:invert"
+                      src={Predict}
+                      alt="predict"
+                    />
+                  </Link>
+                ) : (
+                  <form action={actionPredict}>
+                    <input
+                      type="number"
+                      name="idx"
+                      defaultValue={idx}
+                      className="hidden"
+                    />
+                    <input
+                      type="text"
+                      name="experimentsId"
+                      defaultValue={data?.experimentsId}
+                      className="hidden"
+                    />
+                    <input
+                      type="text"
+                      name="arenaId"
+                      defaultValue={data?.arenaId}
+                      className="hidden"
+                    />
+                    <ReactButton
+                      className="flex items-center p-1.5 font-bold bg-fuchsia-500/50 rounded-md"
+                      onStatic={
+                        <Image
+                          className="dark:invert"
+                          src={Predict}
+                          alt="predict"
+                        />
+                      }
+                      onAction={
+                        <motion.div
+                          animate={{
+                            rotate: [0, 360],
+                            scale: [1, 1.2, 0.8, 1],
+                          }}
+                          transition={{
+                            repeat: Infinity,
+                            duration: 1,
+                            ease: "easeInOut",
+                            times: [0, 0.5, 0.8, 1],
+                          }}
+                        >
+                          <Image
+                            className="dark:invert"
+                            src={Predict}
+                            alt="predict"
+                          />
+                        </motion.div>
+                      }
+                    />
+                  </form>
+                )}
+              </Tooltip>
+            </div>
+          )}
+
+          {!isEditing && (
+            <div className="m-1 p-1">
+              <Tooltip disableFocusListener placement="left" title="Share">
+                <form action={actionShare}>
+                  <input
+                    type="number"
+                    name="idx"
+                    defaultValue={idx}
+                    className="hidden"
+                  />
                   <button
                     className="items-center p-1.5 bg-lime-500/50 rounded-md"
-                    type="button"
-                    onClick={(e) => {
-                      e.preventDefault();
-                    }}
+                    type="submit"
                   >
                     <Image
                       className="dark:invert"
@@ -319,57 +361,34 @@ export default ({ data, idx }: { data: Activity_Header; idx: number }) => {
                       alt="share"
                     />
                   </button>
-                </Tooltip>
-              </div>
-            )}
+                </form>
+              </Tooltip>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* For Sharing Dialog */}
+      {sharingLink && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 md:py-6">
+          <div
+            className="fixed inset-0 bg-black/40 backdrop-blur-sm"
+            onClick={() => setSharingLink(null)}
+          ></div>
+
+          <div className="relative bg-yellow-50 dark:bg-blue-800 p-5 md:p-10 scrollbar-hide rounded-lg shadow-lg w-full max-w-xl max-h-full h-auto overflow-auto">
+            <button
+              onClick={() => setSharingLink(null)}
+              className="absolute top-2 right-5 font-bold text-gray-600 hover:text-gray-900 text-3xl dark:invert"
+            >
+              &times;
+            </button>
+            <div className="container mx-auto p-6">
+              <SharePopUp url={`${myUrl}/share/${sharingLink}`} />
+            </div>
           </div>
         </div>
-      </form>
-    </>
-  );
-};
-
-const SaveButton: React.FC = () => {
-  const { pending } = useFormStatus();
-
-  return (
-    <button
-      type="submit"
-      disabled={pending}
-      className="absolute top-1 right-2 py-1 px-4 bg-teal-500/50 rounded-md font-bold flex items-center justify-center"
-    >
-      {pending ? "Saving..." : "Save"}
-    </button>
-  );
-};
-
-const PredictButton: React.FC = () => {
-  const { pending } = useFormStatus();
-
-  return (
-    <button
-      type="submit"
-      disabled={pending}
-      className="flex items-center p-1.5 font-bold bg-fuchsia-500/50 rounded-md"
-    >
-      {pending ? (
-        <motion.div
-          animate={{
-            rotate: [0, 360],
-            scale: [1, 1.2, 0.8, 1],
-          }}
-          transition={{
-            repeat: Infinity,
-            duration: 1,
-            ease: "easeInOut",
-            times: [0, 0.5, 0.8, 1],
-          }}
-        >
-          <Image className="dark:invert" src={Predict} alt="predict" />
-        </motion.div>
-      ) : (
-        <Image className="dark:invert" src={Predict} alt="predict" />
       )}
-    </button>
+    </>
   );
 };
