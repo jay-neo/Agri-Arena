@@ -1,12 +1,12 @@
 "use client";
 
-import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { getActivitiesWithParams } from "~/app/server/activity";
+import { useSearchParams, usePathname, useRouter } from "next/navigation";
 
 export default () => {
-  const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
+  const searchParams = useSearchParams();
 
   const handleSearch = async (term: string) => {
     const params = new URLSearchParams(searchParams);

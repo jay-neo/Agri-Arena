@@ -2,8 +2,9 @@
 
 import { toast } from "sonner";
 import { useEffect } from "react";
+import { useFormState } from "react-dom";
+import { ReactButton } from "~/lib/neo/button";
 import { createArena } from "~/app/server/arena";
-import { useFormState, useFormStatus } from "react-dom";
 
 const LABEL = "flex w-full font-semibold text-black pb-1";
 const ERROR = "text-sm text-red-500 dark:text-yellow-400";
@@ -66,22 +67,12 @@ export const CreateArenaForm = ({ onClose }: { onClose: () => void }) => {
         )}
       </div>
       <div className="flex items-center justify-center mt-4">
-        <CreatButton />
+        <ReactButton
+          onStatic="Create"
+          onAction="Creating..."
+          className="m-1 px-6 py-1.5 font-bold min-w-40 border border-2 rounded-3xl hover:bg-orange-400 hover:text-black hover:border-black"
+        />
       </div>
     </form>
-  );
-};
-
-const CreatButton = () => {
-  const { pending } = useFormStatus();
-
-  return (
-    <button
-      type="submit"
-      disabled={pending}
-      className="m-1 px-6 py-1.5 font-bold min-w-40 border border-2 rounded-3xl hover:bg-orange-400 hover:text-black hover:border-black"
-    >
-      {pending ? "Creating..." : "Create"}
-    </button>
   );
 };

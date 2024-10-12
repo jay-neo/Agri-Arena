@@ -22,8 +22,8 @@ export default async () => {
         <p className="mt-4 text-lg text-gray-600 dark:text-gray-300">
           Welcome to our Support Center.
           <br />
-          <br /> At Agri Arena, we are committed to providing exceptional
-          support to help you get the most out of our platform. Whether you have
+          <br /> At AgriArena, we are committed to providing exceptional support
+          to help you get the most out of our platform. Whether you have
           questions about connecting your IoT devices, understanding our crop
           recommendations, or need assistance with any issues, our dedicated
           team is here to assist you. Explore our frequently asked questions
