@@ -1,6 +1,6 @@
 import { db } from "~/lib/prisma";
 import { faker } from "@faker-js/faker";
-import { getRandomString } from "~/lib/utils/random";
+import { getRandomString } from "~/lib/utils";
 import { defaultArenaAvatar, defaultArenaAvatars } from "~/lib/constants";
 
 export const neoUserSeeds = async (userId: string): Promise<boolean> => {

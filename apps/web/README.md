@@ -1,1 +1,1 @@
-<div align=center><h1>AGRI-ARENA</h1></div>
+<div align=center><h1>AgriArena - Web</h1></div>

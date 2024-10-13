@@ -9,9 +9,9 @@ import {
 } from "~/lib/arena-icons";
 import Link from "next/link";
 import Image from "next/image";
+import { isMobile } from "~/lib/utils";
 import { motion } from "framer-motion";
 import { usePathname } from "next/navigation";
-import { isMobile } from "~/lib/utils/checker";
 import React, { useEffect, useState } from "react";
 
 interface MobileNavBarItem {

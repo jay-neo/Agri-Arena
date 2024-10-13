@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 import { signIn } from "~/auth";
 import { db } from "~/lib/prisma";
 import { AuthError } from "next-auth";
-import { getRandomString } from "~/lib/utils/random";
+import { getRandomString } from "~/lib/utils";
 import { SignupFormState, SignupFormSchema } from "./validation";
 import { defaultUserAvatar, defaultUserAvatars } from "~/lib/constants";
 
