@@ -34,7 +34,7 @@ export function neoFormAction<T extends FormState>(
   formAction: (state: T, formData: FormData) => Promise<T>,
   editMode?: Dispatch<SetStateAction<boolean>>,
   isRedirect: boolean = true
-): [state: Awaited<T>, dispatch: () => void, isPending: boolean, next: string] {
+): [state: Awaited<T>, dispatch: () => void, next: string] {
   const [state, action, isPending] = useFormState(
     formAction as (state: Awaited<T>) => T | Promise<T>,
     undefined
@@ -62,5 +62,5 @@ export function neoFormAction<T extends FormState>(
     }
   }, [state]);
 
-  return [state, action, isPending, state?.next];
+  return [state, action, state?.next];
 }

@@ -1,19 +1,18 @@
 "use client";
 
 import { toast } from "sonner";
-import { redirect } from "next/navigation";
-import { Button } from "~/components/ui/form/button";
-import { useFormState, useFormStatus } from "react-dom";
+import { neoFormAction } from "~/lib/hooks";
+import { ReactButton } from "~/lib/neo/button";
 import { modelDD1V1 } from "~/app/server/models/agriarena";
-import { useState, useRef, ChangeEvent, DragEvent, useEffect } from "react";
+import { useState, useRef, ChangeEvent, DragEvent } from "react";
 
 type Image = {
   image: string;
 };
 
 export default () => {
+  const [_state, action] = neoFormAction(modelDD1V1);
   const [formData, setFormData] = useState<Image>(null);
-
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const image = e.target.files?.[0];
@@ -30,10 +29,6 @@ export default () => {
     } else {
       toast.error("Image must be jpg, jpeg, or png and less than 2MB");
     }
-  };
-
-  const handleDragOver = (event: DragEvent<HTMLDivElement>) => {
-    event.preventDefault();
   };
 
   const handleDrop = (e: DragEvent<HTMLDivElement>) => {
@@ -55,23 +50,6 @@ export default () => {
     }
   };
 
-  const handleCancel = (e: React.FormEvent) => {
-    e.preventDefault();
-    setFormData(null);
-  };
-
-  const [state, action] = useFormState(modelDD1V1, undefined);
-
-  useEffect(() => {
-    if (state?.error) {
-      toast.error(state.error);
-    } else if (state?.message) {
-      toast.message(state.message);
-    } else if (state?.success) {
-      redirect(`${state.success}`);
-    }
-  }, [state]);
-
   return (
     <form className="border-none" action={action}>
       <div className="container mx-auto p-6">
@@ -86,7 +64,9 @@ export default () => {
         />
         <div
           className="img-area relative w-full h-60 bg-fuchsia-300/30 dark:bg-cyan-700  mb-6 rounded-lg overflow-hidden flex justify-center items-center flex-col"
-          onDragOver={handleDragOver}
+          onDragOver={(event: DragEvent<HTMLDivElement>) =>
+            event.preventDefault()
+          }
           onDrop={handleDrop}
         >
           {!formData?.image ? (
@@ -119,11 +99,18 @@ export default () => {
             </button>
           ) : (
             <>
-              <ProcessButton />
+              <ReactButton
+                onStatic="Process"
+                onAction="Processing..."
+                className="upload-image text-sm px-4 py-2 bg-green-600 text-white font-semibold rounded-lg transition duration-300 hover:bg-green-700"
+              />
               <button
                 type="button"
                 className="cancel-image text-sm px-4 py-2 bg-red-600 text-white font-semibold rounded-lg transition duration-300 hover:bg-red-700"
-                onClick={handleCancel}
+                onClick={(e: React.FormEvent) => {
+                  e.preventDefault();
+                  setFormData(null);
+                }}
               >
                 Cancel
               </button>
@@ -132,19 +119,5 @@ export default () => {
         </div>
       </div>
     </form>
-  );
-};
-
-const ProcessButton: React.FC = () => {
-  const { pending } = useFormStatus();
-
-  return (
-    <Button
-      aria-disabled={pending}
-      type="submit"
-      className="upload-image text-sm px-4 py-2 bg-green-600 text-white font-semibold rounded-lg transition duration-300 hover:bg-green-700"
-    >
-      {pending ? "Processing..." : "Process"}
-    </Button>
   );
 };

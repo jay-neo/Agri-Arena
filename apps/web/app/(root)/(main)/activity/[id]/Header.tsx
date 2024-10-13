@@ -64,7 +64,7 @@ export default ({ data, idx }: { data: Activity_Header; idx: number }) => {
   const [_statePredict, actionPredict] = neoFormAction(modelCP1V1);
   const [_stateDelete, actionDelete] = neoFormAction(deleteActivity);
   const [stateEdit, actionEdit] = neoFormAction(updateActivity, setIsEditing);
-  const [_stateShare, actionShare, _isSharePending, sharingUrl] = neoFormAction(
+  const [_stateShare, actionShare, sharingUrl] = neoFormAction(
     createLink,
     setShare,
     false

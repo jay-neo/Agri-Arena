@@ -3,9 +3,9 @@
 import { z } from "zod";
 
 export const contactWithCompany = async (
-  state: FormState,
+  state: ContactFormState,
   formData: FormData
-): Promise<FormState> => {
+): Promise<ContactFormState> => {
   try {
     const validatedFields = FormSchema.safeParse({
       name: formData.get("name"),
@@ -20,7 +20,6 @@ export const contactWithCompany = async (
     }
 
     // const { name, email, message } = validatedFields.data;
-
     // implement send the message to the company
 
     return {
@@ -36,25 +35,20 @@ export const contactWithCompany = async (
 const FormSchema = z.object({
   name: z
     .string()
-    .min(2, { message: "Name must be at least 2 characters long." })
-    .trim(),
-  email: z.string().email({ message: "Please enter a valid email." }).trim(),
+    .trim()
+    .min(2, { message: "Name must be at least 2 characters long." }),
+  email: z.string().trim().email({ message: "Please enter a valid email." }),
   message: z
     .string()
-    .min(2, { message: "Message must be at least 2 characters long." })
-    .max(200, { message: "Message must be less than 200 characters." })
-    .trim(),
+    .trim()
+    .min(5, { message: "Message must be at least 5 characters long." })
+    .max(200, { message: "Message must be less than 200 characters." }),
 });
 
-type FormState =
-  | {
-      errors?: {
-        name?: string[];
-        email?: string[];
-        message?: string[];
-      };
-      error?: string;
-      message?: string;
-      success?: string;
-    }
-  | undefined;
+type ContactFormState = FormState & {
+  errors?: {
+    name?: string[];
+    email?: string[];
+    message?: string[];
+  };
+};
