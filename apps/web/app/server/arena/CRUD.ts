@@ -2,12 +2,11 @@
 
 import { db } from "~/lib/prisma";
 import { getUser } from "../user";
-import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
+import { getRandomString } from "~/lib/utils";
 import { defaultArenaAvatar, defaultArenaAvatars } from "~/lib/constants";
 import { updateMonitor } from "~/app/server/activity";
 import { ArenaFormSchema, ArenaFormState } from "./validation";
-import { getRandomString } from "~/lib/utils/random";
 
 ///////////////////////////////////// CREATE ///////////////////////////////////
 export const createArena = async (

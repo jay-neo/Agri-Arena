@@ -1,6 +1,6 @@
+import { isNumber } from "~/lib/utils";
 import { redirect } from "next/navigation";
 import { getArena } from "~/app/server/arena";
-import { isNumber } from "~/lib/utils/checker";
 
 import { myenv } from "~/lib/myenv";
 import { getFakeIotDataOneYear } from "~/test/data/faker";

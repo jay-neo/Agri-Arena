@@ -7,8 +7,8 @@ import {
 import Header from "./Header";
 import { myenv } from "~/lib/myenv";
 import type { Metadata } from "next";
+import { isNumber } from "~/lib/utils";
 import { redirect } from "next/navigation";
-import { isNumber } from "~/lib/utils/checker";
 import { getFakeActivity } from "~/test/data/faker";
 
 export const metadata: Metadata = {

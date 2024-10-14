@@ -1,8 +1,8 @@
 import { myenv } from "~/lib/myenv";
 import type { Metadata } from "next";
+import { isNumber } from "~/lib/utils";
 import ArenaDetails from "./ArenaDetails";
 import { redirect } from "next/navigation";
-import { isNumber } from "~/lib/utils/checker";
 import { getAssignedIoTs } from "~/app/server/iot";
 import { getArena, getArenaDataCount } from "~/app/server/arena";
 import { fakeAssignedIoTs, getFakeArenaDetails } from "~/test/data/faker";

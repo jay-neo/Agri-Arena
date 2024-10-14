@@ -2,9 +2,9 @@
 
 import Sidebar from "../sidebar";
 import { motion } from "framer-motion";
+import { isMobile } from "~/lib/utils";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { isMobile } from "~/lib/utils/checker";
 
 export const ToggleMenuButton = ({
   isAuthenticated,

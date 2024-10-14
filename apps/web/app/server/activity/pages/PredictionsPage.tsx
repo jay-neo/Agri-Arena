@@ -1,5 +1,6 @@
 "use server";
 
+import { extractUrls } from "~/lib/utils";
 import ReactMarkdown from "react-markdown";
 import { getPredictionsData } from "~/app/server/ml";
 import { ExperimentsTable } from "~/components/ui/activity";
@@ -7,7 +8,6 @@ import { getExperimentsData } from "~/app/server/experiments";
 import { getFormattedDateActivityDetails } from "~/lib/formatters";
 import { CustomLinkPreview } from "~/components/ui/previews/CustomLinkPreview";
 import { LinkPreview } from "~/components/ui/previews/LinkPreview";
-import { extractUrls } from "~/lib/utils/url";
 
 export const PredictionsPage = async ({
   predictionsId,
