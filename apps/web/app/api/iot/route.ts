@@ -141,7 +141,8 @@ export async function POST(request: NextRequest) {
 
     const insertedData = await db.experiments_Data.create({
       data: {
-        createdAt: data.timestamp,
+        // createdAt: data.timestamp,
+        createdAt: new Date(),
         ph: parseFloat(data.ph),
         ipAddress: String(data.ip),
         nitrogen: parseFloat(data.nitrogen),
