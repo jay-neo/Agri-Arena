@@ -184,10 +184,21 @@ export const deleteArena = async (
   try {
     const arenaId = formData.get("arenaId") as string;
     const { id } = await getUser();
-    await db.arena.delete({
+    const deletedArena = await db.arena.delete({
       where: {
         id: arenaId,
         userId: id,
+      },
+      select: {
+        id: true,
+      },
+    });
+    await db.ioT.updateMany({
+      where: {
+        arenaId: deletedArena.id,
+      },
+      data: {
+        arenaId: null,
       },
     });
     return {

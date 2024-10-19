@@ -1,4 +1,4 @@
 export * from "./CRUD";
-export * from "./getArenas";
-export * from "./getArenasWithId";
-export * from "./getArenaDataCount"
+export { getArenasWithId } from "./getArenasWithId";
+export { getArenaDataCount } from "./getArenaDataCount";
+export { getArenas, getArenasWithParams } from "./getArenas";

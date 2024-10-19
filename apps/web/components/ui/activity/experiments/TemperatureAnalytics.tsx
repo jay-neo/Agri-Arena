@@ -38,6 +38,8 @@ export default ({
         yAxis={[
           {
             label: "Temperature (°C)",
+            // min: range.min,
+            // max: range.max,
             colorMap: {
               type: "continuous",
               min: range.min,
