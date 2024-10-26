@@ -10,13 +10,6 @@
   },
   "editor.formatOnSave": true,
   "files.autoSave": "onFocusChange",
-  "[prisma]": {
-    "editor.defaultFormatter": "Prisma.prisma"
-  },
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "[typescript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
   "[xml]": {
     "editor.defaultFormatter": "redhat.vscode-xml"
   },
