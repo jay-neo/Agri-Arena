@@ -104,10 +104,9 @@ export async function diseaseDetection(
     const activity = await createActivity(user.id, "images", images.id);
     check(activity);
 
-    // redirect(`/activity/${activity}`);
-
     return {
-      success: `/activity/${activity}`,
+      success: "Disease detection is successfully done!",
+      next: `/activity/${activity}`,
     };
   } catch (error) {
     console.error("Error ==> ", error);
@@ -146,14 +145,8 @@ const ImageUploadSchema = z.object({
     ),
 });
 
-type DetectionState =
-  | {
-      errors?: {
-        image?: string[];
-      };
-      error?: string;
-      pending?: string;
-      message?: string;
-      success?: string;
-    }
-  | undefined;
+type DetectionState = FormState & {
+  errors?: {
+    image?: string[];
+  };
+};

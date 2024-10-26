@@ -155,9 +155,9 @@ model IoT {
   description   String?
   user          User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId        String
-  arena         Arena?       @relation(fields: [arenaId], references: [id], onDelete: Cascade)
+  arena         Arena?       @relation(fields: [arenaId], references: [id])
   arenaId       String?
-  experiments   Experiments? @relation(fields: [experimentsId], references: [id], onDelete: Cascade)
+  experiments   Experiments? @relation(fields: [experimentsId], references: [id])
   experimentsId String?      @unique
 
   @@unique([device, userId])

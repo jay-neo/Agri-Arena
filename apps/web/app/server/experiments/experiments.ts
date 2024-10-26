@@ -2,7 +2,6 @@
 
 import { db } from "~/lib/prisma";
 import { getUser } from "../user";
-import { deleteActivity } from "../activity";
 
 ///////////////////////////////////// GETTER ///////////////////////////////////
 export const getExperiments = async (id: string) => {
@@ -26,16 +25,41 @@ export const getExperiments = async (id: string) => {
 };
 
 ///////////////////////////////////// DELETE ///////////////////////////////////
-export const deleteExperiments = async (id: string, activityIdx: number) => {
+export const deleteExperiments = async (
+  experimentsId: string,
+  activityIdx: number
+) => {
   try {
     const user = await getUser();
-    const deletedExperments = await db.experiments.delete({
+
+    await db.activity.delete({
       where: {
-        id: id,
-        userId: user.id,
+        idx_userId: {
+          idx: activityIdx,
+          userId: user.id,
+        },
       },
       select: {
-        device: true,
+        id: true,
+      },
+    });
+
+    const deletedExperments = await db.experiments.delete({
+      where: {
+        id: experimentsId,
+        userId: user.id,
+      },
+      include: {
+        expData: true,
+        predictions: {
+          include: {
+            predictionsData: {
+              include: {
+                modelResponse: true,
+              },
+            },
+          },
+        },
       },
     });
     if (deletedExperments?.device) {
@@ -58,7 +82,6 @@ export const deleteExperiments = async (id: string, activityIdx: number) => {
         });
       }
     }
-    await deleteActivity(activityIdx);
     return true;
   } catch (error) {
     return false;
