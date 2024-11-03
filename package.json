@@ -2,7 +2,11 @@
   "name": "agri-arena",
   "description": "the nature's wisdom for modern agriculture",
   "version": "0.1.1",
-  "author": "Jagadish Sau <jay-neo@outlook.com>",
+  "author": {
+    "name": "Jagadish Sau",
+    "email": "jay-neo@outlook.com",
+    "url": "https://jay-neo.github.io"
+  },
   "private": true,
   "license": "MIT",
   "scripts": {
@@ -12,16 +16,15 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
-    "prettier": "^3.2.5",
-    "turbo": "^2.1.1",
-    "typescript": "^5.4.5"
+    "prettier": "^3.3.3",
+    "turbo": "^2.1.2",
+    "typescript": "^5.6.2"
   },
   "engines": {
     "node": ">=18"
   },
   "packageManager": "yarn@1.22.19",
   "workspaces": [
-    "apps/app",
     "apps/web",
     "packages/*"
   ],

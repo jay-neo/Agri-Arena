@@ -15,7 +15,7 @@ class Sensors {
     std::map<String, float> res;
 public:
     Sensors(const uint8_t, const uint8_t, const uint8_t, const uint8_t, const uint8_t);
-    // ~Sensors();
+    // ~Sensors();e
 
     float get_humidity();
     float get_temperature();
