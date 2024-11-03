@@ -14,13 +14,15 @@ export * as SideBarNotification from "./sidebar/notification.svg";
 
 export * as SideBarActivity from "./phone/activity.svg";
 export * as SideBarArena from "./phone/arena.svg";
-export * as SideBarCalender from "./phone/calender.svg";
+export * as SideBarIot from "./phone/iot.svg";
+export * as SideBarEvents from "./phone/events.svg";
 
 // For Phone Navbar
 export * as PhoneNavBarChat from "./phone/chat.svg";
 export * as PhoneNavBarArena from "./phone/arena.svg";
+export * as PhoneNavBarIot from "./phone/iot.svg";
 export * as PhoneNavBarSocial from "./phone/social.svg";
-export * as PhoneNavBarCalender from "./phone/calender.svg";
+export * as PhoneNavBarCalender from "./phone/events.svg";
 export * as PhoneNavBarActivity from "./phone/activity.svg";
 
 // For Theme

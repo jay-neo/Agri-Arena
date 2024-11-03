@@ -15,7 +15,7 @@ export default async () => {
   return (
     <div className="px-1 py-4">
       <div className="flex items-center justify-center text-3xl text-lime-600 dark:text-fuchsia-400 w-full font-bold mb-3 font-sans">
-        IoT Management Forum
+        IoT Management Dashboard
       </div>
       <IoTsTable initialData={data} />
     </div>

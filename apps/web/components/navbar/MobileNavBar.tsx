@@ -1,10 +1,11 @@
 "use client";
 
 import {
+  SideBarEvents,
   PhoneNavBarChat,
+  PhoneNavBarIot,
   PhoneNavBarArena,
   PhoneNavBarSocial,
-  PhoneNavBarCalender,
   PhoneNavBarActivity,
 } from "~/lib/arena-icons";
 import Link from "next/link";
@@ -22,17 +23,6 @@ interface MobileNavBarItem {
 
 export const MobileNavBarSection: MobileNavBarItem[] = [
   {
-    title: "Activity",
-    path: "/activity",
-    icon: (
-      <Image
-        src={PhoneNavBarActivity}
-        alt="activity"
-        className="h-6 w-6 dark:invert"
-      />
-    ),
-  },
-  {
     title: "Arena",
     path: "/arena",
     icon: (
@@ -44,18 +34,36 @@ export const MobileNavBarSection: MobileNavBarItem[] = [
     ),
   },
   {
-    title: "Chat",
-    path: "/chat",
+    title: "IoT",
+    path: "/iots",
     icon: (
-      <Image src={PhoneNavBarChat} alt="chat" className="h-6 w-6 dark:invert" />
+      <Image src={PhoneNavBarIot} alt="iot" className="h-6 w-6 dark:invert" />
     ),
   },
+  {
+    title: "Activity",
+    path: "/activity",
+    icon: (
+      <Image
+        src={PhoneNavBarActivity}
+        alt="activity"
+        className="h-6 w-6 dark:invert"
+      />
+    ),
+  },
+  // {
+  //   title: "Chat",
+  //   path: "/chat",
+  //   icon: (
+  //     <Image src={PhoneNavBarChat} alt="chat" className="h-6 w-6 dark:invert" />
+  //   ),
+  // },
   {
     title: "Calendar",
     path: "/events",
     icon: (
       <Image
-        src={PhoneNavBarCalender}
+        src={SideBarEvents}
         alt="calender"
         className="h-6 w-6 dark:invert"
       />
