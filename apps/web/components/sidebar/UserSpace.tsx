@@ -4,9 +4,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-  SideBarActivity,
+  SideBarIot,
   SideBarArena,
-  SideBarCalender,
+  SideBarEvents,
+  SideBarActivity,
 } from "~/lib/arena-icons";
 
 interface SidebarItem {
@@ -38,11 +39,17 @@ export const UserSpaceSection: SidebarItem[] = [
     cName: "nav-text",
   },
   {
-    title: "Calender",
+    title: "IoT",
+    path: "/iots",
+    icon: <Image src={SideBarIot} alt="iot" className="dark:invert h-5 w-4" />,
+    cName: "nav-text",
+  },
+  {
+    title: "Events",
     path: "/events",
     icon: (
       <Image
-        src={SideBarCalender}
+        src={SideBarEvents}
         alt="events"
         className="dark:invert h-5 w-4"
       />

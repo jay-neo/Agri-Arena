@@ -96,11 +96,6 @@ export default ({
                 My Profile
               </Link>
             </li>
-            <li role="menuitem">
-              <Link href={`/arena/iots`} className={LIST}>
-                IoT Management
-              </Link>
-            </li>
             {/* <li role="menuitem">
               <Link
                 href="/notifications"
