@@ -1,0 +1,10 @@
+version: '3'
+services:
+  esp32-project:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/project
+    stdin_open: true
+    tty: true
