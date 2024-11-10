@@ -7,9 +7,14 @@ export * as Predict from "./predict.svg";
 export * as ExternalLink from "./external.svg";
 
 // For Sidebar
-export * as SideBarDiscuss from "./sidebar/discuss.svg";
 export * as SideBarPages from "./sidebar/pages.svg";
+export * as SideBarDiscuss from "./sidebar/discuss.svg";
+export * as SidebarShopingIcon from "./sidebar/shop.svg";
 export * as SideBarForecast from "./sidebar/forecast.svg";
+export * as SideBarDividerIcon1 from "./sidebar/divider1.svg";
+export * as SideBarDividerIcon2 from "./sidebar/divider2.svg";
+export * as SideBarLightOnIcon from "./sidebar/light_on.svg";
+export * as SideBarLightOffIcon from "./sidebar/light_off.svg";
 export * as SideBarNotification from "./sidebar/notification.svg";
 
 export * as SideBarActivity from "./phone/activity.svg";
