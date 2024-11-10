@@ -9,20 +9,33 @@ export default ({
   data: {
     humidity: number;
     moisture: number;
-    createdAt: any;
+    createdAt: Date;
   }[];
   dataLength: number;
 }) => {
+  const isSameDay = data.every(
+    (item) => item.createdAt.toDateString() === data[0].createdAt.toDateString()
+  );
+
   return (
     <div
-      className={`md:m-1 my-2  ${dataLength > 25 ? `md:w-full` : `md:w-1/2`}`}
+      className={`md:m-1 my-2 ${dataLength > 25 ? `md:w-full` : `md:w-1/2`}`}
     >
       <LineChart
         xAxis={[
           {
             scaleType: "time",
             data: data.map((item) => item.createdAt),
-            valueFormatter: (value) => value.toLocaleDateString(),
+            valueFormatter: (value) =>
+              isSameDay
+                ? value
+                    .toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                      hour12: true,
+                    })
+                    .toUpperCase() // Standardize to "10:40 PM" format
+                : value.toLocaleDateString(),
           },
         ]}
         series={[
@@ -41,7 +54,7 @@ export default ({
         ]}
         yAxis={[
           {
-            // label: "(in %)",
+            label: "(in %)",
           },
         ]}
         height={300}
