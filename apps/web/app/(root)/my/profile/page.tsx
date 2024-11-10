@@ -1,9 +1,8 @@
-import ProfileForm from "./Profile";
 import { getProfile } from "~/app/server/user";
+import { ProfileForm } from "~/components/ui/Profile";
 
 export default async () => {
   const myprofile: Profile = await getProfile();
-  console.log();
   return (
     <div>
       <div className="max-w-full">

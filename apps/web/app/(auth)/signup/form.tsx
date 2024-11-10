@@ -4,6 +4,7 @@ import clsx from "clsx";
 import Link from "next/link";
 import Image from "next/image";
 import { toast } from "sonner";
+import { HOMEPAGE } from "~/lib/routes";
 import { signup } from "~/app/server/auth";
 import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -35,7 +36,7 @@ export function SignupForm() {
     } else if (state?.success) {
       toast.success(state.success);
       state.success = null;
-      redirect(`activity`);
+      redirect(HOMEPAGE);
     }
   }, [state?.error, state?.message, state?.success]);
 

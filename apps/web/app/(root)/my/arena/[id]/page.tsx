@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 export default async ({ params }: { params: { id: string } }) => {
   if (!isNumber(params.id)) {
-    redirect(`/arena`);
+    redirect(`/my/arena`);
   }
   const arenaIdx = parseFloat(params.id);
 
@@ -23,7 +23,7 @@ export default async ({ params }: { params: { id: string } }) => {
       : await getArena(arenaIdx);
 
   if (!arena) {
-    redirect(`/arena`);
+    redirect(`/my/arena`);
   }
 
   const assignedIoTsData: IoTIds[] =

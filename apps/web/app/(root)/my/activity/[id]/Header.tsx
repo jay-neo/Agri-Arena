@@ -17,11 +17,11 @@ import { useEffect, useState } from "react";
 import { neoFormAction } from "~/lib/hooks";
 import { ReactButton } from "~/lib/neo/button";
 import { createLink } from "~/app/server/share";
+import { SharePopUp } from "~/components/SharePopUp";
 import { getArenasWithId } from "~/app/server/arena";
 import { modelCP1V1 } from "~/app/server/models/agriarena";
 import { Share, Edit, ExternalLink, Predict } from "~/lib/arena-icons";
 import { deleteActivity, updateActivity } from "~/app/server/activity/CRUD";
-import { SharePopUp } from "~/components/SharePopUp";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -209,7 +209,7 @@ export default ({ data, idx }: { data: Activity_Header; idx: number }) => {
             <div className="flex items-center mb-2">
               <span className="font-bold text-lg">Experiments:</span>
               <Link
-                href={`/activity/${data.ref}`}
+                href={`/my/activity/${data.ref}`}
                 className="truncate text-blue-500 underline underline-offset-2 flex items-center ml-2 mr-1"
               >
                 View
@@ -274,7 +274,7 @@ export default ({ data, idx }: { data: Activity_Header; idx: number }) => {
               <Tooltip disableFocusListener placement="left" title="Predict">
                 {data.isPredicted ? (
                   <Link
-                    href={`/activity/${data.ref}`}
+                    href={`/my/activity/${data.ref}`}
                     className="flex items-center p-1.5 font-bold bg-blue-500/50 rounded-md"
                   >
                     <Image

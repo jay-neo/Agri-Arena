@@ -20,7 +20,7 @@ const Analytics = dynamic(() => import("./Analytics"), {
 
 export default async function Page({ params }: { params: { id: string } }) {
   if (!isNumber(params.id)) {
-    redirect(`/arena/${params.id}`);
+    redirect(`/my/arena/${params.id}`);
   }
   const { title } =
     myenv === "test"

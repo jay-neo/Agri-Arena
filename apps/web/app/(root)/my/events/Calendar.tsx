@@ -21,14 +21,19 @@ const MyCalendar: React.FC = () => {
 
   const events: Event[] = [
     {
-      title: "Meeting",
-      start: new Date(2024, 8, 10, 10, 0),
-      end: new Date(2024, 8, 10, 12, 0),
+      title: "Preparation of soil",
+      start: new Date(2024, 11, 2, 15, 0),
+      end: new Date(2024, 11, 2, 17, 0),
     },
     {
-      title: "Conference",
-      start: new Date(2024, 8, 15, 9, 0),
-      end: new Date(2024, 8, 15, 17, 0),
+      title: "Sowing",
+      start: new Date(2024, 11, 8, 9, 0),
+      end: new Date(2024, 11, 8, 12, 0),
+    },
+    {
+      title: "Adding manure",
+      start: new Date(2024, 11, 10, 10, 0),
+      end: new Date(2024, 11, 10, 12, 0),
     },
   ];
 

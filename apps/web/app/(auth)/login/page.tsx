@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import { signIn } from "~/auth";
 import { LoginForm } from "./form";
+import { HOMEPAGE } from "~/lib/routes";
 import LoginWithGoogleButton from "./LoginWithGoogleButton";
 
 export const metadata: Metadata = {
@@ -17,7 +18,7 @@ export default async () => {
             <form
               action={async () => {
                 "use server";
-                await signIn("google", { redirectTo: "/activity" });
+                await signIn("google", { redirectTo: HOMEPAGE });
               }}
             >
               <LoginWithGoogleButton />

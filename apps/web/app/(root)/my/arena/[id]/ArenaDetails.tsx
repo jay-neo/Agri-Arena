@@ -98,9 +98,9 @@ export default ({
           setRejectedIoTs={setRejectedIoTs}
         />
 
-        {!isEditing && (
+        {/* {!isEditing && (
           <DataLinks arenaIdx={arenaIdx} arenaDataCount={arenaDataCount} />
-        )}
+        )} */}
 
         {isEditing && (
           <div className="mt-4 mb-10  flex justify-end w-full">

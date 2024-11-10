@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 
 export default async ({ params }: { params: { id: string } }) => {
   if (!isNumber(params.id)) {
-    redirect(`/activity`);
+    redirect(`/my/activity`);
   }
 
   const idx = Number(params.id);
@@ -26,7 +26,7 @@ export default async ({ params }: { params: { id: string } }) => {
     myenv === "test" ? getFakeActivity() : await getActivity(idx);
 
   if (!data) {
-    redirect(`/activity`);
+    redirect(`/my/activity`);
   }
 
   // await new Promise((resolve) => setTimeout(resolve, 7000));
