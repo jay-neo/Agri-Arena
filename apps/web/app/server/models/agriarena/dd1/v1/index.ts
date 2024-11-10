@@ -106,7 +106,7 @@ export async function diseaseDetection(
 
     return {
       success: "Disease detection is successfully done!",
-      next: `/activity/${activity}`,
+      next: `/my/activity/${activity}`,
     };
   } catch (error) {
     console.error("Error ==> ", error);

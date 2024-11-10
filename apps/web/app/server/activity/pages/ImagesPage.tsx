@@ -8,7 +8,7 @@ export const ImagesPage = async ({ imagesId }: { imagesId: string }) => {
   const data = await getImagesData(imagesId);
 
   return (
-    <div className="mx-1.5 mt-10">
+    <div className="text-justify mx-1.5 mt-10">
       <div>
         {data.map((item, index) => (
           <div key={index}>
@@ -58,7 +58,12 @@ export const ImagesPage = async ({ imagesId }: { imagesId: string }) => {
                     {t}
                   </div>
                 ) : (
-                  <ReactMarkdown key={i}>{t}</ReactMarkdown>
+                  <ReactMarkdown
+                    key={i}
+                    className="prose dark:prose-invert max-w-none"
+                  >
+                    {t}
+                  </ReactMarkdown>
                 )
               )
             ) : item.role === "user" && item.type === "image" ? (

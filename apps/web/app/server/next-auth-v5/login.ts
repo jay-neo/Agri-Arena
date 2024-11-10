@@ -2,7 +2,7 @@
 
 import { signIn } from "~/auth";
 import { SignupFormState, LoginFormSchema } from "./validation";
-import { AuthError, CredentialsSignin } from "next-auth";
+import { CredentialsSignin } from "next-auth";
 import { db } from "~/lib/prisma";
 
 export async function login(
@@ -40,7 +40,6 @@ export async function login(
       email,
       password,
       redirect: false,
-      // redirectTo: "/activity",
     });
 
     return {

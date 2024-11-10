@@ -104,7 +104,10 @@ export const PredictionsPage = async ({
             }
           } else {
             elements.push(
-              <ReactMarkdown key={`${index}-${i}`}>
+              <ReactMarkdown
+                key={`${index}-${i}`}
+                className="prose dark:prose-invert max-w-none"
+              >
                 {item.text[i]}
               </ReactMarkdown>
             );
@@ -116,5 +119,5 @@ export const PredictionsPage = async ({
     }
   }
 
-  return <div className="mx-1.5 mt-10">{elements}</div>;
+  return <div className="text-justify mx-1.5 mt-10">{elements}</div>;
 };
