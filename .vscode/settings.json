@@ -26,5 +26,18 @@
   "[rust]": {
     "editor.defaultFormatter": "rust-lang.rust-analyzer"
   },
-  "rust-analyzer.linkedProjects": ["./apps/app/src/Cargo.toml"]
+  "rust-analyzer.linkedProjects": ["./apps/app/src/Cargo.toml"],
+  "files.associations": {
+    "format": "cpp",
+    "istream": "cpp",
+    "memory": "cpp",
+    "tuple": "cpp",
+    "type_traits": "cpp",
+    "utility": "cpp",
+    "xlocmes": "cpp",
+    "xlocmon": "cpp",
+    "xlocnum": "cpp",
+    "xloctime": "cpp",
+    "xutility": "cpp"
+  }
 }
