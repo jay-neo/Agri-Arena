@@ -24,7 +24,7 @@ interface MobileNavBarItem {
 export const MobileNavBarSection: MobileNavBarItem[] = [
   {
     title: "Arena",
-    path: "/arena",
+    path: "/my/arena",
     icon: (
       <Image
         src={PhoneNavBarArena}
@@ -35,14 +35,14 @@ export const MobileNavBarSection: MobileNavBarItem[] = [
   },
   {
     title: "IoT",
-    path: "/iots",
+    path: "/my/iot",
     icon: (
       <Image src={PhoneNavBarIot} alt="iot" className="h-6 w-6 dark:invert" />
     ),
   },
   {
     title: "Activity",
-    path: "/activity",
+    path: "/my/activity",
     icon: (
       <Image
         src={PhoneNavBarActivity}
@@ -51,16 +51,9 @@ export const MobileNavBarSection: MobileNavBarItem[] = [
       />
     ),
   },
-  // {
-  //   title: "Chat",
-  //   path: "/chat",
-  //   icon: (
-  //     <Image src={PhoneNavBarChat} alt="chat" className="h-6 w-6 dark:invert" />
-  //   ),
-  // },
   {
     title: "Calendar",
-    path: "/events",
+    path: "/my/events",
     icon: (
       <Image
         src={SideBarEvents}

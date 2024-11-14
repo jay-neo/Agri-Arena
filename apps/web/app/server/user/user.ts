@@ -2,6 +2,7 @@
 
 import { cache } from "react";
 import { auth } from "~/auth";
+import { db } from "~/lib/prisma";
 
 ///////////////////////////////////// GETTER ///////////////////////////////////
 export const getUser = cache(async () => {
@@ -20,5 +21,28 @@ export const getUser = cache(async () => {
     return null;
   }
 });
+
+export const getUserById = async (id: string) => {
+  try {
+    const user = db.user.findUnique({
+      where: {
+        id: id,
+      },
+      select: {
+        name: true,
+        email: true,
+        image: true,
+        profile: {
+          select: {
+            username: true,
+          },
+        },
+      },
+    });
+    return user;
+  } catch (error) {
+    return null;
+  }
+};
 
 ///////////////////////////////////// SETTER ///////////////////////////////////

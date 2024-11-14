@@ -2,7 +2,7 @@ import "~/styles/global.css";
 import { meta } from "~/lib/meta";
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
-import { Toaster } from "~/components/ui/sonner";
+import { Toaster } from "~/components/sonner";
 import { Providers } from "~/components/providers";
 
 const font = Roboto({

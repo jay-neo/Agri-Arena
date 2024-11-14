@@ -1,0 +1,8 @@
+.pio
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+
+tmp
+
+*.img

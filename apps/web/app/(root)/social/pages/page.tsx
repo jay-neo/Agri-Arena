@@ -1,3 +1,3 @@
 export default function Page() {
-  return <h1>Hello socials</h1>;
+  return <h1>Hello from Pages</h1>;
 }

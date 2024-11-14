@@ -32,9 +32,9 @@ export const processing = async (
     // For Testing
     return {
       name: "agriarena.model.dd1v1",
-      number: 4,
-      result: ["Rice", "Banana", "Potato", "Carrot"],
-      accuracy: ["70", "20.2", "12", "5"],
+      number: 3,
+      result: ["Fungal", "Chestnut blight ", "Black knot"],
+      accuracy: ["70", "20.2", "12"],
     } as Model_Response_V1;
   } catch (error) {
     return null;

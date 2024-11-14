@@ -62,7 +62,7 @@ function EditToolbar(props: EditToolbarProps) {
           onClick={() => setIsOpen(true)}
           className="font-bold text-base"
         >
-          Add IoTs
+          Add IoT
         </Button>
       </GridToolbarContainer>
       {isOpen && (

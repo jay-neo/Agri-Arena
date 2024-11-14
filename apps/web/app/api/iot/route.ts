@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
     }
 
     const device = await db.ioT.findUnique({
-      where: { device: data.device },
+      where: { device: String(data?.device) },
       select: {
         title: true,
         device: true,
@@ -49,9 +49,9 @@ export async function POST(request: NextRequest) {
     if (!device?.experimentsId) {
       // console.log("Logic - 1");
       experiment = await createExperiment(
-        device.userId,
-        device.device,
-        device.title,
+        device?.userId,
+        device?.device,
+        device?.title,
         device?.arenaId,
         "Innovation Unleashed"
       );
@@ -143,14 +143,13 @@ export async function POST(request: NextRequest) {
       data: {
         // createdAt: data.timestamp,
         createdAt: new Date(),
-        ph: parseFloat(data.ph),
-        ipAddress: String(data.ip),
-        nitrogen: parseFloat(data.nitrogen),
-        humidity: parseFloat(data.humidity),
-        moisture: parseFloat(data.moisture),
-        potassium: parseFloat(data.potassium),
-        phosphorus: parseFloat(data.phosphorus),
-        temperature: parseFloat(data.temperature),
+        ph: parseFloat(data?.ph),
+        nitrogen: parseFloat(data?.nitrogen),
+        humidity: parseFloat(data?.humidity),
+        moisture: parseFloat(data?.moisture),
+        potassium: parseFloat(data?.potassium),
+        phosphorus: parseFloat(data?.phosphorus),
+        temperature: parseFloat(data?.temperature),
         experimentsId: experiment.experimentId,
       },
     });
@@ -168,7 +167,7 @@ export async function POST(request: NextRequest) {
       status: 200,
     });
   } catch (error) {
-    // console.error(error);
+    console.error(error);
     return NextResponse.json({ error: "Error occurred!", status: 500 });
   }
 }

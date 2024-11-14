@@ -20,39 +20,29 @@ interface SidebarItem {
 export const UserSpaceSection: SidebarItem[] = [
   {
     title: "Activity",
-    path: "/activity",
+    path: "/my/activity",
     icon: (
-      <Image
-        src={SideBarActivity}
-        alt="activity"
-        className="dark:invert h-5 w-4"
-      />
+      <Image src={SideBarActivity} alt=">>" className="dark:invert h-5 w-4" />
     ),
     cName: "nav-text",
   },
   {
     title: "Arena",
-    path: "/arena",
-    icon: (
-      <Image src={SideBarArena} alt="arena" className="dark:invert h-5 w-4" />
-    ),
+    path: "/my/arena",
+    icon: <Image src={SideBarArena} alt=">>" className="dark:invert h-5 w-4" />,
     cName: "nav-text",
   },
   {
     title: "IoT",
-    path: "/iots",
-    icon: <Image src={SideBarIot} alt="iot" className="dark:invert h-5 w-4" />,
+    path: "/my/iot",
+    icon: <Image src={SideBarIot} alt=">>" className="dark:invert h-5 w-4" />,
     cName: "nav-text",
   },
   {
     title: "Events",
-    path: "/events",
+    path: "/my/events",
     icon: (
-      <Image
-        src={SideBarEvents}
-        alt="events"
-        className="dark:invert h-5 w-4"
-      />
+      <Image src={SideBarEvents} alt=">>" className="dark:invert h-5 w-4" />
     ),
     cName: "nav-text",
   },

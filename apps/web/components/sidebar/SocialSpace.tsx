@@ -7,6 +7,7 @@ import {
   SideBarPages,
   SideBarForecast,
   SideBarNotification,
+  SidebarShopingIcon,
 } from "~/lib/arena-icons";
 import Image from "next/image";
 import Link from "next/link";
@@ -15,7 +16,6 @@ interface SidebarItem {
   title: string;
   path: string;
   icon: JSX.Element;
-  cName: string;
 }
 
 export const SocialNetworkSection: SidebarItem[] = [
@@ -23,13 +23,11 @@ export const SocialNetworkSection: SidebarItem[] = [
     title: "Discuss",
     path: "/social/posts",
     icon: <Image src={SideBarDiscuss} alt="" className="dark:invert h-5 w-5" />,
-    cName: "nav-text",
   },
   {
     title: "Pages",
     path: "/social/pages",
-    icon: <Image src={SideBarPages} alt="" className="dark:invert h-5 w-4" />,
-    cName: "nav-text",
+    icon: <Image src={SideBarPages} alt="" className="dark:invert h-5 w-5" />,
   },
   {
     title: "Forecast",
@@ -37,7 +35,6 @@ export const SocialNetworkSection: SidebarItem[] = [
     icon: (
       <Image src={SideBarForecast} alt="" className="dark:invert h-5 w-5" />
     ),
-    cName: "nav-text",
   },
   {
     title: "Messages",
@@ -45,7 +42,13 @@ export const SocialNetworkSection: SidebarItem[] = [
     icon: (
       <Image src={SideBarNotification} alt="" className="dark:invert h-5 w-5" />
     ),
-    cName: "nav-text",
+  },
+  {
+    title: "Store",
+    path: "/social/store",
+    icon: (
+      <Image src={SidebarShopingIcon} alt="" className="dark:invert h-4 w-5" />
+    ),
   },
 ];
 
@@ -58,7 +61,7 @@ export default () => {
         <li key={index} className="flex items-center py-1">
           <Link
             href={item.path}
-            className={`space-x-2 group flex items-center hover:decoration-yellow-400 hover:text-purple-500 `}
+            className={`space-x-2 group flex items-center hover:decoration-yellow-400 hover:text-purple-700 dark:hover:text-purple-500`}
           >
             {/* Add hover effect on icon */}
             <span className="group-hover:scale-125 transition-transform duration-200 ease-in-out">

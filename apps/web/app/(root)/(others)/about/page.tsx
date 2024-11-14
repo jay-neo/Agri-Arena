@@ -22,7 +22,7 @@ export default function Page() {
           </p>
         </div>
 
-        <div className="mt-12 space-y-12">
+        <div className="text-justify mt-12 space-y-12">
           <section>
             <h2 className="text-3xl font-semibold text-[#006400] dark:text-yellow-300 mb-4">
               Our Vision

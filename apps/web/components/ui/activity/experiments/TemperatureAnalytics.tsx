@@ -8,7 +8,7 @@ export default ({
 }: {
   data: {
     temperature: number;
-    createdAt: any;
+    createdAt: Date;
   }[];
   dataLength: number;
   range: {
@@ -16,6 +16,10 @@ export default ({
     max: number;
   };
 }) => {
+  const isSameDay = data.every(
+    (item) => item.createdAt.toDateString() === data[0].createdAt.toDateString()
+  );
+
   return (
     <div
       className={`md:m-1 my-2 ${dataLength > 25 ? `md:w-full` : `md:w-1/2`}`}
@@ -38,8 +42,8 @@ export default ({
         yAxis={[
           {
             label: "Temperature (°C)",
-            // min: range.min,
-            // max: range.max,
+            min: range.min - 10,
+            max: range.max + 10,
             colorMap: {
               type: "continuous",
               min: range.min,
@@ -52,7 +56,13 @@ export default ({
           {
             scaleType: "time",
             data: data.map((item) => item.createdAt),
-            valueFormatter: (value) => value.toLocaleDateString(),
+            valueFormatter: (value) =>
+              isSameDay
+                ? value.toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })
+                : value.toLocaleDateString(),
           },
         ]}
       />

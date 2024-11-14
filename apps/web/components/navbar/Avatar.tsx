@@ -92,7 +92,7 @@ export default ({
 
           <ul className="py-1">
             <li role="menuitem">
-              <Link href={`/social/myprofile`} className={LIST}>
+              <Link href={`/my/profile`} className={LIST}>
                 My Profile
               </Link>
             </li>

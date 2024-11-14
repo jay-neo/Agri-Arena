@@ -1,9 +1,9 @@
-import { Metadata } from "next";
 import React from "react";
-import { Navbar } from "~/components/navbar";
-import { MobileNavBar } from "~/components/navbar/MobileNavBar";
-import Sidebar from "~/components/sidebar";
+import { Metadata } from "next";
 import { getUser } from "../server/user";
+import { Navbar } from "~/components/navbar";
+import Sidebar from "~/components/sidebar";
+import { MobileNavBar } from "~/components/navbar/MobileNavBar";
 
 interface LayoutProps {
   children: React.ReactNode;

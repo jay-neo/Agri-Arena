@@ -19,7 +19,9 @@ export default ({
   const chartWidth = dataLength > 25 ? dataLength * 15 : 400;
 
   return (
-    <div className={`md:m-1 my-2 content-center ${dataLength > 25 ? `md:w-full` : `md:w-1/2`}`}>
+    <div
+      className={`md:m-1 my-2 content-center ${dataLength > 25 ? `md:w-full` : `md:w-1/2`}`}
+    >
       <BarChart
         dataset={data}
         xAxis={[

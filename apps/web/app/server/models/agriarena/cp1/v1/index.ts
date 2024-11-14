@@ -127,10 +127,10 @@ export const cropPredict = async (
       };
     }
 
-    revalidatePath(`/activity/${idx}`);
+    revalidatePath(`/my/activity/${idx}`);
     return {
       success: "Successfully predict crops for your arena.",
-      next: `/activity/${activity}`,
+      next: `/my/activity/${activity}`,
     };
   } catch (error) {
     console.log(error);

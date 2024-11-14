@@ -3,11 +3,12 @@
 import Link from "next/link";
 import Image from "next/image";
 import { toast } from "sonner";
+import { HOMEPAGE } from "~/lib/routes";
+import { useFormState } from "react-dom";
 import { login } from "~/app/server/auth";
 import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Button } from "~/components/ui/form/button";
-import { useFormState, useFormStatus } from "react-dom";
+import { ReactButton } from "~/lib/neo/button";
 import { OpenedEye, ClosedEye } from "~/lib/arena-icons";
 
 export function LoginForm() {
@@ -25,7 +26,7 @@ export function LoginForm() {
     } else if (state?.success) {
       toast.success(state.success);
       state.success = null;
-      redirect(`/activity`);
+      redirect(HOMEPAGE);
     }
   }, [state?.error, state?.message, state?.success]);
 
@@ -104,7 +105,11 @@ export function LoginForm() {
             Forgot password?
           </Link>
         </div> */}
-        <LoginButton />
+        <ReactButton
+          onStatic="Login"
+          onAction="Loging..."
+          className="mt-4 bg-black text-white dark:bg-white dark:text-black font-semibold py-3 px-5 rounded-lg hover:bg-teal-400 transition-all hover:text-black dark:hover:bg-teal-400"
+        />
 
         <div className="mt-1">
           <p>
@@ -119,19 +124,5 @@ export function LoginForm() {
         </div>
       </form>
     </>
-  );
-}
-
-export function LoginButton() {
-  const { pending } = useFormStatus();
-
-  return (
-    <Button
-      aria-disabled={pending}
-      type="submit"
-      className="mt-4 dark:bg-white dark:text-black font-semibold py-3 px-5 rounded-lg hover:bg-teal-400 transition-all hover:text-black dark:hover:bg-teal-400"
-    >
-      {pending ? "Submitting..." : "Login"}
-    </Button>
   );
 }

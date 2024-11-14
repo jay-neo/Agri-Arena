@@ -80,7 +80,7 @@ export const ExperimentsPage = async ({
   return (
     <>
       <div className="">
-        <div className="w-full">
+        <div className="text-justify w-full">
           <div
             className={`${dataLength > 25 ? `w-full` : `flex flex-col md:flex-row w-full`}`}
           >
@@ -91,6 +91,7 @@ export const ExperimentsPage = async ({
                 range={{ min: minTemperature, max: maxTemperature }}
               />
             </Suspense>
+            <div className="h-8 md:h-0" />
             <Suspense fallback={<AnalyticsLoading />}>
               <HumidityMoistureAnalytics
                 data={humidityMoistureData}
@@ -102,6 +103,7 @@ export const ExperimentsPage = async ({
             <Suspense fallback={<AnalyticsLoading />}>
               <PHAnalytics data={phData} dataLength={dataLength} />
             </Suspense>
+            <div className="h-8 md:h-0" />
             <Suspense fallback={<AnalyticsLoading />}>
               <NPKAnalytics
                 N={averageN}
