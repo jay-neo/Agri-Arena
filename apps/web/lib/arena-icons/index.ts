@@ -34,6 +34,9 @@ export * as PhoneNavBarActivity from "./phone/activity.svg";
 export * as ThemeSun from "./theme/sun.svg";
 export * as ThemeMoon from "./theme/moon.svg";
 
+// For Store
+export * as StoreCartIcon from "./store/cart.svg";
+
 // For Others Third Party Company
 export * as Google from "./company/google.svg";
 export * as GmailIcon from "./company/gmail.svg";

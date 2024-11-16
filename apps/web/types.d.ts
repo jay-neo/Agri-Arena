@@ -101,31 +101,6 @@ type Experiments_Data = {
   createdAt: Date;
 };
 
-type Activities = {
-  idx: number;
-  title: string;
-  type: string;
-  experimentsId?: string;
-  imagesId?: string;
-  predictionsId?: string;
-  updatedAt: Date;
-};
-
-type Activity_Header = {
-  title: string;
-  arenaId?: string;
-  arena?: string;
-  arenaLocation?: string;
-  type: string;
-  iot?: string;
-  device?: string;
-  ref?: number;
-  experimentsId?: string;
-  isPredicted?: boolean;
-  predictionsId?: string;
-  imagesId?: string;
-};
-
 type Events = {
   title: string;
   start: Date;

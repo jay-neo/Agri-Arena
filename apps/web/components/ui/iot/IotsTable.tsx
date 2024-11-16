@@ -5,6 +5,7 @@ import {
   GridRowId,
   GridColDef,
   GridRowsProp,
+  GridToolbarProps,
   GridRowModesModel,
   GridActionsCellItem,
   GridToolbarContainer,
@@ -18,7 +19,7 @@ import { styled } from "@mui/material/styles";
 import { Add, Edit, Delete } from "~/lib/arena-icons";
 import { updateIot, deleteIot, createIot } from "~/app/server/iot";
 
-interface EditToolbarProps {
+interface EditToolbarProps extends GridToolbarProps {
   setRows: (newRows: (oldRows: GridRowsProp) => GridRowsProp) => void;
   setRowModesModel: (
     newModel: (oldModel: GridRowModesModel) => GridRowModesModel
@@ -265,10 +266,11 @@ export const IoTsTable = ({ initialData }: { initialData: IoT[] }) => {
           rowModesModel={rowModesModel}
           onRowModesModelChange={handleRowModesModelChange}
           slots={{
-            toolbar: EditToolbar,
+            toolbar:
+              EditToolbar as React.JSXElementConstructor<EditToolbarProps>,
           }}
           slotProps={{
-            toolbar: { setRows, setRowModesModel },
+            toolbar: { setRows, setRowModesModel } as EditToolbarProps,
           }}
         />
       </Box>

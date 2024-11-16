@@ -1,4 +1,4 @@
-"use server";
+import "server-only";
 
 import { db } from "~/lib/prisma";
 import { Type } from "@prisma/client";
@@ -126,6 +126,6 @@ export const getActivities = async (topic?: string, query?: string) => {
   }
 };
 
-export const getActivitiesWithParams = () => {
-  revalidatePath(`/activity`);
+export const getActivitiesWithParams = async () => {
+  revalidatePath(`/my/activity`);
 };
