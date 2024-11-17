@@ -12,33 +12,26 @@
         <!-- Row-1 -->
 		    <tr>
 		    	<td>
-                    <p>iot1v1</p>
+                    iot1v1
 		    	</td>
 		    	<td>
-                    <ul>
-                        <li>Microcontroller<br/>
-                        <input type="checkbox" checked disabled>ESP32<br/>
-                        </li>
-                        <li>Sensors<br/>
-                        <input type="checkbox" checked disabled>DHT22<br/>
-                        <input type="checkbox" checked disabled>Capacitive soil moisture sensor<br/>
-                        <input type="checkbox" checked disabled>Water pH sensor<br/>
-                        <input type="checkbox" checked disabled>NPK sensor (JXBS-3001)<br/>
-                        </li>
-                        <li>Others<br/>
-                        <input type="checkbox" checked disabled>OLED<br/>
-                        <input type="checkbox" checked disabled>Switch<br/>
-                        </li>
-                    </ul>
+					🗹 ESP32<br/>
+					🗹 DHT22<br/>
+					🗹 Capacitive soil moisture sensor<br/>
+					🗹 Water pH sensor<br/>
+					🗹 NPK sensor (JXBS-3001)<br/>
+					🗹 OLED<br/>
+					🗹 Switch
 		    	</td>
                 <td>
-		    		<input type="checkbox" checked disabled>Displaying<br/>
-		    		<input type="checkbox" checked disabled>Switching<br/>
-		    		<input type="checkbox" disabled>Dynamic WiFi connection<br/>
-		    		<input type="checkbox" disabled>Online Diagnosis<br/>
+					🗹 Displaying<br/>
+					🗹 Switching<br/>
+					☐ Server<br/>
+					☐ Dynamic WiFi connection<br/>
+					☐ Online Diagnosis
 		    	</td>
                 <td>
-                    <p>High performance, code written in C++</p>
+					Manual Controlling
 		    	</td>
 	    	</tr>
         <!-- Row-2 -->

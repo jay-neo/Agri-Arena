@@ -1,3 +1,1 @@
-# ESP32 for DHT + Soil Moisture Sensors
-
-Go to `include/config.hpp` file and change things with your requirements.
+Configure `iot1v1` in `include/config.hpp` file.
