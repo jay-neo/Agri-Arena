@@ -5,6 +5,7 @@ import { neoFormAction } from "~/lib/hooks";
 import { ReactButton } from "~/lib/neo/button";
 import { modelDD1V1 } from "~/app/server/models/agriarena";
 import { useState, useRef, ChangeEvent, DragEvent } from "react";
+import { Autocomplete, Fade, TextField, Tooltip } from "@mui/material";
 
 type Image = {
   image: string;
@@ -13,6 +14,7 @@ type Image = {
 export default () => {
   const [_state, action] = neoFormAction(modelDD1V1);
   const [formData, setFormData] = useState<Image>(null);
+  const [imageType, setImageType] = useState<string>("");
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const image = e.target.files?.[0];
@@ -99,6 +101,50 @@ export default () => {
             </button>
           ) : (
             <>
+              {/* <Tooltip
+                disableFocusListener
+                followCursor
+                describeChild
+                TransitionComponent={Fade}
+                title="Select your arena where IoT is deployed"
+              >
+                <Autocomplete
+                  fullWidth
+                  value={
+                    (arenas &&
+                      arenas.find(
+                        (arena) => arena.id === selectedArena?.arenaId
+                      )) ||
+                    null
+                  }
+                  onChange={(event: any, value: ArenaIds | null) => {
+                    setSelectedArena({
+                      arena: value?.title,
+                      arenaId: value?.id,
+                    });
+                  }}
+                  inputValue={selectedArena?.arena || ""}
+                  onInputChange={(event, newInputValue) => {
+                    setSelectedArena({ ...selectedArena, arena: newInputValue });
+                  }}
+                  id="arena-autocomplete"
+                  options={arenas || []}
+                  getOptionLabel={(option: ArenaIds) => option.title || ""}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      margin="dense"
+                      label="Arena"
+                      name="arena"
+                      type="string"
+                      fullWidth
+                      value={selectedArena?.arena}
+                      className="dark:invert"
+                    />
+                  )}
+                  noOptionsText="No arena found"
+                />
+              </Tooltip> */}
               <ReactButton
                 onStatic="Process"
                 onAction="Processing..."

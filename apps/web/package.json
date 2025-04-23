@@ -11,7 +11,12 @@
     "start": "next start",
     "test": "next test",
     "prettier": "prettier --write --ignore-unknown .",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:reset": "prisma migrate reset -f",
+    "db:deploy": "prisma migrate deploy",
+    "db:studio": "prisma studio",
+    "db:seed": "prisma db seed"
   },
   "prisma": {
     "schema": "prisma/schema.prisma"

@@ -56,7 +56,7 @@ const ActivitiesList = ({
         experimentsId: Math.random().toString(36).substring(7),
         predictionsId: Math.random().toString(36).substring(7),
         imagesId: Math.random().toString(36).substring(7),
-        image: `/api/placeholder/100/100`,
+        image: `/arena/arena1.png`,
       }));
 
     return { activities: newActivities, hasMore: page < 5 }; // Limit to 5 pages for demo
@@ -104,7 +104,7 @@ const ActivitiesList = ({
   };
 
   return (
-    <div className={`${openSans.variable} ${robotoMono.variable} font-sans`}>
+    <div className={`${openSans.variable} ${robotoMono.variable} font-sans w-full md:mx-8 lg:mx-12`}>
       {activities.map((activity, index) => (
         <div
           key={activity.idx}
@@ -126,12 +126,12 @@ const ActivitiesList = ({
 // Activity card component
 const ActivityCard = React.memo(({ activity }: { activity: Activities }) => {
   return (
-    <Suspense fallback={<SuspenseFallback />}>
-      <div className="flex w-full mx-1 my-4">
+    <Suspense fallback={<SuspenseFallback />} >
+      <div className="flex w-full my-4">
         <Link
           href={`activity/${activity.idx}`}
           className={clsx(
-            "flex w-full rounded-2xl shadow-surface-elevation-low transition duration-300",
+            "flex w-full min-w-80 rounded-2xl shadow-surface-elevation-low transition duration-300",
             "focus:outline-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500/70",
             {
               "bg-green-400/80 hover:bg-green-500/90 dark:bg-green-900/30 dark:hover:bg-green-800/40":
@@ -144,7 +144,7 @@ const ActivityCard = React.memo(({ activity }: { activity: Activities }) => {
           )}
         >
           {/* Image section */}
-          <div className="flex-shrink-0 relative w-24 md:w-32 rounded-l-2xl overflow-hidden">
+          <div className="flex-shrink-0 w-24 md:w-32 rounded-l-2xl overflow-hidden">
             {activity.image ? (
               <Image
                 src={activity.image}
@@ -289,7 +289,7 @@ const SuspenseFallback = () => {
 
 const LoadingSkeleton = () => {
   return (
-    <div className="flex w-full mx-1 my-4">
+    <div className="flex w-full my-4">
       <div className="flex w-full rounded-2xl bg-gray-200 dark:bg-gray-800 shadow-surface-elevation-low">
         {/* Image skeleton */}
         <div className="flex-shrink-0 w-24 md:w-32 rounded-l-2xl bg-gray-300 dark:bg-gray-700 animate-pulse" />
@@ -377,8 +377,7 @@ const PredictionsPreview: React.FC<PreviewProps> = ({ dataId }) => {
   );
 };
 
-// Export a modified version of the original component to maintain backward compatibility
-export default async ({ activity }: { activity: Activities }) => {
+export default ({ activity }: { activity: Activities }) => {
   // Mock some sample activities for the initial load
   const sampleActivities = [activity];
 

@@ -18,13 +18,13 @@ export default () => {
         <button
           type="button"
           onClick={() => setIsOpen(true)}
-          className="flex flex-row text-sm px-2.5 py-2 text-white font-semibold rounded-lg transition duration-300 bg-rose-700/70 hover:bg-rose-600"
+          className="flex flex-row text-sm px-2.5 py-2 text-white font-semibold rounded-lg transition duration-300 bg-gray-50  hover:bg-gray-100 dark:bg-white/5 dark:hover:bg-white/10 shadow-surface-elevation-low hover:shadow-surface-elevation-medium focus:outline-none focus:ring-2 focus:ring-gray-300 dark:focus:ring-gray-600"
         >
           <Image
             src={Camera}
             alt="Camera"
-            width={32}
-            height={30}
+            width={28}
+            height={28}
             className="dark:invert"
           />
         </button>

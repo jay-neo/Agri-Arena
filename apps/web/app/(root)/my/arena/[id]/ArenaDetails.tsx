@@ -90,13 +90,11 @@ export default ({
           isEditing={isEditing}
         />
 
+        {!isEditing && 
         <IoTsDetails
-          isEditing={isEditing}
-          assignedIoTs={assignedIoTs}
-          setAssignedIoTs={setAssignedIoTs}
-          rejectedIoTs={rejectedIoTs}
-          setRejectedIoTs={setRejectedIoTs}
+        assignedIoTs={assignedIoTs}
         />
+      }
 
         {/* {!isEditing && (
           <DataLinks arenaIdx={arenaIdx} arenaDataCount={arenaDataCount} />

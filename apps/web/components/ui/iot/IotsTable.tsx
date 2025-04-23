@@ -246,7 +246,13 @@ export const IoTsTable = ({ initialData }: { initialData: IoT[] }) => {
           width: "100%",
           overflowX: "hidden",
           "& .MuiDataGrid-cell": {
-            padding: "0 8px",
+            padding: "0 10px",
+          },
+          "& .MuiDataGrid-columnHeaders": {
+            backgroundColor: "inherit",
+          },
+          "& .MuiDataGrid-footerContainer": {
+            backgroundColor: "inherit",
           },
           backgroundColor: (theme) =>
             theme.palette.mode === "dark" ? "#2d2d61" : "#e0cee6",
