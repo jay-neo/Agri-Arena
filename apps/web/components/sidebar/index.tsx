@@ -13,7 +13,7 @@ export default () => {
         <div className="pt-6">
           <SocialSpace />
 
-          <ol className="pt-10 flex items-center text-nowrap">
+          <ol className="pt-10 flex items-center text-nowrap ml-2">
             <li className="rounded-md border border-black dark:border-yellow-400 p-1.5 dark:shadow-lg dark:shadow-yellow-500/50">
               <Image
                 src={SideBarDividerIcon1}

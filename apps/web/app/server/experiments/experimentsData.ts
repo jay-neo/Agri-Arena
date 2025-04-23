@@ -91,7 +91,7 @@ export const deleteExperimentsData = async (
         success: "All experiments successfully deleted.",
       };
     } else {
-      revalidatePath(`/activiy/${activity.idx}`);
+      revalidatePath(`/my/activiy/${activity.idx}`);
       return deletedExperments === 1
         ? {
             success: `Only ${deletedExperments} experiment deleted.`,
@@ -101,7 +101,6 @@ export const deleteExperimentsData = async (
           };
     }
   } catch (error) {
-    // console.log(error);
     return {
       error: "Error! We couldn't process your request.",
     };

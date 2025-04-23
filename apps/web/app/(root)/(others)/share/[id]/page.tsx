@@ -4,23 +4,24 @@ import {
   ExperimentsPage,
   PredictionsPage,
 } from "~/app/server/activity";
+import Link from "next/link";
 import Image from "next/image";
+import { HOMEPAGE } from "~/lib/routes";
 import { redirect } from "next/navigation";
 import { findShare } from "~/app/server/share";
 import { getUserById } from "~/app/server/user";
-import Link from "next/link";
 
 export default async ({ params }: { params: { id: string } }) => {
   const share = await findShare(params.id);
   if (!share?.userId) {
-    return redirect(`/activity`);
+    return redirect(HOMEPAGE);
   }
 
   const user = await getUserById(share.userId);
   const data: Activity_Header = await getActivity(share.idx, share.userId);
 
   if (!data) {
-    return redirect(`/activity`);
+    return redirect(HOMEPAGE);
   }
 
   return (

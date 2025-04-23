@@ -1,7 +1,7 @@
 "use client";
 
-import { getActivitiesWithParams } from "~/app/server/activity";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
+import { getActivitiesWithParams } from "~/app/actions/activity";
 
 export default () => {
   const pathname = usePathname();
@@ -10,7 +10,6 @@ export default () => {
 
   const handleSearch = async (term: string) => {
     const params = new URLSearchParams(searchParams);
-    console.log(term);
     if (term) {
       params.set("query", term);
     } else {
@@ -24,24 +23,22 @@ export default () => {
   return (
     <>
       <div className="flex-shrink-0 inline-flex items-center pl-4 pr-2 text-sm font-medium text-center text-gray-900  bg-gray-100 rounded-l-3xl dark:bg-gray-700 border-l border-b border-t dark:border-gray-600 border-gray-300 dark:text-white">
-        <div className="">
-          <svg
-            className="w-4 h-4"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 20 20"
-          >
-            <path
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-            />
-          </svg>
-          <span className="sr-only">Search</span>
-        </div>
+        <svg
+          className="w-4 h-4"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 20 20"
+        >
+          <path
+            stroke="currentColor"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+          />
+        </svg>
+        <span className="sr-only">Search Bar</span>
       </div>
 
       <div className="relative w-full">

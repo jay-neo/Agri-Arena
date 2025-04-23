@@ -56,7 +56,7 @@ export default () => {
   const pathname = usePathname();
 
   return (
-    <ul className="">
+    <ul className="ml-2">
       {SocialNetworkSection.map((item, index) => (
         <li key={index} className="flex items-center py-1">
           <Link

@@ -277,7 +277,7 @@ export const updateActivity = async (
       });
     }
 
-    revalidatePath(`/activity/${validatedFields.data.idx}`);
+    revalidatePath(`/my/activity/${validatedFields.data.idx}`);
 
     return {
       success: "Arena updated successfully.",
@@ -360,10 +360,10 @@ export const deleteActivity = async (
       });
     }
 
-    revalidatePath(`/activity`);
+    revalidatePath(`/my/activity`);
     return {
       success: "",
-      next: "/activity",
+      next: "/my/activity",
     };
   } catch (error) {
     console.log(error);

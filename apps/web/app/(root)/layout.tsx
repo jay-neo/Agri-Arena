@@ -12,7 +12,6 @@ interface LayoutProps {
 export async function generateMetadata(): Promise<Metadata> {
   "use server";
   const user = await getUser();
-
   return {
     title: {
       default: `${user?.name}`,

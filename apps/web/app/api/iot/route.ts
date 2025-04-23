@@ -53,7 +53,7 @@ export async function POST(request: NextRequest) {
         device?.device,
         device?.title,
         device?.arenaId,
-        "Innovation Unleashed"
+        "Innovation Unleashed",
       );
     } else {
       const existedExperiments = await db.experiments.findUnique({
@@ -75,7 +75,7 @@ export async function POST(request: NextRequest) {
           device.device,
           device.title,
           device?.arenaId,
-          "Frontline Discoveries"
+          "Frontline Discoveries",
         );
       } else if (existedExperiments.isPredicted) {
         // console.log("Logic - 3")
@@ -84,7 +84,7 @@ export async function POST(request: NextRequest) {
           device.device,
           device.title,
           device?.arenaId,
-          "Stream Experiment"
+          "Stream Experiment",
         );
       } else if (
         isValidExperimentInterval(existedExperiments.createdAt, device.interval)
@@ -95,7 +95,7 @@ export async function POST(request: NextRequest) {
           device.device,
           device.title,
           device?.arenaId,
-          "Experiment Chronicles"
+          "Experiment Chronicles",
         );
       } else if (
         device?.arenaId &&
@@ -107,7 +107,7 @@ export async function POST(request: NextRequest) {
           device.device,
           device.title,
           device?.arenaId,
-          "Groundbreaking Experiments"
+          "Groundbreaking Experiments",
         );
       } else {
         // console.log("Logic - 6");
@@ -155,11 +155,11 @@ export async function POST(request: NextRequest) {
     });
 
     if (isNewActivity) {
-      revalidatePath(`/activity`);
+      revalidatePath(`/my/activity`);
     }
 
     if (!isNewActivity && insertedData) {
-      revalidatePath(`/activity/${experiment.activityIdx}`);
+      revalidatePath(`/my/activity/${experiment.activityIdx}`);
     }
 
     return NextResponse.json({
@@ -174,7 +174,7 @@ export async function POST(request: NextRequest) {
 
 function isValidExperimentInterval(
   targetDate: Date,
-  intervalInDays: number
+  intervalInDays: number,
 ): boolean {
   const now = new Date();
   const differenceInMs = targetDate.getTime() - now.getTime();
@@ -187,7 +187,7 @@ const createExperiment = async (
   device: string,
   deviceTitle: string,
   arenaId?: string,
-  activityTitle?: string
+  activityTitle?: string,
 ) => {
   try {
     const experiment = await db.experiments.create({
@@ -206,7 +206,7 @@ const createExperiment = async (
       userId,
       "experiments",
       experiment.id,
-      activityTitle
+      activityTitle,
     );
 
     if (experiment && activity) {

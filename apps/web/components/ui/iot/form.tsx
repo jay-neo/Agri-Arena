@@ -95,7 +95,7 @@ export const IoTForm = ({
             followCursor
             describeChild
             TransitionComponent={Fade}
-            title="Device ID is unique code provided with AgriArena IoT"
+            title="Device ID is unique identifier provided with IoT device"
           >
             <TextField
               margin="dense"
@@ -118,7 +118,7 @@ export const IoTForm = ({
             followCursor
             describeChild
             TransitionComponent={Fade}
-            title="Interval used to group the experiments in a single unit"
+            title="Interval used to group similar experiments in single unit"
           >
             <TextField
               margin="dense"
@@ -140,7 +140,7 @@ export const IoTForm = ({
             followCursor
             describeChild
             TransitionComponent={Fade}
-            title="This is your accurate IoT location deploed in an arena."
+            title="This is your accurate IoT location deployed in the arena"
           >
             <TextField
               margin="dense"
@@ -157,40 +157,50 @@ export const IoTForm = ({
               {state.errors.location}
             </div>
           )}
-          <Autocomplete
-            fullWidth
-            value={
-              (arenas &&
-                arenas.find((arena) => arena.id === selectedArena?.arenaId)) ||
-              null
-            }
-            onChange={(event: any, value: ArenaIds | null) => {
-              setSelectedArena({
-                arena: value?.title,
-                arenaId: value?.id,
-              });
-            }}
-            inputValue={selectedArena?.arena || ""}
-            onInputChange={(event, newInputValue) => {
-              setSelectedArena({ ...selectedArena, arena: newInputValue });
-            }}
-            id="arena-autocomplete"
-            options={arenas || []}
-            getOptionLabel={(option: ArenaIds) => option.title || ""}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                margin="dense"
-                label="Arena"
-                name="arena"
-                type="string"
-                fullWidth
-                value={selectedArena?.arena}
-                className="dark:invert"
-              />
-            )}
-            noOptionsText="No arena found"
-          />
+          <Tooltip
+            disableFocusListener
+            followCursor
+            describeChild
+            TransitionComponent={Fade}
+            title="Select your arena where IoT is deployed"
+          >
+            <Autocomplete
+              fullWidth
+              value={
+                (arenas &&
+                  arenas.find(
+                    (arena) => arena.id === selectedArena?.arenaId
+                  )) ||
+                null
+              }
+              onChange={(event: any, value: ArenaIds | null) => {
+                setSelectedArena({
+                  arena: value?.title,
+                  arenaId: value?.id,
+                });
+              }}
+              inputValue={selectedArena?.arena || ""}
+              onInputChange={(event, newInputValue) => {
+                setSelectedArena({ ...selectedArena, arena: newInputValue });
+              }}
+              id="arena-autocomplete"
+              options={arenas || []}
+              getOptionLabel={(option: ArenaIds) => option.title || ""}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  margin="dense"
+                  label="Arena"
+                  name="arena"
+                  type="string"
+                  fullWidth
+                  value={selectedArena?.arena}
+                  className="dark:invert"
+                />
+              )}
+              noOptionsText="No arena found"
+            />
+          </Tooltip>
           {state?.errors?.arena && (
             <div className="text-red-500 text-sm mb-1">
               {state.errors?.arena}
@@ -201,14 +211,22 @@ export const IoTForm = ({
             name="arenaId"
             value={selectedArena?.arenaId || ""}
           />
-          <TextField
-            margin="dense"
-            label="Description"
-            name="description"
-            fullWidth
-            value={data?.description}
-            className="dark:invert"
-          />
+          <Tooltip
+            disableFocusListener
+            followCursor
+            describeChild
+            TransitionComponent={Fade}
+            title="This is a description about your IoT device"
+          >
+            <TextField
+              margin="dense"
+              label="Description"
+              name="description"
+              fullWidth
+              value={data?.description}
+              className="dark:invert"
+            />
+          </Tooltip>
           {state?.errors?.description && (
             <div className="text-red-500 text-sm mb-1">
               {state.errors.description}

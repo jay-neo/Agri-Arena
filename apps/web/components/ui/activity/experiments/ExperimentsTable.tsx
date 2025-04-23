@@ -199,7 +199,7 @@ function EnhancedTableToolbar({
     if (state?.success) {
       toast.success(state.success);
       if (state?.redirect) {
-        redirect(`/activity`);
+        redirect(`/my/activity`);
       }
       setNumSelected([]);
     } else if (state?.error) {
