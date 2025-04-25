@@ -34,9 +34,9 @@ export const CreateArenaButton = () => {
         <div className="fixed inset-0 flex items-center justify-center z-50 md:py-6">
           <div className="fixed inset-0 bg-black/70" onClick={onClose}></div>
 
-          <div className="relative bg-yellow-50 dark:bg-cyan-600 p-5 md:p-10 scrollbar-hide rounded-lg shadow-lg w-full max-w-2xl max-h-full h-auto overflow-auto">
+          <div className="relative bg-yellow-50 dark:bg-[#2f2f61] p-5 md:p-10 scrollbar-hide rounded-lg shadow-lg w-full max-w-xl max-h-full h-auto overflow-auto">
             <button
-              className="absolute top-2 right-5 font-bold text-gray-600 hover:text-gray-900 text-3xl dark:invert"
+              className="absolute top-2 right-5  text-gray-600 hover:text-gray-900 text-3xl dark:invert"
               onClick={onClose}
             >
               &times;

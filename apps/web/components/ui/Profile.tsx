@@ -56,7 +56,9 @@ export const ProfileForm = ({
           <div className="flex flex-col items-center">
             <label htmlFor="avatar-upload" className="relative cursor-pointer">
               {formData?.image && (
-                <img
+                <Image
+                  width={100}
+                  height={100}
                   src={
                     typeof formData.image === "string"
                       ? formData.image
@@ -88,7 +90,7 @@ export const ProfileForm = ({
         ) : (
           <div className="flex flex-col items-center">
             {formData?.image && (
-              <img
+              <Image
                 src={
                   typeof formData.image === "string"
                     ? formData.image
@@ -96,6 +98,8 @@ export const ProfileForm = ({
                 }
                 alt="Avatar"
                 className="rounded-full w-24 h-24 border-2 border-[#ff8c42]"
+                width={100}
+                height={100}
               />
             )}
             <span className="font-bold text-xl text-amber-700 mt-2">

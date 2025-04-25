@@ -52,26 +52,23 @@ export default () => {
   const pathname = usePathname();
   return (
     <>
-      {/* <ul className="pt-10 flex items-center text-nowrap">
-        <span className="rounded-md border p-1.5">User Space</span>
-        <span className="border-b p-0 space-x-5 w-full"></span>
-      </ul> */}
-
       <ul className="pt-4">
         {UserSpaceSection.map((item, index) => (
-          <li key={index} className={`px-4 py-1 flex items-center space-x-4`}>
+          <li
+            key={index}
+            className={`px-4 py-1 flex items-center space-x-4 text-sm`}
+          >
             <span className="flex-grow"> </span>
             <span className="flex-shrink-0">
               <Link
                 href={item.path}
-                className={`space-x-2 group flex items-center hover:decoration-yellow-400 hover:text-rose-600 `}
+                className={`space-x-2 group flex items-center hover:text-rose-600 `}
               >
-                {/* Add hover effect on icon */}
                 <span className="group-hover:scale-125 transition-transform duration-200 ease-in-out">
                   {item.icon}
                 </span>
                 <span
-                  className={`${pathname.startsWith(item.path) ? "text-cyan-500 border-b border-cyan-500" : ""}`}
+                  className={`${pathname.startsWith(item.path) ? "dark:text-yellow-400 text-cyan-500 border-b dark:border-yellow-400 border-cyan-500" : ""}`}
                 >
                   {item.title}
                 </span>

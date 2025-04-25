@@ -17,15 +17,15 @@ export default ({
   assignedIoTsData,
 }: {
   arenaIdx: number;
-  arenaData: Arena;
-  assignedIoTsData: IoTIds[];
+  arenaData: ArenaDetails;
+  assignedIoTsData: IotInfo[];
   arenaDataCount: ArenaDataCount;
 }) => {
-  const [arena, setArena] = useState<Arena>(arenaData);
-  const [assignedIoTs, setAssignedIoTs] = useState<IoTIds[]>(
+  const [arena, setArena] = useState<ArenaDetails>(arenaData);
+  const [assignedIoTs, setAssignedIoTs] = useState<IotInfo[]>(
     assignedIoTsData || []
   );
-  const [rejectedIoTs, setRejectedIoTs] = useState<IoTIds[]>([]);
+  const [rejectedIoTs, setRejectedIoTs] = useState<IotInfo[]>([]);
 
   const [state, action] = useFormState(updateArena, undefined);
 
@@ -90,11 +90,7 @@ export default ({
           isEditing={isEditing}
         />
 
-        {!isEditing && 
-        <IoTsDetails
-        assignedIoTs={assignedIoTs}
-        />
-      }
+        {!isEditing && <IoTsDetails assignedIoTs={assignedIoTs} />}
 
         {/* {!isEditing && (
           <DataLinks arenaIdx={arenaIdx} arenaDataCount={arenaDataCount} />

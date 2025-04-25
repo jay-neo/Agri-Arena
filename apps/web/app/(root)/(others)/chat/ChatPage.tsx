@@ -2,7 +2,7 @@
 
 import ReactMarkdown from "react-markdown";
 import { useState, useEffect, useRef } from "react";
-import { chatWithGemini } from "~/app/server/models/gemini";
+import { chatWithGemini } from "~/app/actions/ai-models/chatWithGemini";
 
 export default () => {
   const [prompt, setPrompt] = useState<string>("");

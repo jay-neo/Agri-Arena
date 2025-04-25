@@ -5,7 +5,7 @@ import { Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { getUser } from "~/app/server/user";
 
-export async function getArenas(query?: string): Promise<Arenas[] | null> {
+export async function getArenas(query?: string): Promise<ArenaOverview[] | null> {
   try {
     const user = await getUser();
 
@@ -13,11 +13,11 @@ export async function getArenas(query?: string): Promise<Arenas[] | null> {
       userId: user.id,
       OR: query
         ? [
-            { title: { contains: query, mode: Prisma.QueryMode.insensitive } },
-            {
-              location: { contains: query, mode: Prisma.QueryMode.insensitive },
-            },
-          ]
+          { title: { contains: query, mode: Prisma.QueryMode.insensitive } },
+          {
+            location: { contains: query, mode: Prisma.QueryMode.insensitive },
+          },
+        ]
         : undefined,
     };
 
