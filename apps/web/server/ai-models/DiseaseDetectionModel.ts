@@ -16,31 +16,22 @@ class DiseaseDetectionModel {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    url: data?.imageUrl,
-                    id: data?.modelId,
+                    modelId: data?.modelId,
+                    imageUrl: data?.imageUrl,
                 }),
             });
-            console.log("Response from model:", response);
 
             if (!response.ok) {
                 return null;
             }
 
             const result = await response.json();
-
-            // return {
-            //     name: "agriarena.model.dd1v1",
-            //     number: (result?.number as number),
-            //     result: (result?.result as string[]),
-            //     accuracy: (result?.accuracy as string[]),
-            // } as DiseaseDetectionModelResponse;
             console.log("Result ==>", result);
 
             return {
-                name: "agriarena.model.dd1v1",
-                number: 3,
-                result: ["Fungal", "Chestnut blight ", "Black knot"],
-                accuracy: ["70", "20.2", "12"],
+                number_of_disease: (parseFloat(result?.number_of_disease) as number),
+                result: (result?.result as string[]),
+                possibility: (result?.possibility as number[]),
             } as DiseaseDetectionModelResponse;
         }
         catch (error) {
@@ -48,16 +39,25 @@ class DiseaseDetectionModel {
         }
     };
 
-    public async prompting(data: DiseaseDetectionModelResponse): Promise<string[]> {
+    public async prompting(crop: string, data: DiseaseDetectionModelResponse, arena?: any): Promise<string[]> {
         try {
-            const query = [
+            const query = data?.number_of_disease == 0 ? [
+                {
+                    heading: "Preview",
+                    prompt: `Give me some healthy suggestions ${crop} for in 600 words`,
+                },
+                {
+                    heading: "Products",
+                    prompt: `give me product links for ${crop} cases of ${data.result.toString()} in 600 words`,
+                },
+            ] : [
                 {
                     heading: "Solution",
-                    prompt: `give me solution of diseases of ${data.result.toString()} in 600 words`,
+                    prompt: `give me solution of diseases  ${crop} of ${data.result.toString()} in 600 words`,
                 },
                 {
                     heading: "Links",
-                    prompt: `give me product links for diseases of ${data.result.toString()} in 600 words`,
+                    prompt: `give me product links for diseases  ${crop} of ${data.result.toString()} in 600 words`,
                 },
             ];
 

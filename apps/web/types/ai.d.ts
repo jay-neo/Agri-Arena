@@ -3,10 +3,9 @@ type CropPredictionModelRequest = {
 };
 
 type CropPredictionModelResponse = {
-    name: string;
-    number: number;
-    result: string[];
-    accuracy: string[];
+    number_of_crops?: number;
+    prediction: string[];
+    confidence: number[];
 };
 
 type DiseaseDetectionModelRequest = {
@@ -15,15 +14,14 @@ type DiseaseDetectionModelRequest = {
 };
 
 type DiseaseDetectionModelResponse = {
-    name: string;
-    number: number;
+    number_of_disease: number;
     result: string[];
-    accuracy: string[];
+    possibility: number[];
 };
 
 type DiseaseDetectionModelInfo = {
     id: string;
-    name: string;
+    cetegory: string;
     description?: string;
     crop: string;
     displayCrop: string;

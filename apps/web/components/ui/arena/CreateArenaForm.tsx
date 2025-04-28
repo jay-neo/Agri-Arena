@@ -72,7 +72,10 @@ export const CreateArenaForm = ({ onClose }: { onClose: () => void }) => {
         <ReactButton
           onStatic="Create"
           onAction="Creating..."
-          className="m-1 px-6 py-1.5 min-w-24 dark:bg-rose-600/70 hover:dark:bg-rose-600 text-white font-semibold rounded-lg transition duration-300 disabled:bg-rose-600/70"
+          className={clsx(
+            "m-1 px-6 py-1.5 min-w-24 text-white font-semibold rounded-lg transition duration-300 disabled:bg-rose-600/70",
+            "bg-purple-600/80 hover:bg-purple-600 dark:bg-rose-600/70 hover:dark:bg-rose-600"
+          )}
         />
       </div>
     </form>

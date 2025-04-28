@@ -88,22 +88,38 @@ model VerificationToken {
 }
 
 model Arena {
-  id          String        @id @default(cuid())
+  id          String   @id @default(cuid())
   idx         Int
   title       String
   image       String
   description String?
   location    String?
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-  user        User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  currentCrop String?
+  area        String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId      String
-  iot         IoT[]
-  experiments Experiments[]
-  images      Images[]
-  predictions Predictions[]
+
+  arenaHistory ArenaHistory[]
+  iot          IoT[]
+  experiments  Experiments[]
+  images       Images[]
+  predictions  Predictions[]
 
   @@unique([idx, userId])
+}
+
+model ArenaHistory {
+  id          String  @id @default(uuid())
+  idx         Int
+  title       String
+  image       String
+  description String?
+  location    String?
+  currentCrop String?
+  arenaId     String
+  arena       Arena?  @relation(fields: [arenaId], references: [id], onDelete: Cascade)
 }
 
 model Activity {
@@ -251,7 +267,7 @@ model model_v1 {
   name     String
   number   Int
   result   String[]
-  accuracy String[]
+  accuracy Float[]
 
   imagesData      Images_Data?
   predictionsData Predictions_Data?

@@ -20,6 +20,16 @@ export const cropPredictionModelActions = async (
             where: {
                 experimentsId: experimentsId,
             },
+            select: {
+                nitrogen: true,
+                phosphorus: true,
+                potassium: true,
+                ph: true,
+                moisture: true,
+                temperature: true,
+                humidity: true,
+                experimentsId: true,
+            }
         });
         if (!data) {
             return {
@@ -27,12 +37,7 @@ export const cropPredictionModelActions = async (
             };
         }
 
-        const res: CropPredictionModelResponse = await cropPredictionModel.predict();
-        if (!res) {
-            return {
-                error: "Oops! Something went wrong.",
-            };
-        }
+        const res: CropPredictionModelResponse = await cropPredictionModel.predict({ experimentsData: data });
 
         const promptResponse: string[] = await cropPredictionModel.prompting(res);
         if (!promptResponse) {
@@ -52,30 +57,19 @@ export const cropPredictionModelActions = async (
                 id: true,
             },
         });
-        if (!predictions) {
-            return {
-                error: "Oops! Something went wrong.",
-            };
-        }
-
-        if (!res?.name || !res?.number || !res?.result || !res?.accuracy) {
-            return {
-                error: "Error! We couldn't process your request.",
-            };
-        }
 
         const savedResult = await db.model_v1.create({
             data: {
-                name: res?.name,
-                number: res?.number,
-                result: res?.result,
-                accuracy: res?.accuracy,
+                name: "Crop Prediction",
+                number: res?.number_of_crops || 1,
+                result: res?.prediction,
+                accuracy: res?.confidence,
             },
             select: {
                 id: true,
             },
         });
-        const savedResultData = await db.predictions_Data.create({
+        await db.predictions_Data.create({
             data: {
                 role: "model",
                 predictionsId: predictions.id,
@@ -85,13 +79,8 @@ export const cropPredictionModelActions = async (
                 id: true,
             },
         });
-        if (!savedResult || !savedResultData) {
-            return {
-                error: "Oops! Something went wrong.",
-            };
-        }
 
-        const savedPrompting = await db.predictions_Data.create({
+        await db.predictions_Data.create({
             data: {
                 predictionsId: predictions.id,
                 role: "ai",
@@ -101,13 +90,8 @@ export const cropPredictionModelActions = async (
                 id: true,
             },
         });
-        if (!savedPrompting) {
-            return {
-                error: "Oops! Something went wrong.",
-            };
-        }
 
-        const updatedExperiment = await db.experiments.update({
+        await db.experiments.update({
             where: {
                 id: experimentsId,
             },
@@ -115,11 +99,6 @@ export const cropPredictionModelActions = async (
                 isPredicted: true,
             },
         });
-        if (!updatedExperiment) {
-            return {
-                error: "Oops! Something went wrong.",
-            };
-        }
 
         const activity = await createActivity(
             user.id,

@@ -19,7 +19,7 @@
     "db:seed": "prisma db seed"
   },
   "prisma": {
-    "schema": "prisma/schema.prisma"
+    "schema": "./prisma/schema.prisma"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.7.3",

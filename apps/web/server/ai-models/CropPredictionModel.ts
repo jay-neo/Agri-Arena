@@ -6,45 +6,51 @@ import { GenerateContentStreamResult } from "@google/generative-ai";
 class CropPredictionModel {
     constructor() { }
     private chatModel = geminiModel();
-    private modelEndpoint = `${process.env.DD_MODEL_ENDPOINT}/predict`;
+    private modelEndpoint = `${process.env.CP_MODEL_ENDPOINT}/predict`;
 
-    public async predict(data?: CropPredictionModelRequest): Promise<CropPredictionModelResponse | null> {
+    public async predict(data: CropPredictionModelRequest): Promise<CropPredictionModelResponse | null> {
         try {
-            // const response = await fetch(this.modelEndpoint, {
-            //     method: "POST",
-            //     headers: {
-            //         "Content-Type": "application/json",
-            //     },
-            //     body: JSON.stringify({
-            //         data: {
-            //             url: data?.imageUrl,
-            //             id: data?.modelId,
-            //         },
-            //     }),
-            // });
-            // console.log("Response from model:", response);
+            const modifiedData = data.experimentsData.map(experiment => ({
+                N: experiment.nitrogen,
+                P: experiment.phosphorus,
+                K: experiment.potassium,
+                temperature: experiment.temperature,
+                humidity: experiment.humidity,
+                ph: experiment.ph
+            }));
 
-            // if (!response.ok) {
-            //     return null;
-            // }
+            console.log({
+                data: modifiedData
 
-            // const result = await response.json();
+            });
 
-            // return {
-            //     name: "agriarena.model.dd1v1",
-            //     number: (result?.number as number),
-            //     result: (result?.result as string[]),
-            //     accuracy: (result?.accuracy as string[]),
-            // } as CropPredictionModelResponse;
+            const response = await fetch(this.modelEndpoint, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    data: modifiedData
+
+                }),
+            });
+            console.log("Response ==>", response);
+
+            if (!response.ok) {
+                return null;
+            }
+
+            const result = await response.json();
+            console.log("Result ==>", result);
 
             return {
-                name: "agriarena.model.dd1v1",
-                number: 3,
-                result: ["Fungal", "Chestnut blight ", "Black knot"],
-                accuracy: ["70", "20.2", "12"],
+                number_of_crops: 3,
+                prediction: ["Fungal", "Chestnut blight ", "Black knot"],
+                confidence: [70, 20.2, 12],
             } as CropPredictionModelResponse;
         }
         catch (error) {
+            console.error("Error in CropPredictionModel:", error);
             throw error;
         }
     };
@@ -58,7 +64,7 @@ class CropPredictionModel {
                 },
                 {
                     heading: "Links",
-                    prompt: `give me 8 valid links of related ${data.result.toString()} like crop grains shop link etc specific to Indian zone and relavant valid available YouTube video links. Written format is each line have one link, only give links not write anything others text`,
+                    prompt: `give me 8 valid links of related ${data.prediction.toString()} like crop grains shop link etc specific to Indian zone and relavant valid available YouTube video links. Written format is each line have one link, only give links not write anything others text`,
                 },
             ];
 
@@ -68,7 +74,7 @@ class CropPredictionModel {
                         role: "user",
                         parts: [
                             {
-                                text: `${data.result.toString()} and ${data.accuracy.toString()} is the ML predictions result to cultivate crops in our fields.`,
+                                text: `${data.prediction.toString()} and ${data.confidence.toString()} is the ML predictions result to cultivate crops in our fields.`,
                             },
                         ],
                     },

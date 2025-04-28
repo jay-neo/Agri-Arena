@@ -134,7 +134,7 @@ export default function DiseaseDetectionForm() {
             {!formData?.image ? (
               <button
                 type="button"
-                className="mx-auto select-image text-sm text-white px-4 py-2 bg-purple-600 dark:bg-rose-600/70 font-semibold rounded-lg transition duration-300 hover:dark:bg-rose-600/90"
+                className="mx-auto select-image text-sm text-white px-4 py-2 bg-purple-600/80 hover:bg-purple-600 dark:bg-rose-600/70 font-semibold rounded-lg transition duration-300 hover:dark:bg-rose-600/90"
                 onClick={() => fileInputRef.current?.click()}
               >
                 Select Image
@@ -143,7 +143,7 @@ export default function DiseaseDetectionForm() {
               <>
                 <button
                   type="submit"
-                  className="select-image text-sm text-white px-4 py-2 bg-purple-600 dark:bg-rose-600/70 hover:dark:bg-rose-600 font-semibold rounded-lg transition duration-300"
+                  className="select-image text-sm text-white px-4 py-2 bg-purple-600/80 hover:bg-purple-600 dark:bg-rose-600/70 hover:dark:bg-rose-600 font-semibold rounded-lg transition duration-300"
                 >
                   Upload Image
                 </button>
@@ -216,6 +216,12 @@ export default function DiseaseDetectionForm() {
                 type="hidden"
                 name="modelId"
                 value={selectedCrop?.id || ""}
+              />
+
+              <input
+                type="hidden"
+                name="modelCetegory"
+                value={selectedCrop?.cetegory || ""}
               />
 
               <Tooltip

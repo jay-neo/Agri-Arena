@@ -21,7 +21,7 @@ import { SharePopUp } from "~/components/SharePopUp";
 import { getArenasWithId } from "~/app/server/arena";
 import { Share, Edit, ExternalLink, Predict } from "~/lib/arena-icons";
 import { deleteActivity, updateActivity } from "~/app/server/activity/CRUD";
-import { diseaseDetectionModelAction } from "~/app/actions/ai-models/diseaseDetectionModelAction";
+import { cropPredictionModelActions } from "~/app/actions/ai-models/cropPredictionModelActions";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -61,7 +61,9 @@ export default ({ data, idx }: { data: ActivityHeader; idx: number }) => {
     location: data.arenaLocation,
   });
 
-  const [_statePredict, actionPredict] = neoFormAction(diseaseDetectionModelAction);
+  const [_statePredict, actionPredict] = neoFormAction(
+    cropPredictionModelActions
+  );
   const [_stateDelete, actionDelete] = neoFormAction(deleteActivity);
   const [stateEdit, actionEdit] = neoFormAction(updateActivity, setIsEditing);
   const [_stateShare, actionShare, sharingUrl] = neoFormAction(

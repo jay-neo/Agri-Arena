@@ -5,17 +5,17 @@ export const getDiseaseDetectionModelsInfo = async (): Promise<DiseaseDetectionM
         [
             {
                 id: "1",
-                name: "plant-disease-detection",
-                description: "Plant Leaf Disease Detection",
                 crop: "Rice",
                 displayCrop: "Rice Leaf",
+                cetegory: "agriarena_dd1v1",
+                description: "Plant Leaf Disease Detection",
             },
             {
                 id: "2",
-                name: "plant-leaf-disease-detection",
-                description: "Plant Leaf Disease Detection",
                 crop: "Potato",
                 displayCrop: "Potato Leaf",
+                cetegory: "agriarena_dd1v1",
+                description: "Plant Leaf Disease Detection",
             },
         ]
     )
