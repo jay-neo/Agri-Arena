@@ -3,6 +3,7 @@
 import Image from "next/image";
 import ReactMarkdown from "react-markdown";
 import { getImagesData } from "~/app/server/ip";
+import AITextItem from "./AITextItem";
 
 export const ImagesPage = async ({ imagesId }: { imagesId: string }) => {
   const data = await getImagesData(imagesId);
@@ -49,23 +50,7 @@ export const ImagesPage = async ({ imagesId }: { imagesId: string }) => {
                 </div>
               </div>
             ) : item.role === "ai" ? (
-              item.text.map((t: string, i) =>
-                i % 2 === 0 ? (
-                  <div
-                    className="font-semibold text-3xl text-rose-500 dark:text-rose-400 mt-5 mb-1"
-                    key={i}
-                  >
-                    {t}
-                  </div>
-                ) : (
-                  <ReactMarkdown
-                    key={i}
-                    className="prose dark:prose-invert max-w-none"
-                  >
-                    {t}
-                  </ReactMarkdown>
-                )
-              )
+              <AITextItem initialItem={item} />
             ) : item.role === "user" && item.type === "image" ? (
               <div className="flex items-center justify-center">
                 <Image

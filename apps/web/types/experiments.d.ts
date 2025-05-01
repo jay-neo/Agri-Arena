@@ -1,8 +1,10 @@
 type ExperimentsData = {
-    nitrogen: number;
-    phosphorus: number;
-    potassium: number;
-    temperature: number;
-    humidity: number;
-    ph: number;
-  };
+  nitrogen: number;
+  phosphorus: number;
+  potassium: number;
+  temperature: number;
+  moisture: number;
+  humidity: number;
+  ph: number;
+  createdAt: Date;
+};

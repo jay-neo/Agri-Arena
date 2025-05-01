@@ -11,17 +11,17 @@ class CropPredictionModel {
     public async predict(data: CropPredictionModelRequest): Promise<CropPredictionModelResponse | null> {
         try {
             const modifiedData = data.experimentsData.map(experiment => ({
+                ph: experiment.ph,
                 N: experiment.nitrogen,
-                P: experiment.phosphorus,
                 K: experiment.potassium,
-                temperature: experiment.temperature,
+                P: experiment.phosphorus,
                 humidity: experiment.humidity,
-                ph: experiment.ph
+                moisture: experiment.moisture,
+                temperature: experiment.temperature,
             }));
 
             console.log({
                 data: modifiedData
-
             });
 
             const response = await fetch(this.modelEndpoint, {
@@ -44,9 +44,9 @@ class CropPredictionModel {
             console.log("Result ==>", result);
 
             return {
-                number_of_crops: 3,
-                prediction: ["Fungal", "Chestnut blight ", "Black knot"],
-                confidence: [70, 20.2, 12],
+                number_of_crops: 1,
+                prediction: result?.prediction as string[],
+                confidence: result?.confidence as number[],
             } as CropPredictionModelResponse;
         }
         catch (error) {

@@ -27,7 +27,7 @@ export const ExperimentsPage = async ({
 }) => {
   // const eventSource = new EventSource(`/api/iot`)
 
-  const data: Experiments_Data[] =
+  const data: ExperimentsData[] =
     myenv === "test"
       ? await getFakeIotData()
       : await getExperimentsData(experimentsId);

@@ -29,6 +29,7 @@ export const cropPredictionModelActions = async (
                 temperature: true,
                 humidity: true,
                 experimentsId: true,
+                createdAt: true,
             }
         });
         if (!data) {
@@ -47,7 +48,7 @@ export const cropPredictionModelActions = async (
         }
 
         // Save the all response
-        const predictions = await db.predictions.create({
+        const predictions = await db.prediction.create({
             data: {
                 userId: user.id,
                 experimentsId: experimentsId,
@@ -58,7 +59,7 @@ export const cropPredictionModelActions = async (
             },
         });
 
-        const savedResult = await db.model_v1.create({
+        const savedResult = await db.cropPredictionModel.create({
             data: {
                 name: "Crop Prediction",
                 number: res?.number_of_crops || 1,
@@ -69,7 +70,7 @@ export const cropPredictionModelActions = async (
                 id: true,
             },
         });
-        await db.predictions_Data.create({
+        await db.predictionData.create({
             data: {
                 role: "model",
                 predictionsId: predictions.id,
@@ -80,7 +81,7 @@ export const cropPredictionModelActions = async (
             },
         });
 
-        await db.predictions_Data.create({
+        await db.predictionData.create({
             data: {
                 predictionsId: predictions.id,
                 role: "ai",

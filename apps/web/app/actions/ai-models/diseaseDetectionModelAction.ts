@@ -26,7 +26,6 @@ export async function diseaseDetectionModelAction(
     formData: FormData
 ): Promise<DiseaseDetectionState> {
     try {
-        console.log(formData);
         const user = await getUser();
         const validatedFields = ModelRequestSchema.safeParse({
             modelId: formData.get("modelId"),
@@ -45,80 +44,63 @@ export async function diseaseDetectionModelAction(
         const { modelId, arenaId, modelCetegory, crop, imageUrl } =
             validatedFields.data;
 
+        const images = await db.image.create({
+            data: {
+                userId: user.id,
+                arenaId: arenaId,
+            },
+            select: {
+                id: true,
+            },
+        });
+
+        await db.imageData.create({
+            data: {
+                role: "user",
+                type: "image",
+                image: imageUrl,
+                imagesId: images.id,
+            },
+            select: {
+                id: true,
+            },
+        });
+
         const res: DiseaseDetectionModelResponse =
             await diseaseDetectionModel.processing({ modelId, imageUrl });
 
-        const promptResponse: string[] = await diseaseDetectionModel.prompting(
+        const savedResult = await db.imageProcessingModel.create({
+            data: {
+                name: modelCetegory,
+                number: res?.number_of_disease,
+                result: res?.result,
+                accuracy: res?.possibility,
+            },
+            select: {
+                id: true,
+            },
+        });
+
+        await db.imageData.create({
+            data: {
+                role: "model",
+                type: "text",
+                imagesId: images.id,
+                modelResponseId: savedResult.id,
+            },
+            select: {
+                id: true,
+            },
+        });
+
+        doItAsync({
             crop,
-            res
-        );
-
-        const imageId = await db.$transaction(async (tx) => {
-            const images = await tx.images.create({
-                data: {
-                    userId: user.id,
-                    arenaId: arenaId,
-                },
-                select: {
-                    id: true,
-                },
-            });
-
-            await tx.images_Data.create({
-                data: {
-                    role: "user",
-                    type: "image",
-                    image: imageUrl,
-                    imagesId: images.id,
-                },
-                select: {
-                    id: true,
-                },
-            });
-
-            const savedResult = await tx.model_v1.create({
-                data: {
-                    name: modelCetegory,
-                    number: res?.number_of_disease,
-                    result: res?.result,
-                    accuracy: res?.possibility,
-                },
-                select: {
-                    id: true,
-                },
-            });
-
-            await tx.images_Data.create({
-                data: {
-                    role: "model",
-                    imagesId: images.id,
-                    modelResponseId: savedResult.id,
-                },
-                select: {
-                    id: true,
-                },
-            });
-
-            await tx.images_Data.create({
-                data: {
-                    role: "ai",
-                    imagesId: images.id,
-                    text: promptResponse,
-                },
-                select: {
-                    id: true,
-                },
-            });
-
-            return images.id;
+            res,
+            imagesId: images.id,
         });
 
-        const activity = await createActivity(user.id, "images", imageId);
+        const activity = await createActivity(user.id, "images", images.id);
 
-        console.log({
-            success: "Disease detection is successfully done!",
-            next: `/my/activity/${activity}`,
-        });
         return {
             success: "Disease detection is successfully done!",
             next: `/my/activity/${activity}`,
@@ -126,5 +108,43 @@ export async function diseaseDetectionModelAction(
     } catch (error) {
         console.error("Error ==> ", error);
         return { error: error?.message };
+    }
+}
+
+async function doItAsync(data: {
+    crop: string;
+    res: DiseaseDetectionModelResponse;
+    imagesId: string;
+}) {
+    try {
+        const aiResponse = await db.imageData.create({
+            data: {
+                role: "ai",
+                type: "text",
+                imagesId: data.imagesId,
+            },
+            select: {
+                id: true,
+            },
+        });
+
+        const promptResponse: string[] = await diseaseDetectionModel.prompting(
+            data.crop,
+            data.res
+        );
+
+        await db.imageData.update({
+            where: {
+                id: aiResponse.id,
+            },
+            data: {
+                text: promptResponse,
+            },
+            select: {
+                id: true,
+            },
+        });
+    } catch (error) {
+        throw error;
     }
 }
