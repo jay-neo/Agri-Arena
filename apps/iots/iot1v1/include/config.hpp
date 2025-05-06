@@ -10,6 +10,7 @@
 #include <map>
 
 #include "WifiConfiguration.hpp"
+#include "cert_hex.h"
 
 // ---------------------------------------------------------------------------
 // For General Purpose

@@ -2,7 +2,7 @@
 	<table  width=100%>
 		<thead>
 			<tr>
-				<th>IoTs</th>
+				<th>IoTs</th>	
 				<th>Ingredients</th>
 				<th>Features</th>
 				<th>Descriptions</th>
@@ -20,8 +20,7 @@
 					🗹 Capacitive soil moisture sensor<br/>
 					🗹 Water pH sensor<br/>
 					🗹 NPK sensor (JXBS-3001)<br/>
-					🗹 OLED<br/>
-					🗹 Switch
+					🗹 OLED
 		    	</td>
                 <td>
 					🗹 Displaying<br/>
