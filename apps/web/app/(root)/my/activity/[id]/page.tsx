@@ -22,7 +22,7 @@ export default async ({ params }: { params: { id: string } }) => {
 
   const idx = Number(params.id);
 
-  const data: Activity_Header =
+  const data: ActivityHeader =
     myenv === "test" ? getFakeActivity() : await getActivity(idx);
 
   if (!data) {

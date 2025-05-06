@@ -5,9 +5,11 @@ import { useEffect } from "react";
 import { useFormState } from "react-dom";
 import { ReactButton } from "~/lib/neo/button";
 import { createArena } from "~/app/server/arena";
+import clsx from "clsx";
 
-const LABEL = "flex w-full font-semibold text-black pb-1";
+const LABEL = "flex w-full pb-1";
 const ERROR = "text-sm text-red-500 dark:text-yellow-400";
+const TEXTAREA = `text-sm block ps-3 p-2.5 bg-black/20 w-full rounded-md focus:outline-none focus:ring-1 focus:ring-gray-700`;
 
 export const CreateArenaForm = ({ onClose }: { onClose: () => void }) => {
   const [state, action] = useFormState(createArena, undefined);
@@ -22,7 +24,7 @@ export const CreateArenaForm = ({ onClose }: { onClose: () => void }) => {
   }, [state, onClose]);
 
   return (
-    <form action={action} className="dark:bg-cyan-600 p-2 rounded-lg">
+    <form action={action} className="dark:bg-[#2f2f61] p-2 rounded-lg">
       <div className="container">
         <label className={LABEL}>Name</label>
         <textarea
@@ -31,7 +33,7 @@ export const CreateArenaForm = ({ onClose }: { onClose: () => void }) => {
           autoComplete="off"
           placeholder={""}
           rows={1}
-          className={`text-sm focus:ring-blue-500 focus:border-blue-500 block ps-3 p-2.5  bg-slate-300 dark:bg-sky-600/30 w-full border border-gray-300 dark:border-gray-600 rounded-md`}
+          className={clsx(TEXTAREA)}
         />
         {state?.errors?.title && <p className={ERROR}>{state.errors.title}</p>}
       </div>
@@ -44,7 +46,7 @@ export const CreateArenaForm = ({ onClose }: { onClose: () => void }) => {
           autoComplete="off"
           placeholder={""}
           rows={1}
-          className={`text-sm focus:ring-blue-500 focus:border-blue-500 block ps-3 p-2.5 bg-slate-300 dark:bg-sky-600/30 w-full border border-gray-300 dark:border-gray-600 rounded-md`}
+          className={clsx(TEXTAREA)}
         />
         {state?.errors?.location && (
           <p className={ERROR}>{state.errors.location}</p>
@@ -59,7 +61,7 @@ export const CreateArenaForm = ({ onClose }: { onClose: () => void }) => {
             name="description"
             autoComplete="off"
             placeholder={""}
-            className={`flex flex-col text-sm text-wrap focus:ring-blue-500 focus:border-blue-500  ps-3 p-2.5 h-24 bg-slate-300 dark:bg-sky-600/30 w-full border border-gray-300 dark:border-gray-600 rounded-md`}
+            className={clsx(TEXTAREA)}
           />
         </div>
         {state?.errors?.description && (
@@ -70,7 +72,10 @@ export const CreateArenaForm = ({ onClose }: { onClose: () => void }) => {
         <ReactButton
           onStatic="Create"
           onAction="Creating..."
-          className="m-1 px-6 py-1.5 font-bold min-w-40 border border-2 rounded-3xl hover:bg-orange-400 hover:text-black hover:border-black"
+          className={clsx(
+            "m-1 px-6 py-1.5 min-w-24 text-white font-semibold rounded-lg transition duration-300 disabled:bg-rose-600/70",
+            "bg-purple-600/80 hover:bg-purple-600 dark:bg-rose-600/70 hover:dark:bg-rose-600"
+          )}
         />
       </div>
     </form>

@@ -58,7 +58,7 @@ export default () => {
   return (
     <ul className="ml-2">
       {SocialNetworkSection.map((item, index) => (
-        <li key={index} className="flex items-center py-1">
+        <li key={index} className="flex items-center py-1 text-sm">
           <Link
             href={item.path}
             className={`space-x-2 group flex items-center hover:decoration-yellow-400 hover:text-purple-700 dark:hover:text-purple-500`}

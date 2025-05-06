@@ -9,19 +9,21 @@ export default () => {
   const { themeMode, toggleTheme } = useTheme();
 
   return (
-    <Button
+    <button
       onClick={toggleTheme}
       className={`${
         themeMode === "light"
-          ? "bg-gray-100 hover:bg-gray-300 rounded-md border-purple-400 border-2 p-2"
-          : "bg-gray-800 hover:bg-black  rounded-md border-purple-400 border-2 p-2"
-      } rounded-md border-purple-400 border-2 p-2`}
+          ? "bg-gray-100 hover:bg-gray-300 rounded-md "
+          : "bg-gray-800 hover:bg-black  rounded-md "
+      } rounded-md p-1`}
     >
       <Image
         src={themeMode === "light" ? ThemeMoon : ThemeSun}
         alt={themeMode === "light" ? "Moon" : "Sun"}
         width={20}
+        height={20}
+        className="w-5 h-5 dark:invert"
       />
-    </Button>
+    </button>
   );
 };

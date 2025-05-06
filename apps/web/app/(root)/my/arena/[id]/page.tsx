@@ -17,7 +17,7 @@ export default async ({ params }: { params: { id: string } }) => {
   }
   const arenaIdx = parseFloat(params.id);
 
-  const arena: Arena =
+  const arena: ArenaDetails =
     myenv === "test"
       ? await getFakeArenaDetails(arenaIdx)
       : await getArena(arenaIdx);
@@ -26,7 +26,7 @@ export default async ({ params }: { params: { id: string } }) => {
     redirect(`/my/arena`);
   }
 
-  const assignedIoTsData: IoTIds[] =
+  const assignedIoTsData: IotInfo[] =
     myenv === "test" ? fakeAssignedIoTs : await getAssignedIoTs(arena.id);
 
   const arenaDataCount: ArenaDataCount =

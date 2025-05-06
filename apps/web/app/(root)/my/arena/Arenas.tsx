@@ -4,7 +4,7 @@ import { ArenaPreview } from "./ArenaPreview";
 import { getFakeArenas } from "~/test/data/faker";
 
 export default async ({ query }: { query?: string }) => {
-  const arenas: Arenas[] =
+  const arenas: ArenaOverview[] =
     myenv == "test" ? getFakeArenas() : await getArenas(query);
 
   // await new Promise((resolve) => setTimeout(resolve, 5000));

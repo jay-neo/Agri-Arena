@@ -18,7 +18,7 @@ export const PredictionsPage = async ({
 }) => {
   const data = await getPredictionsData(predictionsId);
 
-  const experimentsData: Experiments_Data[] =
+  const experimentsData: ExperimentsData[] =
     await getExperimentsData(experimentsId);
 
   const dataLength = experimentsData.length;
@@ -56,7 +56,11 @@ export const PredictionsPage = async ({
               {item.modelResponse.name}
             </span>
           </div>
-          <div>{"Number of possibilities = " + item.modelResponse.number}</div>
+          {item.modelResponse.number != 0 && (
+            <div>
+              {"Number of possibilities = " + item.modelResponse.number}
+            </div>
+          )}
           <div className="mt-2 w-full">
             <table className="min-w-[20rem] max-w-full table-auto text-center border-collapse border border-gray-300 rounded-lg shadow-md">
               <thead>

@@ -1,9 +1,9 @@
 import Link from "next/link";
 import Image from "next/image";
 import { getFormattedDate } from "~/lib/formatters/date";
-import { Recent, IotSvg, Location } from "~/lib/arena-icons";
+import { IotSvg, Location } from "~/lib/arena-icons";
 
-export const ArenaPreview = async ({ arena }: { arena: Arenas }) => {
+export const ArenaPreview = async ({ arena }: { arena: ArenaOverview }) => {
   return (
     <div className="">
       <Link

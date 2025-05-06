@@ -25,7 +25,7 @@ export const IoTForm = ({
   action: (_state: IoTFormState, formData: FormData) => Promise<IoTFormState>;
 }) => {
   const [state, neoAction] = useFormState(action, undefined);
-  const [arenas, setArenas] = useState<ArenaIds[]>([]);
+  const [arenas, setArenas] = useState<ArenaInfo[]>([]);
   const [selectedArena, setSelectedArena] = useState<{
     arena: string;
     arenaId: string;
@@ -173,7 +173,7 @@ export const IoTForm = ({
                   )) ||
                 null
               }
-              onChange={(event: any, value: ArenaIds | null) => {
+              onChange={(event: any, value: ArenaInfo | null) => {
                 setSelectedArena({
                   arena: value?.title,
                   arenaId: value?.id,
@@ -185,7 +185,7 @@ export const IoTForm = ({
               }}
               id="arena-autocomplete"
               options={arenas || []}
-              getOptionLabel={(option: ArenaIds) => option.title || ""}
+              getOptionLabel={(option: ArenaInfo) => option.title || ""}
               renderInput={(params) => (
                 <TextField
                   {...params}

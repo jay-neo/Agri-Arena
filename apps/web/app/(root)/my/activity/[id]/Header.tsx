@@ -19,9 +19,9 @@ import { ReactButton } from "~/lib/neo/button";
 import { createLink } from "~/app/server/share";
 import { SharePopUp } from "~/components/SharePopUp";
 import { getArenasWithId } from "~/app/server/arena";
-import { modelCP1V1 } from "~/app/server/models/agriarena";
 import { Share, Edit, ExternalLink, Predict } from "~/lib/arena-icons";
 import { deleteActivity, updateActivity } from "~/app/server/activity/CRUD";
+import { cropPredictionModelActions } from "~/app/actions/ai-models/cropPredictionModelActions";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -51,17 +51,19 @@ const MenuProps = {
   },
 };
 
-export default ({ data, idx }: { data: Activity_Header; idx: number }) => {
+export default ({ data, idx }: { data: ActivityHeader; idx: number }) => {
   const [isShare, setShare] = useState<boolean>(false);
   const [isEditing, setIsEditing] = useState<boolean>(false);
-  const [arenas, setArenas] = useState<ArenaIds[] | undefined>();
-  const [arena, setArena] = useState<ArenaIds>({
+  const [arenas, setArenas] = useState<ArenaInfo[] | undefined>();
+  const [arena, setArena] = useState<ArenaInfo>({
     id: data.arenaId,
     title: data.arena,
     location: data.arenaLocation,
   });
 
-  const [_statePredict, actionPredict] = neoFormAction(modelCP1V1);
+  const [_statePredict, actionPredict] = neoFormAction(
+    cropPredictionModelActions
+  );
   const [_stateDelete, actionDelete] = neoFormAction(deleteActivity);
   const [stateEdit, actionEdit] = neoFormAction(updateActivity, setIsEditing);
   const [_stateShare, actionShare, sharingUrl] = neoFormAction(

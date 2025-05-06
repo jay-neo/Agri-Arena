@@ -33,6 +33,7 @@ export const getActivities = async (topic?: string, query?: string) => {
               select: {
                 title: true,
                 location: true,
+                image: true,
               },
             },
           },
@@ -43,6 +44,7 @@ export const getActivities = async (topic?: string, query?: string) => {
               select: {
                 title: true,
                 location: true,
+                image: true,
               },
             },
           },
@@ -53,6 +55,7 @@ export const getActivities = async (topic?: string, query?: string) => {
               select: {
                 title: true,
                 location: true,
+                image: true,
               },
             },
           },
@@ -67,8 +70,49 @@ export const getActivities = async (topic?: string, query?: string) => {
       return null;
     }
 
+    const transformedActivities: Activity[] = activities.map((activity: any) => {
+      const baseActivity = {
+        idx: activity.idx,
+        title: activity.title,
+        type: activity.type,
+        updatedAt: activity.updatedAt,
+      };
+
+      // Determine which relation exists and extract arena data
+      let arenaData = {};
+      if (activity.type === 'experiments' && activity.experiments?.arena) {
+        arenaData = {
+          experimentsId: activity.experiments.device, // assuming this is the ID
+          arenaTitle: activity.experiments.arena.title,
+          arenaLocation: activity.experiments.arena.location,
+          arenaImage: activity.experiments.arena.image,
+        };
+      } else if (activity.type === 'images' && activity.images?.arena) {
+        arenaData = {
+          imagesId: activity.images.id, // you might need to adjust this if there's an ID field
+          arenaTitle: activity.images.arena.title,
+          arenaLocation: activity.images.arena.location,
+          arenaImage: activity.images.arena.image,
+        };
+      } else if (activity.type === 'predictions' && activity.predictions?.arena) {
+        arenaData = {
+          predictionsId: activity.predictions.id, // you might need to adjust this if there's an ID field
+          arenaTitle: activity.predictions.arena.title,
+          arenaLocation: activity.predictions.arena.location,
+          arenaImage: activity.predictions.arena.image,
+        };
+      }
+
+      return {
+        ...baseActivity,
+        ...arenaData,
+      };
+    });
+
+    let result = null;
+
     if (query) {
-      activities = activities.filter((activity: any) => {
+      result = transformedActivities.filter((activity: any) => {
         // For Activity
         const matchWithActivity = activity.title.includes(query);
 
@@ -76,39 +120,39 @@ export const getActivities = async (topic?: string, query?: string) => {
         const matchWithExperiments =
           activity.type === Type.experiments && activity.experiments
             ? (() => {
-                const matchWithDevice =
-                  activity.experiments.device.includes(query);
-                const matchWithArenaTitle = activity.experiments.arena
-                  ? activity.experiments.arena.title.includes(query)
-                  : false;
-                const matchWithArenaLocation = activity.experiments.arena
-                  ? activity.experiments.arena.location.includes(query)
-                  : false;
+              const matchWithDevice =
+                activity.experiments.device.includes(query);
+              const matchWithArenaTitle = activity.experiments.arena
+                ? activity.experiments.arena.title.includes(query)
+                : false;
+              const matchWithArenaLocation = activity.experiments.arena
+                ? activity.experiments.arena.location.includes(query)
+                : false;
 
-                return (
-                  matchWithDevice ||
-                  matchWithArenaTitle ||
-                  matchWithArenaLocation
-                );
-              })()
+              return (
+                matchWithDevice ||
+                matchWithArenaTitle ||
+                matchWithArenaLocation
+              );
+            })()
             : null;
 
         // For Predictions
         const matchWithPredictions =
           activity.type === Type.images &&
-          activity.experiments &&
-          activity.experiments.arena
+            activity.experiments &&
+            activity.experiments.arena
             ? activity.experiments.arena.title.includes(query) ||
-              activity.experiments.arena.location.includes(query)
+            activity.experiments.arena.location.includes(query)
             : null;
 
         // For Images
         const matchWithImages =
           activity.type === Type.images &&
-          activity.images &&
-          activity.images.arena
+            activity.images &&
+            activity.images.arena
             ? activity.images.arena.title.includes(query) ||
-              activity.images.arena.location.includes(query)
+            activity.images.arena.location.includes(query)
             : null;
 
         return (
@@ -120,7 +164,7 @@ export const getActivities = async (topic?: string, query?: string) => {
       });
     }
 
-    return activities.length ? activities : null;
+    return result || transformedActivities;
   } catch (error) {
     return null;
   }

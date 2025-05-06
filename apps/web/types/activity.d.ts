@@ -1,4 +1,4 @@
-type Activities = {
+type Activity = {
   idx: string;
   title: string;
   type: "experiments" | "predictions" | "images";
@@ -6,7 +6,9 @@ type Activities = {
   experimentsId?: string;
   predictionsId?: string;
   imagesId?: string;
-  image?: string;
+  arenaTitle?: string;
+  arenaLocation?: string;
+  arenaImage?: string;
 };
 
 type ActivityHeader = {

@@ -1,0 +1,120 @@
+import "server-only";
+
+import { geminiModel } from "./gemini";
+import { GenerateContentStreamResult } from "@google/generative-ai";
+
+class CropPredictionModel {
+    constructor() { }
+    private chatModel = geminiModel();
+    private modelEndpoint = `${process.env.CP_MODEL_ENDPOINT}/predict`;
+
+    public async predict(data: CropPredictionModelRequest): Promise<CropPredictionModelResponse | null> {
+        try {
+            const modifiedData = data.experimentsData.map(experiment => ({
+                ph: experiment.ph,
+                N: experiment.nitrogen,
+                K: experiment.potassium,
+                P: experiment.phosphorus,
+                humidity: experiment.humidity,
+                moisture: experiment.moisture,
+                temperature: experiment.temperature,
+            }));
+
+            console.log({
+                data: modifiedData
+            });
+
+            const response = await fetch(this.modelEndpoint, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    data: modifiedData
+
+                }),
+            });
+            console.log("Response ==>", response);
+
+            if (!response.ok) {
+                return null;
+            }
+
+            const result = await response.json();
+            console.log("Result ==>", result);
+
+            return {
+                number_of_crops: 1,
+                prediction: result?.prediction as string[],
+                confidence: result?.confidence as number[],
+            } as CropPredictionModelResponse;
+        }
+        catch (error) {
+            console.error("Error in CropPredictionModel:", error);
+            throw error;
+        }
+    };
+
+    public async prompting(data: CropPredictionModelResponse): Promise<string[]> {
+        try {
+            const query = [
+                {
+                    heading: "Guidance",
+                    prompt: `give me a guidance to cultivate crops in our filed, each crop each paragraph, in total 600 words`,
+                },
+                {
+                    heading: "Links",
+                    prompt: `give me 8 valid links of related ${data.prediction.toString()} like crop grains shop link etc specific to Indian zone and relavant valid available YouTube video links. Written format is each line have one link, only give links not write anything others text`,
+                },
+            ];
+
+            const chat = this.chatModel.startChat({
+                history: [
+                    {
+                        role: "user",
+                        parts: [
+                            {
+                                text: `${data.prediction.toString()} and ${data.confidence.toString()} is the ML predictions result to cultivate crops in our fields.`,
+                            },
+                        ],
+                    },
+                    {
+                        role: "user",
+                        parts: [
+                            {
+                                text: "Give me my answers in precise paragraph wise, not to much use bullet points. Each paragraph have 100 to 120 words. Try write as possible as text file not md file.",
+                            },
+                        ],
+                    },
+                ],
+                generationConfig: {
+                    maxOutputTokens: 1000,
+                },
+            });
+
+            let response: string[] = [];
+
+            for (const t of query) {
+                let aiResponse: string = "";
+                const result: GenerateContentStreamResult = await chat.sendMessageStream(
+                    t.prompt
+                );
+
+                for await (const chunk of result.stream) {
+                    const chunkText: string = chunk.text();
+                    aiResponse += chunkText;
+                }
+
+                response.push(t.heading);
+                response.push(aiResponse);
+            }
+
+            return response as string[];
+        } catch (error) {
+            throw error;
+        }
+    };
+
+}
+
+export const cropPredictionModel = new CropPredictionModel();

@@ -9,7 +9,7 @@ import { SideBarDividerIcon1 } from "~/lib/arena-icons";
 export default () => {
   return (
     <aside className="h-full w-full px-2xl py-2xl md:pl-2xl md:pr-lg border-r border-black">
-      <nav className="flex md:!min-h-full h-[calc(100vh_-_4rem)] flex-col justify-between">
+      <nav className="flex h-[calc(100vh_-_4rem)] flex-col justify-between">
         <div className="pt-6">
           <SocialSpace />
 

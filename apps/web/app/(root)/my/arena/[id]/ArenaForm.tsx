@@ -11,10 +11,10 @@ export default ({
   setArena,
   isEditing,
 }: {
-  arena: Arena;
+  arena: ArenaDetails;
   isEditing?: boolean;
   state?: FormData<ArenaFormState>;
-  setArena?: React.Dispatch<React.SetStateAction<Arena>>;
+  setArena?: React.Dispatch<React.SetStateAction<ArenaDetails>>;
 }) => {
   const placeholders = {
     title: "Enter your unique arena name",
