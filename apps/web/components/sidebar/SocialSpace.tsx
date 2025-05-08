@@ -25,6 +25,11 @@ export const SocialNetworkSection: SidebarItem[] = [
     icon: <Image src={SideBarDiscuss} alt="" className="dark:invert h-5 w-5" />,
   },
   {
+    title: "Profile",
+    path: "/social/profile",
+    icon: <Image src={SideBarDiscuss} alt="" className="dark:invert h-5 w-5" />,
+  },
+  {
     title: "Pages",
     path: "/social/pages",
     icon: <Image src={SideBarPages} alt="" className="dark:invert h-5 w-5" />,

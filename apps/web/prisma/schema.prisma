@@ -33,6 +33,20 @@ model User {
   predictions Prediction[]
   images      Image[]
   shares      Share[]
+
+  posts                 Post[]
+  comments              Comment[]
+  likes                 Like[]
+  followers             Follower[]      @relation("UserFollowers")
+  followings            Follower[]      @relation("UserFollowings")
+  followRequestSent     FollowRequest[] @relation("followRequestSent")
+  followRequestReceived FollowRequest[] @relation("followRequestsReceived")
+
+  blocks        Block[]         @relation("BlocksSent")
+  blockedBy     Block[]         @relation("BlocksReceived")
+  Follower      Follower[]
+  FollowRequest FollowRequest[]
+  Block         Block[]
 }
 
 model Profile {
@@ -97,6 +111,7 @@ model Arena {
   currentCrop String?
   area        String?
   soilType    String?
+  isReal      Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -127,6 +142,7 @@ model Activity {
   id            String       @id @default(cuid())
   idx           Int
   title         String       @default("Untitled Activity")
+  isReal        Boolean      @default(true)
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
   type          Type
@@ -312,3 +328,78 @@ model Share {
 }
 
 // https://www.prisma.io/data-platform/pulse
+
+model Post {
+  id        Int       @id @default(autoincrement())
+  desc      String
+  img       String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  comments  Comment[]
+  likes     Like[]
+}
+
+model Comment {
+  id        Int      @id @default(autoincrement())
+  desc      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId    Int
+  likes     Like[]
+}
+
+model Like {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  post      Post?    @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId    Int?
+
+  comment   Comment? @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  commentId Int?
+}
+
+model Follower {
+  id         Int      @id @default(autoincrement())
+  createdAt  DateTime @default(now())
+  follower   User     @relation("UserFollowers", fields: [followerId], references: [id], onDelete: Cascade)
+  followerId String
+
+  following   User    @relation("UserFollowings", fields: [followingId], references: [id], onDelete: Cascade)
+  followingId String
+  User        User?   @relation(fields: [userId], references: [id])
+  userId      String?
+}
+
+model FollowRequest {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  sender    User     @relation("followRequestSent", fields: [senderId], references: [id], onDelete: Cascade)
+  senderId  String
+
+  receiver   User    @relation("followRequestsReceived", fields: [receiverId], references: [id], onDelete: Cascade)
+  receiverId String
+  User       User?   @relation(fields: [userId], references: [id])
+  userId     String?
+
+  @@unique([senderId, receiverId])
+}
+
+model Block {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  blocker   User     @relation("BlocksSent", fields: [blockerId], references: [id], onDelete: Cascade)
+  blockerId String
+  blocked   User     @relation("BlocksReceived", fields: [blockedId], references: [id], onDelete: Cascade)
+  blockedId String
+  User      User?    @relation(fields: [userId], references: [id])
+  userId    String?
+
+  @@unique([blockerId, blockedId])
+}

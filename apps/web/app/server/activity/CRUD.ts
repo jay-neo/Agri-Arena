@@ -139,25 +139,25 @@ export const getActivity = async (idx: number, userId?: string) => {
     const experimentsIdx =
       res.type === "predictions"
         ? await db.activity.findUnique({
-            where: {
-              experimentsId: res?.predictions?.experimentsId,
-            },
-            select: {
-              idx: true,
-            },
-          })
+          where: {
+            experimentsId: res?.predictions?.experimentsId,
+          },
+          select: {
+            idx: true,
+          },
+        })
         : null;
 
     const predictionIdx =
       res.type === "experiments" && res.experiments.isPredicted
         ? await db.activity.findUnique({
-            where: {
-              predictionsId: res.experiments.predictions?.id,
-            },
-            select: {
-              idx: true,
-            },
-          })
+          where: {
+            predictionsId: res.experiments.predictions?.id,
+          },
+          select: {
+            idx: true,
+          },
+        })
         : null;
 
     return {
@@ -201,7 +201,7 @@ export const getActivity = async (idx: number, userId?: string) => {
 
       iot: iot || null,
       device: res?.experiments?.device || null,
-    } as Activity_Header;
+    } as ActivityHeader;
   } catch (error) {
     return null;
   }
@@ -258,7 +258,7 @@ export const updateActivity = async (
         },
       });
     } else if (activity.type === "images") {
-      await db.images.update({
+      await db.image.update({
         where: {
           id: activity.imagesId,
         },
@@ -267,7 +267,7 @@ export const updateActivity = async (
         },
       });
     } else if (activity.type === "predictions") {
-      await db.predictions.update({
+      await db.prediction.update({
         where: {
           id: activity.predictionsId,
         },
@@ -325,7 +325,7 @@ export const deleteActivity = async (
         },
       });
     } else if (deletedActivity.type === "predictions") {
-      const deletedPredictions = await db.predictions.delete({
+      const deletedPredictions = await db.prediction.delete({
         where: {
           id: deletedActivity.predictionsId,
         },
@@ -346,7 +346,7 @@ export const deleteActivity = async (
         },
       });
     } else if (deletedActivity.type === "images") {
-      await db.images.delete({
+      await db.image.delete({
         where: {
           id: deletedActivity.imagesId,
         },

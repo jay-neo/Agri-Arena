@@ -8,6 +8,7 @@ import { Button } from "~/components/ui/form/button";
 import { useFormState, useFormStatus } from "react-dom";
 import { IoTFormState } from "~/app/server/iot/validation";
 import { TextField, Autocomplete, Tooltip, Fade } from "@mui/material";
+import { ReactButton } from "~/lib/neo/button";
 
 export const IoTForm = ({
   data,
@@ -70,9 +71,11 @@ export const IoTForm = ({
         </button>
         <form action={neoAction} className="mt-6 md:mt-1">
           <Tooltip
-            disableFocusListener
-            followCursor
+            arrow
+            placement="right"
             describeChild
+            disableHoverListener
+            disableTouchListener
             TransitionComponent={Fade}
             title="This is you custom IoT identification title"
           >
@@ -81,6 +84,7 @@ export const IoTForm = ({
               label="Title"
               name="title"
               fullWidth
+              required
               defaultValue={data?.title}
               className="dark:invert"
             />
@@ -91,9 +95,11 @@ export const IoTForm = ({
             </div>
           )}
           <Tooltip
-            disableFocusListener
-            followCursor
+            arrow
+            placement="right"
             describeChild
+            disableHoverListener
+            disableTouchListener
             TransitionComponent={Fade}
             title="Device ID is unique identifier provided with IoT device"
           >
@@ -102,6 +108,7 @@ export const IoTForm = ({
               label="Device ID"
               name="device"
               type="text"
+              required
               disabled={formType === "edit"}
               fullWidth
               defaultValue={data?.device}
@@ -114,9 +121,11 @@ export const IoTForm = ({
             </div>
           )}
           <Tooltip
-            disableFocusListener
-            followCursor
+            arrow
+            placement="right"
             describeChild
+            disableHoverListener
+            disableTouchListener
             TransitionComponent={Fade}
             title="Interval used to group similar experiments in single unit"
           >
@@ -125,6 +134,7 @@ export const IoTForm = ({
               label="Interval (in Days)"
               name="interval"
               type="number"
+              required
               fullWidth
               defaultValue={data?.interval || 1}
               className="dark:invert"
@@ -136,9 +146,11 @@ export const IoTForm = ({
             </div>
           )}
           <Tooltip
-            disableFocusListener
-            followCursor
+            arrow
+            placement="right"
             describeChild
+            disableHoverListener
+            disableTouchListener
             TransitionComponent={Fade}
             title="This is your accurate IoT location deployed in the arena"
           >
@@ -158,9 +170,11 @@ export const IoTForm = ({
             </div>
           )}
           <Tooltip
-            disableFocusListener
-            followCursor
+            arrow
+            placement="right"
             describeChild
+            disableHoverListener
+            disableTouchListener
             TransitionComponent={Fade}
             title="Select your arena where IoT is deployed"
           >
@@ -212,9 +226,11 @@ export const IoTForm = ({
             value={selectedArena?.arenaId || ""}
           />
           <Tooltip
-            disableFocusListener
-            followCursor
+            arrow
+            placement="right"
             describeChild
+            disableHoverListener
+            disableTouchListener
             TransitionComponent={Fade}
             title="This is a description about your IoT device"
           >
@@ -236,16 +252,10 @@ export const IoTForm = ({
             <input type="hidden" name="device" value={data?.device || ""} />
           )}
           <div className="flex flex-row items-center justify-center gap-4 mt-2">
-            <Button onClick={() => setIsOpen(false)}>Cancel</Button>
-            <SubmitButton />
+            <ReactButton onStatic="Save" onAction="Saving..." />
           </div>
         </form>
       </div>
     </div>
   );
-};
-
-const SubmitButton: React.FC = () => {
-  const { pending } = useFormStatus();
-  return <Button type="submit">{pending ? "Saving..." : "Save"}</Button>;
 };

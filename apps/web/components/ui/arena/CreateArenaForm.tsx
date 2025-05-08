@@ -1,15 +1,77 @@
 "use client";
 
+import clsx from "clsx";
 import { toast } from "sonner";
 import { useEffect } from "react";
 import { useFormState } from "react-dom";
 import { ReactButton } from "~/lib/neo/button";
 import { createArena } from "~/app/server/arena";
-import clsx from "clsx";
 
 const LABEL = "flex w-full pb-1";
 const ERROR = "text-sm text-red-500 dark:text-yellow-400";
 const TEXTAREA = `text-sm block ps-3 p-2.5 bg-black/20 w-full rounded-md focus:outline-none focus:ring-1 focus:ring-gray-700`;
+
+const FormField = ({
+  id,
+  name,
+  label,
+  rows = 1,
+  errors,
+}: {
+  id: string;
+  name: string;
+  label: string;
+  rows?: number;
+  errors?: string[] | string;
+}) => (
+  <div className="container mt-5">
+    <label className={LABEL}>{label}</label>
+    <textarea
+      id={id}
+      name={name}
+      autoComplete="off"
+      placeholder=""
+      rows={rows}
+      className={clsx(TEXTAREA)}
+    />
+    {errors && (
+      <div className={ERROR}>
+        {Array.isArray(errors) ? (
+          <ul>
+            {errors.map((error) => (
+              <li key={error}>{error}</li>
+            ))}
+          </ul>
+        ) : (
+          <p>{errors}</p>
+        )}
+      </div>
+    )}
+  </div>
+);
+
+const AdditionalInfoAccordion = ({ state }: { state: any }) => (
+  <div className="container mt-5">
+    <FormField
+      id="currentCrop"
+      name="currentCrop"
+      label="Current Crop"
+      errors={state?.errors?.currentCrop}
+    />
+    <FormField
+      id="area"
+      name="area"
+      label="Area"
+      errors={state?.errors?.area}
+    />
+    <FormField
+      id="soilType"
+      name="soilType"
+      label="Soil Type"
+      errors={state?.errors?.soilType}
+    />
+  </div>
+);
 
 export const CreateArenaForm = ({ onClose }: { onClose: () => void }) => {
   const [state, action] = useFormState(createArena, undefined);
@@ -25,49 +87,30 @@ export const CreateArenaForm = ({ onClose }: { onClose: () => void }) => {
 
   return (
     <form action={action} className="dark:bg-[#2f2f61] p-2 rounded-lg">
-      <div className="container">
-        <label className={LABEL}>Name</label>
-        <textarea
-          id="title"
-          name="title"
-          autoComplete="off"
-          placeholder={""}
-          rows={1}
-          className={clsx(TEXTAREA)}
-        />
-        {state?.errors?.title && <p className={ERROR}>{state.errors.title}</p>}
-      </div>
+      <FormField
+        id="title"
+        name="title"
+        label="Title"
+        errors={state?.errors?.title}
+      />
 
-      <div className="container mt-5">
-        <label className={LABEL}>Location</label>
-        <textarea
-          id="location"
-          name="location"
-          autoComplete="off"
-          placeholder={""}
-          rows={1}
-          className={clsx(TEXTAREA)}
-        />
-        {state?.errors?.location && (
-          <p className={ERROR}>{state.errors.location}</p>
-        )}
-      </div>
+      <FormField
+        id="location"
+        name="location"
+        label="Location"
+        errors={state?.errors?.location}
+      />
 
-      <div className="container mt-5">
-        <label className={LABEL}>Description:</label>
-        <div className="truncate">
-          <textarea
-            id="description"
-            name="description"
-            autoComplete="off"
-            placeholder={""}
-            className={clsx(TEXTAREA)}
-          />
-        </div>
-        {state?.errors?.description && (
-          <p className={ERROR}>{state.errors.description}</p>
-        )}
-      </div>
+      <FormField
+        id="description"
+        name="description"
+        label="Description"
+        rows={2}
+        errors={state?.errors?.description}
+      />
+
+      <AdditionalInfoAccordion state={state} />
+
       <div className="flex items-center justify-center mt-4">
         <ReactButton
           onStatic="Create"

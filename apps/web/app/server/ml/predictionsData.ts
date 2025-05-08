@@ -2,7 +2,7 @@ import { db } from "~/lib/prisma";
 
 export const getPredictionsData = async (id: string) => {
   try {
-    return await db.predictions_Data.findMany({
+    return await db.predictionData.findMany({
       where: {
         predictionsId: id,
       },

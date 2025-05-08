@@ -3,6 +3,64 @@ import { faker } from "@faker-js/faker";
 import { getRandomString } from "~/lib/utils";
 import { defaultArenaAvatar, defaultArenaAvatars } from "~/lib/constants";
 
+const experimentData = [
+  {
+    "N": 90,
+    "P": 42,
+    "K": 43,
+    "temperature": 20.8797,
+    "humidity": 82.00,
+    "ph": 6.5,
+    "moisture": 75
+  },
+  {
+    "N": 85,
+    "P": 58,
+    "K": 41,
+    "temperature": 21,
+    "humidity": 80,
+    "ph": 7,
+    "moisture": 80
+  },
+  {
+    "N": 78,
+    "P": 42,
+    "K": 42,
+    "temperature": 20.13,
+    "humidity": 81.60,
+    "ph": 7.6,
+    "moisture": 80
+  },
+  {
+    "N": 60,
+    "P": 55,
+    "K": 44,
+    "temperature": 23.00,
+    "humidity": 82.32,
+    "ph": 7.8,
+    "moisture": 90
+  },
+  {
+    "N": 74,
+    "P": 35,
+    "K": 40,
+    "temperature": 26.49,
+    "humidity": 80.16,
+    "ph": 6.98,
+    "moisture": 85
+  },
+  {
+    "N": 69,
+    "P": 37,
+    "K": 42,
+    "temperature": 23.05,
+    "humidity": 83.37,
+    "ph": 7.07,
+    "moisture": 82
+  }
+]
+
+
 export const neoUserSeeds = async (userId: string): Promise<boolean> => {
   try {
     const arena = await db.arena.create({
@@ -12,6 +70,7 @@ export const neoUserSeeds = async (userId: string): Promise<boolean> => {
         image: getRandomString(defaultArenaAvatars) || defaultArenaAvatar,
         title: "Demo Arena",
         location: "Virtual",
+        isReal: false,
         description: "This is auto-generated arena.",
       },
     });
@@ -50,30 +109,23 @@ export const neoUserSeeds = async (userId: string): Promise<boolean> => {
         type: "experiments",
         title: "Demo Activity",
         experimentsId: experiments.id,
+        isReal: false,
       },
       select: {
         id: true,
       },
     });
-    for (let i = 0; i < 10; ++i) {
+    for (let i = 0; i < experimentData.length; ++i) {
       await db.experiments_Data.create({
         data: {
           createdAt: faker.date.recent(),
-          nitrogen: faker.number.float({ min: 0, max: 100, multipleOf: 0.01 }),
-          phosphorus: faker.number.float({
-            min: 0,
-            max: 100,
-            multipleOf: 0.01,
-          }),
-          potassium: faker.number.float({ min: 0, max: 100, multipleOf: 0.01 }),
-          ph: faker.number.float({ min: 0, max: 14, multipleOf: 0.01 }),
-          moisture: faker.number.float({ min: 0, max: 100, multipleOf: 0.01 }),
-          temperature: faker.number.float({
-            min: -10,
-            max: 100,
-            multipleOf: 0.01,
-          }),
-          humidity: faker.number.float({ min: 0, max: 100, multipleOf: 0.01 }),
+          nitrogen: experimentData[i].N,
+          phosphorus: experimentData[i].P,
+          potassium: experimentData[i].K,
+          ph: experimentData[i].ph,
+          moisture: experimentData[i].moisture,
+          temperature: experimentData[i].temperature,
+          humidity: experimentData[i].humidity,
           experimentsId: experiments.id,
         },
         select: {

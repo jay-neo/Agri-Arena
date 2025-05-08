@@ -20,13 +20,16 @@ export const ArenaFormSchema = z.object({
 
 export type ArenaFormState =
   | {
-      errors?: {
-        title?: string[];
-        location?: string[];
-        description?: string[];
-      };
-      error?: string;
-      message?: string;
-      success?: string;
-    }
+    errors?: {
+      title?: string[];
+      location?: string[];
+      description?: string[];
+      currentCrop?: string[];
+      area?: string[];
+      soilType?: string[];
+    };
+    error?: string;
+    message?: string;
+    success?: string;
+  }
   | undefined;

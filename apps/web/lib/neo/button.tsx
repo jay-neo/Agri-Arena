@@ -1,5 +1,6 @@
 import * as React from "react";
 import { useFormStatus } from "react-dom";
+import { Button } from "~/components/ui/form/button";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   onStatic?: React.ReactNode;
@@ -11,9 +12,9 @@ export const ReactButton = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const { pending } = useFormStatus();
 
     return (
-      <button type="submit" disabled={pending} {...props} ref={ref}>
+      <Button type="submit" disabled={pending} {...props} ref={ref}>
         {pending ? onAction : onStatic}
-      </button>
+      </Button>
     );
   }
 );
