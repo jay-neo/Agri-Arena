@@ -13,6 +13,7 @@ import Image from "next/image";
 import { getFormattedDate } from "~/lib/formatters";
 import { Open_Sans, Roboto_Mono } from "next/font/google";
 import React, { Suspense, useState, useEffect, useRef } from "react";
+import { getActivitiesAction } from "~/app/actions/activity/getActivitiesAction";
 
 const openSans = Open_Sans({
   subsets: ["latin"],
@@ -254,35 +255,31 @@ const LoadingSkeleton = () => {
   );
 };
 
-export default ({ activity }: { activity: Activity }) => {
-  const [activities, setActivities] = useState<Activity[]>([activity]);
+export default ({
+  activityData,
+  searchParams,
+}: {
+  activityData: { activities: Activity[]; hasMore: boolean };
+  searchParams: {
+    topic?: string;
+    query?: string;
+  };
+}) => {
+  const [activities, setActivities] = useState<Activity[]>(
+    activityData?.activities || []
+  );
   const [loading, setLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(true);
+  const [hasMore, setHasMore] = useState(activityData.hasMore);
   const observer = useRef<IntersectionObserver | null>(null);
   const lastActivityRef = useRef<HTMLDivElement>(null);
 
   // Mock function to fetch more activities (replace with actual API call)
   const fetchMoreActivities = async (page: number) => {
-    // Simulate API delay
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
-    // Mock new data - in real app, this would be an API call
-    const newActivities: Activity[] = Array(5)
-      .fill(null)
-      .map((_, i) => ({
-        idx: `new-${page}-${i}`,
-        title: `Activity ${page * 5 + i}`,
-        type: ["experiments", "predictions", "images"][
-          Math.floor(Math.random() * 3)
-        ] as Activity["type"],
-        updatedAt: new Date(),
-        experimentsId: Math.random().toString(36).substring(7),
-        predictionsId: Math.random().toString(36).substring(7),
-        imagesId: Math.random().toString(36).substring(7),
-        arenaImage: `/arena/arena1.png`,
-      }));
-
-    return { activities: newActivities, hasMore: page < 5 }; // Limit to 5 pages for demo
+    return await getActivitiesAction(
+      searchParams.topic,
+      searchParams.query,
+      page
+    );
   };
 
   // Handle intersection for infinite scroll

@@ -20,10 +20,10 @@ export default async ({
     query?: string;
   };
 }) => {
-  const activities: Activity[] =
-    myenv === "test"
-      ? getFakeActivities()
-      : await getActivities(searchParams.topic, searchParams.query);
+  const activityData = await getActivities(
+    searchParams.topic,
+    searchParams.query
+  );
 
   return (
     <div className="p-0.5">
@@ -35,10 +35,11 @@ export default async ({
       </div>
       <SearchTopics />
       <div className="flex w-full items-center justify-center flex-col mx-auto max-w-2xl">
-        {activities ? (
-          activities.map((activity) => (
-            <ActivityPreview key={activity.idx} activity={activity} />
-          ))
+        {activityData ? (
+          <ActivityPreview
+            activityData={activityData}
+            searchParams={searchParams}
+          />
         ) : (
           <></>
         )}

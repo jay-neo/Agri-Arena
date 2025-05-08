@@ -4,6 +4,10 @@ type ArenaOverview = {
     location: string;
     iots: number;
     updatedAt: Date;
+    currentCrop?: string;
+    area?: string;
+    soilType?: string;
+    image?: string;
 };
 
 type ArenaInfo = {

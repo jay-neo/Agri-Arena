@@ -28,6 +28,10 @@ export async function getArenas(query?: string): Promise<ArenaOverview[] | null>
         title: true,
         location: true,
         updatedAt: true,
+        currentCrop: true,
+        area: true,
+        soilType: true,
+        image: true,
         _count: {
           select: {
             iot: true,
@@ -45,6 +49,10 @@ export async function getArenas(query?: string): Promise<ArenaOverview[] | null>
       location: arena.location,
       iots: arena._count.iot,
       updatedAt: arena.updatedAt,
+      currentCrop: arena.currentCrop,
+      area: arena.area,
+      soilType: arena.soilType,
+      image: arena.image,
     }));
   } catch (err) {
     return null;

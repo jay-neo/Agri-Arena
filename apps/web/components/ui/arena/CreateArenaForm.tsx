@@ -6,6 +6,11 @@ import { useEffect } from "react";
 import { useFormState } from "react-dom";
 import { ReactButton } from "~/lib/neo/button";
 import { createArena } from "~/app/server/arena";
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import Typography from "@mui/material/Typography";
+import { ArrowDownIcon } from "lucide-react";
 
 const LABEL = "flex w-full pb-1";
 const ERROR = "text-sm text-red-500 dark:text-yellow-400";
@@ -52,24 +57,56 @@ const FormField = ({
 
 const AdditionalInfoAccordion = ({ state }: { state: any }) => (
   <div className="container mt-5">
-    <FormField
-      id="currentCrop"
-      name="currentCrop"
-      label="Current Crop"
-      errors={state?.errors?.currentCrop}
-    />
-    <FormField
-      id="area"
-      name="area"
-      label="Area"
-      errors={state?.errors?.area}
-    />
-    <FormField
-      id="soilType"
-      name="soilType"
-      label="Soil Type"
-      errors={state?.errors?.soilType}
-    />
+    <Accordion
+      sx={{
+        backgroundColor: "transparent",
+        boxShadow: "none", // removes the shadow if needed
+        "&:before": {
+          display: "none", // removes the default divider line
+        },
+      }}
+    >
+      <AccordionSummary
+        expandIcon={<ArrowDownIcon className="w-5 h-5" />}
+        aria-controls="panel2-content"
+        id="panel2-header"
+        sx={{
+          backgroundColor: "none",
+        }}
+      >
+        <Typography
+          component="span"
+          className="text-sm font-light"
+          sx={{ fontSize: 13 }}
+        >
+          Optional
+        </Typography>
+      </AccordionSummary>
+      <AccordionDetails
+        sx={{
+          backgroundColor: "none",
+        }}
+      >
+        <FormField
+          id="currentCrop"
+          name="currentCrop"
+          label="Current Crop"
+          errors={state?.errors?.currentCrop}
+        />
+        <FormField
+          id="area"
+          name="area"
+          label="Area (in acres)"
+          errors={state?.errors?.area}
+        />
+        <FormField
+          id="soilType"
+          name="soilType"
+          label="Soil Type"
+          errors={state?.errors?.soilType}
+        />
+      </AccordionDetails>
+    </Accordion>
   </div>
 );
 

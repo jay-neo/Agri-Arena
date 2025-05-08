@@ -1,4 +1,5 @@
 type ExperimentsData = {
+  id: string;
   nitrogen: number;
   phosphorus: number;
   potassium: number;

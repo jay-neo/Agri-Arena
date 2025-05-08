@@ -21,6 +21,7 @@ export const cropPredictionModelActions = async (
                 experimentsId: experimentsId,
             },
             select: {
+                id: true,
                 nitrogen: true,
                 phosphorus: true,
                 potassium: true,

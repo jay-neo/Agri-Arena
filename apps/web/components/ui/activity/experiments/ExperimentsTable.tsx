@@ -67,7 +67,7 @@ function stableSort<T>(
 
 interface HeadCell {
   disablePadding: boolean;
-  id: keyof Experiments_Data;
+  id: keyof ExperimentsData;
   label: string;
   numeric: boolean;
 }
@@ -112,7 +112,7 @@ interface EnhancedTableProps {
   numSelected: number;
   onRequestSort: (
     event: React.MouseEvent<unknown>,
-    property: keyof Experiments_Data
+    property: keyof ExperimentsData
   ) => void;
   onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
   order: Order;
@@ -130,8 +130,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
     onRequestSort,
   } = props;
   const createSortHandler =
-    (property: keyof Experiments_Data) =>
-    (event: React.MouseEvent<unknown>) => {
+    (property: keyof ExperimentsData) => (event: React.MouseEvent<unknown>) => {
       onRequestSort(event, property);
     };
 
@@ -286,7 +285,7 @@ export default function MainTable({
   endDate,
   actionOnData = null,
 }: {
-  data: Experiments_Data[];
+  data: ExperimentsData[];
   startDate: string;
   endDate: string;
   actionOnData?: (
@@ -297,7 +296,7 @@ export default function MainTable({
   const isSmallScreen = useMediaQuery("(max-width: 1024px)");
   const [order, setOrder] = React.useState<Order>("desc");
   const [orderBy, setOrderBy] =
-    React.useState<keyof Experiments_Data>("createdAt");
+    React.useState<keyof ExperimentsData>("createdAt");
   const [selected, setSelected] = React.useState<string[]>([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(true);
@@ -305,7 +304,7 @@ export default function MainTable({
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
-    property: keyof Experiments_Data
+    property: keyof ExperimentsData
   ) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
@@ -372,9 +371,18 @@ export default function MainTable({
         )}
         <TableContainer>
           <Table
-            sx={{ minWidth: isSmallScreen ? 200 : 750 }}
+            sx={{
+              minWidth: 200,
+              "& .MuiTableCell-root": {
+                padding: "3px 6px",
+                fontSize: "0.80rem",
+              },
+              "& .MuiTableRow-root": {
+                height: "32px",
+              },
+            }}
             aria-labelledby="tableTitle"
-            size={dense ? "small" : "medium"}
+            size="small"
           >
             <EnhancedTableHead
               numSelected={selected.length}
@@ -440,7 +448,7 @@ export default function MainTable({
               {emptyRows > 0 && (
                 <TableRow
                   style={{
-                    height: (dense ? 33 : 53) * emptyRows,
+                    height: 33 * emptyRows,
                   }}
                 >
                   <TableCell colSpan={6} />

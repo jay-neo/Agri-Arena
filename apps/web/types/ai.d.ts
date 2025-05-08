@@ -9,8 +9,11 @@ type CropPredictionModelResponse = {
 };
 
 type DiseaseDetectionModelRequest = {
-    modelId: string;
-    imageUrl: string;
+    modelId?: string;
+    arenaId?: string;
+    crop?: string;
+    imageUrl?: string;
+    modelCetegory?: string;
 };
 
 type DiseaseDetectionModelResponse = {

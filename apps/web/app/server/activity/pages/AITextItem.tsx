@@ -2,43 +2,37 @@
 
 import { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
-import { getImagesDataById } from "../../ip/imagesData";
+import { getImagesDataById } from "~/app/actions/activity/images/getImagesDataById";
 
 const AITextItem = ({ initialItem }) => {
   const [item, setItem] = useState(initialItem);
-  const [currentPart, setCurrentPart] = useState(0);
   const [displayedText, setDisplayedText] = useState("");
-
-  // Polling for status updates
+  // Polling for status updates when processing
   useEffect(() => {
-    let intervalId: NodeJS.Timeout;
-
+    let intervalId: NodeJS.Timeout | null = null;
     const pollItem = async () => {
       try {
         const updatedItem = await getImagesDataById(item.id);
-        if (
-          updatedItem &&
-          updatedItem.processingStatus !== item.processingStatus
-        ) {
-          setItem(updatedItem);
-        }
+        setItem(updatedItem);
+        console.log("Updated item:", item);
       } catch (error) {
         console.error("Polling error:", error);
       }
     };
 
-    if (item.processingStatus === "processing") {
+    if (item.processingStatus == "processing") {
       intervalId = setInterval(pollItem, 3000);
     }
-
     return () => {
-      if (intervalId) clearInterval(intervalId);
-    };
+      if (intervalId) {
+        clearInterval(intervalId);
+      }
+    }
   }, [item.processingStatus, item.id]);
 
-  // Text streaming effect
+  // Text streaming effect when processing, full text when processed
   useEffect(() => {
-    if (item.processingStatus === "processed" && item.text) {
+    if (initialItem.processingStatus == "processing" && item.text) {
       const textToStream = item.text.join("\n");
       let index = 0;
 
@@ -52,10 +46,12 @@ const AITextItem = ({ initialItem }) => {
       }, 20);
 
       return () => clearInterval(intervalId);
+    } else if (initialItem.processingStatus == "processed" && item.text) {
+      setDisplayedText(item.text.join("\n"));
     }
-  }, [item.processingStatus, item.text]);
+  }, [item.text]);
 
-  if (item.processingStatus === "processing") {
+  if (item.processingStatus == "processing") {
     return (
       <div className="animate-pulse space-y-2">
         <div className="h-6 bg-gray-300 rounded w-1/4" />
@@ -65,7 +61,7 @@ const AITextItem = ({ initialItem }) => {
     );
   }
 
-  if (item.processingStatus === "error") {
+  if (item.processingStatus == "error") {
     return <div className="text-red-500">Error processing response</div>;
   }
 
@@ -81,7 +77,7 @@ const AITextItem = ({ initialItem }) => {
           </div>
         ) : (
           <ReactMarkdown key={i} className="prose dark:prose-invert max-w-none">
-            {i === 1 ? displayedText : t}
+            {i === 1 && item.processingStatus == "processing" ? displayedText : t}
           </ReactMarkdown>
         )
       )}
