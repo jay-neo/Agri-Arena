@@ -14,7 +14,7 @@ const generateFakeArenas = (num: number) => {
   }));
 };
 
-const generateFakeIoTs = (count: number): IoTIds[] => {
+const generateFakeIoTs = (count: number): IotInfo[] => {
   return Array.from({ length: count }, (_, index) => ({
     id: faker.string.uuid(),
     title: faker.commerce.productName(),
@@ -232,7 +232,7 @@ export const getFakeIotDataFiveYears: any = async () => {
   return dataset;
 };
 
-export const getFakeIoTDetails = (num = 20): IoT_Details[] => {
+export const getFakeIoTDetails = (num = 20): IotDetails[] => {
   return Array.from({ length: num }, (_, index) => ({
     id: faker.string.uuid(),
     title: faker.animal.bird(),

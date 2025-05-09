@@ -1,0 +1,152 @@
+[
+  {
+    "device": 2135575333,
+    "ph": 6.5,
+    "nitrogen": 90,
+    "humidity": 82.54,
+    "moisture": 60,
+    "potassium": 45,
+    "phosphorus": 42,
+    "temperature": 20
+  },
+  {
+    "device": 2135575333,
+    "ph": 7.0,
+    "nitrogen": 85,
+    "humidity": 80.31,
+    "moisture": 65,
+    "potassium": 41,
+    "phosphorus": 58,
+    "temperature": 21.77
+  },
+  {
+    "device": 2135575333,
+    "ph": 6.98,
+    "nitrogen": 74,
+    "humidity": 80.15,
+    "moisture": 70,
+    "potassium": 40,
+    "phosphorus": 35,
+    "temperature": 26
+  },
+  {
+    "device": 2135575333,
+    "ph": 5.07,
+    "nitrogen": 76,
+    "humidity": 83.11,
+    "moisture": 62,
+    "potassium": 43,
+    "phosphorus": 40,
+    "temperature": 25.15
+  },
+  {
+    "device": 2135575333,
+    "ph": 6.35,
+    "nitrogen": 92,
+    "humidity": 82,
+    "moisture": 72,
+    "potassium": 40,
+    "phosphorus": 35,
+    "temperature": 22.79
+  },
+  {
+    "device": 2135575333,
+    "ph": 5.53,
+    "nitrogen": 64,
+    "humidity": 83.52,
+    "moisture": 69,
+    "potassium": 43,
+    "phosphorus": 45,
+    "temperature": 25.62
+  },
+  {
+    "device": 2135575333,
+    "ph": 6.76,
+    "nitrogen": 76,
+    "humidity": 80.04,
+    "moisture": 64,
+    "potassium": 39,
+    "phosphorus": 60,
+    "temperature": 20.04
+  },
+  {
+    "device": 2135575333,
+    "ph": 5.59,
+    "nitrogen": 99,
+    "humidity": 80.33,
+    "moisture": 63,
+    "potassium": 37,
+    "phosphorus": 54,
+    "temperature": 21.14
+  },
+  {
+    "device": 2135575333,
+    "ph": 5.7,
+    "nitrogen": 72,
+    "humidity": 82.94,
+    "moisture": 68,
+    "potassium": 35,
+    "phosphorus": 45,
+    "temperature": 25.49
+  },
+  {
+    "device": 2135575333,
+    "ph": 6.5,
+    "nitrogen": 93,
+    "humidity": 82.14,
+    "moisture": 60,
+    "potassium": 37,
+    "phosphorus": 47,
+    "temperature": 21.53
+  },
+  {
+    "device": 2135575333,
+    "ph": 5.9,
+    "nitrogen": 99,
+    "humidity": 81.17,
+    "moisture": 62,
+    "potassium": 35,
+    "phosphorus": 57,
+    "temperature": 26.75
+  },
+  {
+    "device": 2135575333,
+    "ph": 6.35,
+    "nitrogen": 92,
+    "humidity": 80.64,
+    "moisture": 61,
+    "potassium": 40,
+    "phosphorus": 35,
+    "temperature": 22
+  },
+  {
+    "device": 2135575333,
+    "ph": 7.0,
+    "nitrogen": 60,
+    "humidity": 80.36,
+    "moisture": 60,
+    "potassium": 39,
+    "phosphorus": 48,
+    "temperature": 24.56
+  },
+  {
+    "device": 2135575333,
+    "ph": 6.9,
+    "nitrogen": 93,
+    "humidity": 82,
+    "moisture": 71,
+    "potassium": 36,
+    "phosphorus": 56,
+    "temperature": 24.85
+  },
+  {
+    "device": 2135575333,
+    "ph": 7.5,
+    "nitrogen": 90,
+    "humidity": 82.4,
+    "moisture": 67,
+    "potassium": 42,
+    "phosphorus": 46,
+    "temperature": 23.97
+  }
+]

@@ -1,8 +1,8 @@
 type FormState =
-    | {
-        error?: string;
-        message?: string;
-        success?: string;
-        next?: string;
+  | {
+      error?: string;
+      message?: string;
+      success?: string;
+      next?: string;
     }
-    | undefined;
+  | undefined;

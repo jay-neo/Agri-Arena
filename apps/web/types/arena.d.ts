@@ -1,32 +1,35 @@
-type ArenaOverview = {
-    idx: number;
-    title: string;
-    location: string;
-    iots: number;
-    updatedAt: Date;
-    currentCrop?: string;
-    area?: string;
-    soilType?: string;
-    image?: string;
+type ArenaBaseData = {
+  image?: string;
+  title: string;
+  location: string;
+  area?: string;
+  soilType?: string;
+  currentCrop?: string;
+  description?: string;
+};
+
+type ArenaOverview = ArenaBaseData & {
+  idx: number;
+  iots: number;
+  updatedAt: Date;
 };
 
 type ArenaInfo = {
-    id: string;
-    title: string;
-    location: string;
+  id: string;
+  title: string;
+  location: string;
 };
 
-type ArenaDetails = {
-    id: string;
-    title: string;
-    image: string;
-    location: string;
-    description?: string;
-    createdAt: Date;
+type ArenaDetails = ArenaBaseData & {
+  id: string;
+  idx: number;
+  isReal: boolean;
+  updatedAt: Date;
+  createdAt: Date;
 };
 
-type ArenaDataCount = {
-    experiments: number;
-    predictions: number;
-    images: number;
+type ArenaSpecificActivity = {
+  experiments: number;
+  predictions: number;
+  images: number;
 };
