@@ -13,7 +13,7 @@ datasource db {
 // https://www.prisma.io/docs/orm/overview/databases/postgresql
 
 model User {
-  id            String    @id @default(cuid())
+  id            String    @id @default(uuid())
   createdAt     DateTime? @default(now())
   updatedAt     DateTime  @updatedAt
   name          String
@@ -47,6 +47,7 @@ model User {
   Follower      Follower[]
   FollowRequest FollowRequest[]
   Block         Block[]
+  Event         Event[]
 }
 
 model Profile {
@@ -84,7 +85,7 @@ model Account {
 }
 
 model Session {
-  sessionToken String   @unique @default(cuid())
+  sessionToken String   @unique @default(uuid())
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -102,26 +103,30 @@ model VerificationToken {
 }
 
 model Arena {
-  id          String   @id @default(cuid())
-  idx         Int
-  title       String
-  image       String
-  description String?
-  location    String?
-  currentCrop String?
-  area        String?
-  soilType    String?
-  isReal      Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId      String
+  id  String @id @default(uuid())
+  idx Int
+
+  title                    String
+  image                    String
+  description              String?
+  location                 String?
+  area                     String?
+  soilType                 String?
+  currentCrop              String?
+  currectCropCultivateDate DateTime?
+  colorCode                String
+  isReal                   Boolean   @default(true)
+  createdAt                DateTime  @default(now())
+  updatedAt                DateTime  @updatedAt
+  user                     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId                   String
 
   arenaHistory ArenaHistory[]
   iot          IoT[]
   experiments  Experiments[]
   images       Image[]
   predictions  Prediction[]
+  Event        Event[]
 
   @@unique([idx, userId])
 }
@@ -139,7 +144,7 @@ model ArenaHistory {
 }
 
 model Activity {
-  id            String       @id @default(cuid())
+  id            String       @id @default(uuid())
   idx           Int
   title         String       @default("Untitled Activity")
   isReal        Boolean      @default(true)
@@ -159,7 +164,7 @@ model Activity {
 }
 
 model Activity_Monitoring {
-  id          String @id @default(cuid())
+  id          String @id @default(uuid())
   activities  Int    @default(0)
   iots        Int    @default(0)
   arenas      Int    @default(0)
@@ -177,7 +182,7 @@ enum Type {
 }
 
 model IoT {
-  id            String       @id @default(cuid())
+  id            String       @id @default(uuid())
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
   interval      Int
@@ -197,7 +202,7 @@ model IoT {
 }
 
 model Experiments {
-  id          String             @id @default(cuid())
+  id          String             @id @default(uuid())
   createdAt   DateTime           @default(now())
   updatedAt   DateTime           @updatedAt
   count       Int                @default(1)
@@ -215,7 +220,7 @@ model Experiments {
 }
 
 model Experiments_Data {
-  id            String      @id @default(cuid())
+  id            String      @id @default(uuid())
   createdAt     DateTime    @default(now())
   ipAddress     String?
   nitrogen      Float       @default(0)
@@ -230,7 +235,7 @@ model Experiments_Data {
 }
 
 model Prediction {
-  id              String           @id @default(cuid())
+  id              String           @id @default(uuid())
   createdAt       DateTime         @default(now())
   updatedAt       DateTime         @updatedAt
   user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -244,7 +249,7 @@ model Prediction {
 }
 
 model PredictionData {
-  id              String               @id @default(cuid())
+  id              String               @id @default(uuid())
   createdAt       DateTime             @default(now())
   role            ActivityRole
   text            String[]
@@ -265,7 +270,7 @@ model CropPredictionModel {
 }
 
 model Image {
-  id         String      @id @default(cuid())
+  id         String      @id @default(uuid())
   createdAt  DateTime    @default(now())
   updatedAt  DateTime    @updatedAt
   user       User        @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -277,7 +282,7 @@ model Image {
 }
 
 model ImageData {
-  id               String                     @id @default(cuid())
+  id               String                     @id @default(uuid())
   createdAt        DateTime                   @default(now())
   role             ActivityRole
   type             ImageDataType? // if "user" then check type "image" or "text"
@@ -298,7 +303,7 @@ enum ImageDataProcessingStatus {
 }
 
 model ImageProcessingModel {
-  id       String   @id @default(cuid())
+  id       String   @id @default(uuid())
   name     String
   number   Int
   result   String[]
@@ -318,6 +323,39 @@ enum ImageDataType {
   text
 }
 
+model Event {
+  id          String      @id @default(uuid())
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  deletedAt   DateTime?
+  author      EventAuthor @default(user)
+  title       String
+  description String?
+  type        String?
+  location    String?
+  colorCode   String?
+  startTime   DateTime?
+  endTime     DateTime?
+  alarmTime   DateTime?
+  status      EventStatus @default(pending)
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId  String
+  arena   Arena?  @relation(fields: [arenaId], references: [id], onDelete: Cascade)
+  arenaId String?
+}
+
+enum EventAuthor {
+  user
+  ai
+}
+
+enum EventStatus {
+  pending
+  ongoing
+  finished
+}
+
 model Share {
   id     String  @id @default(uuid())
   idx    Int
@@ -327,7 +365,24 @@ model Share {
   @@unique([idx, userId])
 }
 
-// https://www.prisma.io/data-platform/pulse
+model DefaultValue {
+  id    String @id @default(uuid())
+  name  String
+  value String
+  type  String
+}
+
+model ForecastAgricultureSchema {
+  id          String    @id @default(uuid())
+  name        String
+  link        String
+  description String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  expiresAt   DateTime?
+
+  @@unique([name, link])
+}
 
 model Post {
   id        Int       @id @default(autoincrement())
