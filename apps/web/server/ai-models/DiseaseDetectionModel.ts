@@ -10,16 +10,13 @@ class DiseaseDetectionModel {
   private modelEndpoint = `${process.env.DD_MODEL_ENDPOINT}/image_predict`;
   private imagesId: string | null = null;
 
-  public async run(
-    user: any,
-    data: DiseaseDetectionModelRequest
-  ): Promise<string> {
+  public async run(user: any, data: DiseaseDetectionModelRequest) {
     try {
       // Step 1: Initialize the images activity with database intsertion
       const images = await db.image.create({
         data: {
           userId: user.id,
-          arenaId: data?.arenaId,
+          ...(user.arenaId && { arenaId: data?.arenaId }),
         },
         select: {
           id: true,
@@ -92,7 +89,10 @@ class DiseaseDetectionModel {
       // Step 4: Prompt the AI asynchronously with the disease detection result
       this.imagesId = images.id;
       this.prompting(data?.crop, res);
-      return images.id;
+      return {
+        imagesId: images.id as string,
+        numberOfDisease: res.number_of_disease as number,
+      };
     } catch (error) {
       throw error;
     }
@@ -101,7 +101,7 @@ class DiseaseDetectionModel {
   public async prompting(
     crop: string,
     data: DiseaseDetectionModelResponse,
-    arena?: any
+    arena?: any,
   ): Promise<void> {
     try {
       const imagesDataAi = await db.imageData.create({
