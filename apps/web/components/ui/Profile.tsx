@@ -4,7 +4,7 @@ import { toast } from "sonner";
 import Image from "next/image";
 import { useFormState, useFormStatus } from "react-dom";
 import { Edit } from "~/lib/arena-icons";
-import { setProfile } from "~/app/server/user";
+import { setProfile } from "~/app/actions/user";
 import React, { useEffect, useState } from "react";
 
 export const ProfileForm = ({
@@ -31,7 +31,7 @@ export const ProfileForm = ({
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) =>
-      prevData ? { ...prevData, [name]: value } : null
+      prevData ? { ...prevData, [name]: value } : null,
     );
   };
 
@@ -42,7 +42,7 @@ export const ProfileForm = ({
         setFormData((prevData) =>
           prevData
             ? { ...prevData, image: event.target?.result as string }
-            : null
+            : null,
         );
       };
       reader.readAsDataURL(e.target.files[0]);
@@ -151,7 +151,7 @@ export const ProfileForm = ({
                 )}
               </div>
             );
-          }
+          },
         )}
       </div>
 

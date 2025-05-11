@@ -1,7 +1,7 @@
 // "use client";
 import React from "react";
 import { Button } from "../../form/button";
-import { login } from "~/app/server/next-auth-v5";
+import { login } from "~/app/actions/auth";
 import { auth } from "~/auth";
 import { db } from "~/lib/prisma";
 import { BlockReason } from "@google/generative-ai";

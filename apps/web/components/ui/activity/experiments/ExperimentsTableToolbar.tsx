@@ -42,7 +42,7 @@ const EnhancedTableToolbar: React.FC<EnhancedTableToolbarProps> = ({
           bgcolor: (theme) =>
             alpha(
               theme.palette.primary.main,
-              theme.palette.action.activatedOpacity
+              theme.palette.action.activatedOpacity,
             ),
         }),
       }}

@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "~/lib/prisma";
-import { getUser } from "~/app/server/user";
+import { getUser } from "~/app/actions/user";
 import { uploadInPublicS3Bucket } from "~/lib/aws/s3";
 
 export async function addPostsWithImage(formData: FormData) {
@@ -26,4 +26,3 @@ export async function addPostsWithImage(formData: FormData) {
 
   return { success: true };
 }
-

@@ -18,7 +18,7 @@ export const LinkPreview: React.FC<{ link: string }> = ({ link }) => {
     async function fetchPreview(url: string) {
       try {
         const response = await fetch(
-          `/api/og/preview?url=${encodeURIComponent(url)}`
+          `/api/og/preview?url=${encodeURIComponent(url)}`,
         );
         const data = await response.json();
         setPreview(data);

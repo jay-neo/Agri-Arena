@@ -18,10 +18,10 @@
 //     if (result && result.success) {
 //       setTimeout(() => {
 //           setDesc("");
-//       }, 1); 
+//       }, 1);
 //   }
 // };
-  
+
 //   return (
 //     <div className="p-4 bg-white bg-white dark:bg-[#2A2A4F] border border-gray-300 dark:border-gray-600 rounded-lg flex gap-4 justify-between text-sm">
 //       {/* avatar */}
@@ -64,11 +64,6 @@
 // };
 // export default AddPost;
 
-
-
-
-
-
 "use client";
 import Image from "next/image";
 import { useState, useRef, ChangeEvent } from "react";
@@ -90,13 +85,16 @@ const AddPost = ({ user }: { user: UserType }) => {
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file && file.size < 2000000 && /image\/(jpeg|jpg|png)/.test(file.type)) {
+    if (
+      file &&
+      file.size < 2000000 &&
+      /image\/(jpeg|jpg|png)/.test(file.type)
+    ) {
       setImageFile(file);
     } else {
       alert("Invalid image. Must be jpg/png and < 2MB.");
     }
   };
-
 
   const router = useRouter();
   const handleSubmit = async (formData: FormData) => {
@@ -167,7 +165,12 @@ const AddPost = ({ user }: { user: UserType }) => {
             className="flex items-center gap-2 cursor-pointer text-blue-500 hover:underline"
             onClick={() => fileInputRef.current?.click()}
           >
-            <Image src="/socialimg/addimage.png" alt="Add" width={20} height={20} />
+            <Image
+              src="/socialimg/addimage.png"
+              alt="Add"
+              width={20}
+              height={20}
+            />
             Photo
           </div>
         </form>
@@ -177,9 +180,3 @@ const AddPost = ({ user }: { user: UserType }) => {
 };
 
 export default AddPost;
-
-
-
-
-
-

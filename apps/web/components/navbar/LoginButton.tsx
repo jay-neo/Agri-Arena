@@ -4,10 +4,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 export default () => {
-    const currentPath = usePathname();
-    const isSignInOrLoginPage =
+  const currentPath = usePathname();
+  const isSignInOrLoginPage =
     currentPath === "/signup" || currentPath === "/login";
-
 
   return (
     !isSignInOrLoginPage && (

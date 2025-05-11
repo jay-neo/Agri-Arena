@@ -23,12 +23,6 @@ const Userinfo = ({ userData }: { userData: usertype }) => {
     <div className="flex flex-col items-center p-2">
       <div className="w-full h-56 relative">
         <Image
-          src="https://images.pexels.com/photos/64221/flower-sunflower-karnataka-india-64221.jpeg?auto=compress&cs=tinysrgb&w=300"
-          className="object-cover rounded-lg"
-          fill
-          alt=""
-        />
-        <Image
           src={userData.image}
           width={128}
           height={128}

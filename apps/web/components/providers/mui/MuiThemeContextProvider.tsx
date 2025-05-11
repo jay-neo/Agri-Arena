@@ -47,7 +47,7 @@ export const MuiThemeContextProvider = ({
           mode,
         },
       }),
-    [mode]
+    [mode],
   );
 
   const toggleTheme = () => {

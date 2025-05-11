@@ -3,6 +3,7 @@
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 
 import clsx from "clsx";
+import { getActivitiesWithParams } from "~/app/actions/activity/getActivitiesWithParamsAction";
 
 export default () => {
   const searchParams = useSearchParams();
@@ -13,7 +14,7 @@ export default () => {
 
   const currentTopic = searchParams.get("topic") || "all";
 
-  const handleTopicChange = (topic: string) => {
+  const handleTopicChange = async (topic: string) => {
     const params = new URLSearchParams(searchParams.toString());
     const lowerTopic = topic.toLowerCase();
     if (lowerTopic === "all") {
@@ -22,6 +23,7 @@ export default () => {
       params.set("topic", lowerTopic);
     }
     replace(`${pathname}?${params.toString()}`);
+    await getActivitiesWithParams();
   };
 
   const capitalize = (str: string) =>
@@ -38,7 +40,7 @@ export default () => {
               "px-4 py-1 rounded-full whitespace-nowrap text-sm",
               currentTopic === topic
                 ? "bg-rose-600/70 text-white font-normal"
-                : "border-2 border-purple-700 text-rose-400"
+                : "border-2 border-purple-700 text-rose-400",
             )}
           >
             <span>{capitalize(topic)}</span>

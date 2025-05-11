@@ -1,6 +1,6 @@
 "use client";
 
-import { getProductsWithParams } from "~/app/server/store";
+import { getProductsWithParams } from "~/app/actions/store";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 
 export default () => {

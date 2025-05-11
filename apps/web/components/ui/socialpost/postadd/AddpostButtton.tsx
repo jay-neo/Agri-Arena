@@ -44,9 +44,6 @@
 
 // export default AddpostButton;
 
-
-
-
 "use client";
 import { useFormStatus } from "react-dom";
 
@@ -65,4 +62,3 @@ const AddPostButton = () => {
 };
 
 export default AddPostButton;
-

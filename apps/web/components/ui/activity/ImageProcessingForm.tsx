@@ -2,7 +2,7 @@
 
 import { toast } from "sonner";
 import { neoFormAction } from "~/lib/hooks";
-import { ReactButton } from "~/lib/neo/button";
+import { ReactButton } from "~/lib/neo/ReactButton";
 import { getArenaInfo } from "~/app/actions/arena/getArenaInfo";
 import { fileUploadAction } from "~/app/actions/file-upload/aws-s3";
 import { Autocomplete, Fade, TextField, Tooltip } from "@mui/material";
@@ -13,7 +13,7 @@ import { getDiseaseDetectionModelsInfo } from "~/app/actions/ai-models/getDiseas
 export default function DiseaseDetectionForm() {
   const [uploadState, uploadAction] = neoFormAction(fileUploadAction);
   const [_detectionState, detectionAction] = neoFormAction(
-    diseaseDetectionModelAction
+    diseaseDetectionModelAction,
   );
 
   const [arenas, setArenas] = useState<ArenaInfo[]>([]);
@@ -188,7 +188,7 @@ export default function DiseaseDetectionForm() {
                   value={selectedCrop}
                   onChange={(
                     _event: any,
-                    value: DiseaseDetectionModelInfo | null
+                    value: DiseaseDetectionModelInfo | null,
                   ) => {
                     setSelectedCrop(value);
                   }}
@@ -264,7 +264,7 @@ export default function DiseaseDetectionForm() {
               <div className="mt-2 flex gap-4 items-center justify-center">
                 <ReactButton
                   onStatic="Process"
-                  onAction="Processing..."
+                  onAction="Processing"
                   className="upload-image text-sm px-4 py-2 dark:bg-rose-600/70 hover:dark:bg-rose-600 text-white font-semibold rounded-lg transition duration-300 disabled:bg-rose-600/70"
                 />
                 <button

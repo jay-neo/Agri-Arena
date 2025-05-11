@@ -56,7 +56,7 @@ export default () => {
         {UserSpaceSection.map((item, index) => (
           <li
             key={index}
-            className={`px-4 py-1 flex items-center space-x-4 text-sm`}
+            className={`px-4 py-1.5 flex items-center space-x-4 text-base`}
           >
             <span className="flex-grow"> </span>
             <span className="flex-shrink-0">
@@ -68,7 +68,7 @@ export default () => {
                   {item.icon}
                 </span>
                 <span
-                  className={`${pathname.startsWith(item.path) ? "dark:text-yellow-400 text-cyan-500 border-b dark:border-yellow-400 border-cyan-500" : ""}`}
+                  className={`${pathname.startsWith(item.path) ? "dark:text-yellow-400 text-cyan-500 border-b border-dashed dark:border-yellow-400 border-cyan-500" : ""}`}
                 >
                   {item.title}
                 </span>

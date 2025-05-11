@@ -1,52 +1,35 @@
 // "use client"
 import React, { useEffect, useState } from "react";
 import { db } from "~/lib/prisma";
-import { getComments } from "~/app/server/social/post/action";
-import { getUser } from "~/app/server/user";
+import { getComments } from "~/app/actions/social/post/action";
+import { getUser } from "~/app/actions/user";
 import CommentList from "./CommentList";
 import CommentClient from "./CommentClient";
 // import Comments from './Comments'
 
-const Comment = async ({id,postId}:{id:string;postId:number}) => {
+const Comment = async ({ id, postId }: { id: string; postId: number }) => {
   const user = await getUser();
-  
-  
+
   const comments = await db.comment.findMany({
-    where:{
+    where: {
       postId,
     },
-    include:{
-      user:true
-    }
-  })
+    include: {
+      user: true,
+    },
+  });
 
-
-
-  
   return (
     <div>
-      <CommentClient user={user} postId={postId} comments={comments}/>
-{/* postId={postId} */}
+      <CommentClient user={user} postId={postId} comments={comments} />
+      {/* postId={postId} */}
     </div>
   );
 };
 
 export default Comment;
 
-  // {postId}:{postId:number}
-
-
-
-
-
-
-
-
-
-
-
-
-
+// {postId}:{postId:number}
 
 // "use client";
 // import React, { useEffect, useState } from "react";

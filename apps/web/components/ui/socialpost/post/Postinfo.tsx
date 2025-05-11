@@ -39,11 +39,10 @@
 // };
 // export default Postinfo;
 
-
 "use client";
 import Image from "next/image";
 import { useState } from "react";
-import { deletePost } from "~/app/server/social/post/action";
+import { deletePost } from "~/app/actions/social/post/action";
 
 const Postinfo = ({ postId }: { postId: number }) => {
   const [showConfirmation, setShowConfirmation] = useState(false);
@@ -60,11 +59,12 @@ const Postinfo = ({ postId }: { postId: number }) => {
 
   return (
     <div className="relative">
-      <button 
-        onClick={handleDelete} 
+      <button
+        onClick={handleDelete}
         className=" rounded-lg flex items-center gap-2 text-white"
         aria-label="Delete post"
-      ><Image src="/socialimg/delete.png" width={20} height={20} alt="" />
+      >
+        <Image src="/socialimg/delete.png" width={20} height={20} alt="" />
       </button>
 
       {showConfirmation && (
@@ -72,8 +72,18 @@ const Postinfo = ({ postId }: { postId: number }) => {
           <div className="bg-white dark:bg-gray-500 p-6 rounded-lg">
             <p>Are you sure you want to delete this post?</p>
             <div className="flex justify-end mt-4 gap-4">
-              <button onClick={() => setShowConfirmation(false)} className="px-4 py-2 bg-gray-300 dark:bg-gray-700 rounded">Cancel</button>
-              <button onClick={confirmDelete} className="px-4 py-2 bg-red-600 text-white rounded">Delete</button>
+              <button
+                onClick={() => setShowConfirmation(false)}
+                className="px-4 py-2 bg-gray-300 dark:bg-gray-700 rounded"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={confirmDelete}
+                className="px-4 py-2 bg-red-600 text-white rounded"
+              >
+                Delete
+              </button>
             </div>
           </div>
         </div>

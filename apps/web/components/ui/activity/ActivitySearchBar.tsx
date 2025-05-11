@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
-import { getActivitiesWithParams } from "~/app/actions/activity";
+import { getActivitiesWithParams } from "~/app/actions/activity/getActivitiesWithParamsAction";
 
 export default () => {
   const pathname = usePathname();

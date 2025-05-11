@@ -1,7 +1,7 @@
 "use client";
 import { log } from "console";
 import React, { useOptimistic, useState } from "react";
-import { switchBlock, switchfollow } from "~/app/server/social/post/action";
+import { switchBlock, switchfollow } from "~/app/actions/social/post/action";
 
 const Userdetailsinteraction = ({
   loginid,
@@ -22,8 +22,7 @@ const Userdetailsinteraction = ({
     followingRequestSent: isFollowingSent,
   });
 
-
-  console.log("inside userdetailsinteraction follow state  ",isFollowingSent)
+  console.log("inside userdetailsinteraction follow state  ", isFollowingSent);
   const follow = async () => {
     switchOptimisticState("follow");
     try {
@@ -60,7 +59,7 @@ const Userdetailsinteraction = ({
             followRequestSent:
               !state.following && !state.followingRequestSent ? true : false,
           }
-        : { ...state, blocked: !state.blocked }
+        : { ...state, blocked: !state.blocked },
   );
   return (
     <div>

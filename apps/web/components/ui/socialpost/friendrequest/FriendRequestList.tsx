@@ -5,7 +5,7 @@ import React, { use, useOptimistic, useState } from "react";
 import {
   acceptfollowRequest,
   declinefollowRequest,
-} from "~/app/server/social/post/action";
+} from "~/app/actions/social/post/action";
 
 type Requests = FollowRequest & {
   sender: User;
@@ -22,7 +22,6 @@ const FriendRequestList = ({ requests }: { requests: Requests[] }) => {
     } catch (error) {}
   };
 
-
   const decline = async (requestId: number, userId: string) => {
     removeOptimisticRequest(requestId);
     try {
@@ -33,7 +32,7 @@ const FriendRequestList = ({ requests }: { requests: Requests[] }) => {
 
   const [optimisticRequest, removeOptimisticRequest] = useOptimistic(
     requestState,
-    (state, value: number) => state.filter((req) => req.id !== value)
+    (state, value: number) => state.filter((req) => req.id !== value),
   );
 
   return (
@@ -82,4 +81,3 @@ const FriendRequestList = ({ requests }: { requests: Requests[] }) => {
 };
 
 export default FriendRequestList;
-

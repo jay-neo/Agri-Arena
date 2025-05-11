@@ -2,7 +2,7 @@
 import { Comment, User } from "@prisma/client";
 import React, { useOptimistic, useState, useRef } from "react";
 import Image from "next/image";
-import { addComment, getComments } from "~/app/server/social/post/action";
+import { addComment, getComments } from "~/app/actions/social/post/action";
 type CommentWithUser = Comment & { user: User };
 import Link from "next/link";
 import { formatDateToDDMMYYYY } from "~/lib/formatters";
@@ -55,12 +55,12 @@ const CommentList = ({
       if (inputRef.current) {
         inputRef.current.value = ""; //clear the input directly
       }
-    } catch (error) { }
+    } catch (error) {}
   };
 
   const [optimisticComments, addOptimisticComments] = useOptimistic(
     cummentState,
-    (state, value: CommentWithUser) => [value, ...state]
+    (state, value: CommentWithUser) => [value, ...state],
   );
   return (
     <div>

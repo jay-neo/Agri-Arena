@@ -1,14 +1,14 @@
 "use client";
 
 import { toast } from "sonner";
+import { useFormState } from "react-dom";
 import { useEffect, useState } from "react";
 import { GridRowsProp } from "@mui/x-data-grid";
-import { getArenasWithId } from "~/app/server/arena";
-import { Button } from "~/components/ui/form/button";
-import { useFormState, useFormStatus } from "react-dom";
-import { IoTFormState } from "~/app/server/iot/validation";
+import { getArenaInfo } from "~/app/actions/arena";
+import { ReactButton } from "~/lib/neo/ReactButton";
+import { IoTState } from "~/app/actions/iot/iot.schema";
 import { TextField, Autocomplete, Tooltip, Fade } from "@mui/material";
-import { ReactButton } from "~/lib/neo/button";
+import clsx from "clsx";
 
 export const IoTForm = ({
   data,
@@ -23,7 +23,7 @@ export const IoTForm = ({
   setRows?: React.Dispatch<React.SetStateAction<IoT[]>>;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setNewRow?: (newRows: (oldRows: GridRowsProp) => GridRowsProp) => void;
-  action: (_state: IoTFormState, formData: FormData) => Promise<IoTFormState>;
+  action: (_state: IoTState, formData: FormData) => Promise<IoTState>;
 }) => {
   const [state, neoAction] = useFormState(action, undefined);
   const [arenas, setArenas] = useState<ArenaInfo[]>([]);
@@ -33,7 +33,7 @@ export const IoTForm = ({
   } | null>(data ? { arena: data.arena, arenaId: data.arenaId } : null);
 
   useEffect(() => {
-    (async () => setArenas(await getArenasWithId()))();
+    (async () => setArenas(await getArenaInfo()))();
   }, []);
 
   useEffect(() => {
@@ -45,8 +45,8 @@ export const IoTForm = ({
       } else if (formType === "edit") {
         setRows((prevRows) =>
           prevRows.map((row) =>
-            row.id === data.id ? { ...row, ...neoData } : row
-          )
+            row.id === data.id ? { ...row, ...neoData } : row,
+          ),
         );
       }
       setIsOpen(false);
@@ -62,14 +62,17 @@ export const IoTForm = ({
         onClick={() => setIsOpen(false)}
       ></div>
 
-      <div className="relative bg-white dark:bg-teal-500 p-5 md:p-10 scrollbar-hide rounded-lg shadow-lg w-full  max-w-2xl max-h-full h-auto overflow-auto">
+      <div className="relative bg-white dark:bg-[#2f2f61] p-5 md:p-10 scrollbar-hide rounded-lg shadow-lg w-full  max-w-2xl max-h-full h-auto overflow-auto">
+        <h1 className="font-semibold text-2xl mb-4 text-center">
+          {formType == "create" ? "Create IoT" : "Update IoT"}
+        </h1>
         <button
           className="absolute top-2 right-5 font-bold text-gray-600 hover:text-gray-900 text-3xl"
           onClick={() => setIsOpen(false)}
         >
           &times;
         </button>
-        <form action={neoAction} className="mt-6 md:mt-1">
+        <form action={neoAction} className="mt-6 md:mt-1 dark:invert">
           <Tooltip
             arrow
             placement="right"
@@ -77,7 +80,7 @@ export const IoTForm = ({
             disableHoverListener
             disableTouchListener
             TransitionComponent={Fade}
-            title="This is you custom IoT identification title"
+            title="This is your preferred IoT identification title"
           >
             <TextField
               margin="dense"
@@ -183,7 +186,7 @@ export const IoTForm = ({
               value={
                 (arenas &&
                   arenas.find(
-                    (arena) => arena.id === selectedArena?.arenaId
+                    (arena) => arena.id === selectedArena?.arenaId,
                   )) ||
                 null
               }
@@ -252,7 +255,14 @@ export const IoTForm = ({
             <input type="hidden" name="device" value={data?.device || ""} />
           )}
           <div className="flex flex-row items-center justify-center gap-4 mt-2">
-            <ReactButton onStatic="Save" onAction="Saving..." />
+            <ReactButton
+              onStatic="Save"
+              onAction="Saving "
+              className={clsx(
+                "m-1 px-6 py-1.5 min-w-24 text-white font-semibold rounded-lg transition duration-300 disabled:bg-rose-600/70",
+                "bg-purple-600/80 hover:bg-purple-600 dark:bg-rose-600/70 hover:dark:bg-rose-600",
+              )}
+            />
           </div>
         </form>
       </div>

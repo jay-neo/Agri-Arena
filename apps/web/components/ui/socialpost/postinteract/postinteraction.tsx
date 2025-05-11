@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useOptimistic, useState } from "react";
 import Image from "next/image";
-import { switchLike } from "~/app/server/social/post/action";
+import { switchLike } from "~/app/actions/social/post/action";
 import Post from "../post/Post";
 // import { getUser } from '~/app/server/user';
 const postinteraction = ({
@@ -26,7 +26,7 @@ const postinteraction = ({
         likeCount: state.isLiked ? state.likeCount - 1 : state.likeCount + 1,
         isLiked: !state.isLiked,
       };
-    }
+    },
   );
   const likeaction = async () => {
     switchOptimisticLike("");

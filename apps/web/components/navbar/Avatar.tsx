@@ -4,11 +4,11 @@ import clsx from "clsx";
 import Link from "next/link";
 import Image from "next/image";
 import { isMobile } from "~/lib/utils";
+import { logout } from "~/app/actions/auth";
 import { usePathname } from "next/navigation";
-import { logout } from "~/app/server/next-auth-v5/logout";
 import { NavbarThemeToggleButton } from "./NavbarThemeToggleButton";
 import React, { useState, useEffect, useRef, MutableRefObject } from "react";
-  
+
 const LIST =
   "flex w-full cursor-pointer items-center justify-start px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:bg-gray-600 dark:focus:text-white";
 

@@ -28,5 +28,4 @@ export async function uploadInPublicS3Bucket(file: File, path: string) {
   await s3.send(command);
 
   return `https://${BUCKET}.s3.${process.env.AWS_REGION}.amazonaws.com/${encodeURIComponent(fileKey)}`;
-
 }

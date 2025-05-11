@@ -27,7 +27,7 @@ const Post = ({ post, id }: { post: Feedposttype; id: string }) => {
             height={40}
             className="w-10 h-10 rounded-full"
           />{" "}
-          <Link href={`/social/profile/${post.user.name}`}>
+          <Link href={`/social/profile/${post.user.id}`}>
             <span className="cursor-pointer hover:underline">
               {post.user.name}
             </span>
