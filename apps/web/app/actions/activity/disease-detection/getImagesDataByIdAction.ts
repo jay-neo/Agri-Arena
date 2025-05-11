@@ -2,9 +2,8 @@
 
 import { db } from "~/lib/prisma";
 
-export const getImagesDataById = async (id: string) => {
+export const getImagesDataByIdAction = async (id: string) => {
   try {
-    console.log("ID", id);
     return await db.imageData.findUnique({
       where: {
         id: id,
