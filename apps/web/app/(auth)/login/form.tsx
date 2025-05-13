@@ -5,10 +5,10 @@ import Image from "next/image";
 import { toast } from "sonner";
 import { HOMEPAGE } from "~/lib/routes";
 import { useFormState } from "react-dom";
-import { login } from "~/app/server/auth";
 import { redirect } from "next/navigation";
+import { login } from "~/app/actions/auth";
 import { useEffect, useState } from "react";
-import { ReactButton } from "~/lib/neo/button";
+import { ReactButton } from "~/lib/neo/ReactButton";
 import { OpenedEye, ClosedEye } from "~/lib/arena-icons";
 
 export function LoginForm() {
