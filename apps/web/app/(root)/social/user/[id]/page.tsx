@@ -1,4 +1,4 @@
-import { getProfileById } from "~/app/server/user/profile";
+import { getProfileById } from "~/app/actions/user";
 import { ProfileForm } from "~/components/ui/Profile";
 
 export default async ({ params }: { params: { id: string } }) => {

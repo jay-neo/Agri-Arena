@@ -1,7 +1,5 @@
 import { redirect } from "next/navigation";
 
 export default function Page() {
-  return (
-  redirect(`/social/posts`)
-  );
+  return redirect(`/social/posts`);
 }
