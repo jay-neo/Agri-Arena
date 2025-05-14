@@ -1,15 +1,13 @@
-import {
-  ImagesPage,
-  getActivity,
-  ExperimentsPage,
-  PredictionsPage,
-} from "~/app/server/activity";
+import { getActivity } from "~/app/actions/activity";
 import Link from "next/link";
 import Image from "next/image";
 import { HOMEPAGE } from "~/lib/routes";
 import { redirect } from "next/navigation";
-import { findShare } from "~/app/server/share";
-import { getUserById } from "~/app/server/user";
+import { findShare } from "~/app/actions/share";
+import { getUserById } from "~/app/actions/user";
+import { ExperimentsPage } from "~/app/(root)/my/activity/[id]/ExperimentsPage";
+import { PredictionsPage } from "~/app/(root)/my/activity/[id]/PredictionsPage";
+import { ImagesPage } from "~/app/(root)/my/activity/[id]/ImagesPage";
 
 export default async ({ params }: { params: { id: string } }) => {
   const share = await findShare(params.id);
@@ -18,7 +16,7 @@ export default async ({ params }: { params: { id: string } }) => {
   }
 
   const user = await getUserById(share.userId);
-  const data: Activity_Header = await getActivity(share.idx, share.userId);
+  const data: ActivityHeader = await getActivity(share.idx, share.userId);
 
   if (!data) {
     return redirect(HOMEPAGE);

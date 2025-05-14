@@ -1,7 +1,7 @@
 import { meta } from "~/lib/meta";
 import { Metadata } from "next";
 
-import { TeamDetails } from "./team";
+// import { TeamDetails } from "./team";
 
 export const metadata: Metadata = {
   title: "About",

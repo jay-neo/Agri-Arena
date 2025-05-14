@@ -3,7 +3,7 @@ import { Metadata } from "next";
 import { meta } from "~/lib/meta";
 import dataFAQs from "./faqs.json";
 import { ContactForm } from "./contact";
-import { getUser } from "~/app/server/user";
+import { getUser } from "~/app/actions/user";
 
 export const metadata: Metadata = {
   title: "Support",
