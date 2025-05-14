@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { ArenaFormState } from "~/app/server/arena/validation";
+import { ArenaFormState } from "~/app/actions/arena/arena.schema";
 
 type FormData<T> = T;
 
@@ -23,7 +23,7 @@ export default ({
   };
 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
     setArena((prevValues) => ({

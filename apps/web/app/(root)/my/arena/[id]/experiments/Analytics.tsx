@@ -17,7 +17,12 @@ const series: (LineSeriesType | BarSeriesType)[] = [
   { type: "line", dataKey: "humidity", color: "#3b00de", label: "Humidity" },
   { type: "line", dataKey: "moisture", color: "#00f1ca", label: "Moisture" },
   { type: "line", dataKey: "nitrogen", color: "#17ff00", label: "Nitrogen" },
-  { type: "line", dataKey: "phosphorus", color: "#bf0000", label: "Phosphorus" },
+  {
+    type: "line",
+    dataKey: "phosphorus",
+    color: "#bf0000",
+    label: "Phosphorus",
+  },
   { type: "line", dataKey: "potassium", color: "#ff14ee", label: "Potassium" },
   {
     type: "bar",
@@ -34,7 +39,6 @@ const series: (LineSeriesType | BarSeriesType)[] = [
     label: "pH",
   },
 ];
-
 
 export default ({ data }: { data: any }) => {
   let dataset = data;

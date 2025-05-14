@@ -10,10 +10,12 @@ import {
 import clsx from "clsx";
 import Link from "next/link";
 import Image from "next/image";
+import { LoadingSkeleton } from "./loading";
 import { getFormattedDate } from "~/lib/formatters";
 import { Open_Sans, Roboto_Mono } from "next/font/google";
 import React, { Suspense, useState, useEffect, useRef } from "react";
 import { getActivitiesAction } from "~/app/actions/activity/getActivitiesAction";
+import { getImageByImageIdAction } from "~/app/actions/activity";
 
 const openSans = Open_Sans({
   subsets: ["latin"],
@@ -44,7 +46,7 @@ const ActivityCard = React.memo(({ activity }: { activity: Activity }) => {
                 activity.type === "predictions",
               "bg-purple-400/80 hover:bg-purple-500/90 dark:bg-purple-900/30 dark:hover:bg-purple-800/40":
                 activity.type === "images",
-            }
+            },
           )}
         >
           {/* Image section */}
@@ -230,31 +232,6 @@ const SuspenseFallback = () => {
   );
 };
 
-const LoadingSkeleton = () => {
-  return (
-    <div className="flex flex-col mx-auto max-w-2xl w-full my-4">
-      <div className="flex w-full rounded-2xl bg-gray-200 dark:bg-gray-800 shadow-surface-elevation-low">
-        {/* Image skeleton */}
-        <div className="flex-shrink-0 w-24 md:w-32 rounded-l-2xl bg-gray-300 dark:bg-gray-700 animate-pulse" />
-
-        {/* Content skeleton */}
-        <div className="flex flex-col flex-grow p-4 space-y-3">
-          <div className="flex justify-between items-start">
-            <div className="h-6 bg-gray-300 dark:bg-gray-700 animate-pulse rounded w-3/4" />
-            <div className="h-8 w-8 bg-gray-300 dark:bg-gray-700 animate-pulse rounded-full" />
-          </div>
-          <div className="h-4 bg-gray-300 dark:bg-gray-700 animate-pulse rounded w-1/2" />
-          <div className="h-20 bg-gray-300 dark:bg-gray-700 animate-pulse rounded w-full" />
-          <div className="flex justify-between items-center">
-            <div className="h-3 bg-gray-300 dark:bg-gray-700 animate-pulse rounded w-24" />
-            <div className="h-4 w-4 bg-gray-300 dark:bg-gray-700 animate-pulse rounded-full" />
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
 export default ({
   activityData,
   searchParams,
@@ -266,7 +243,7 @@ export default ({
   };
 }) => {
   const [activities, setActivities] = useState<Activity[]>(
-    activityData?.activities || []
+    activityData?.activities || [],
   );
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(activityData.hasMore);
@@ -278,7 +255,7 @@ export default ({
     return await getActivitiesAction(
       searchParams.topic,
       searchParams.query,
-      page
+      page,
     );
   };
 
@@ -291,7 +268,7 @@ export default ({
           loadMoreActivities();
         }
       },
-      { threshold: 0.5 }
+      { threshold: 0.5 },
     );
 
     if (lastActivityRef.current) {
@@ -322,6 +299,26 @@ export default ({
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    const fetchImages = async () => {
+      const updatedActivities = await Promise.all(
+        activities.map(async (a) => {
+          if (a.imagesId && !a.arenaImage) {
+            const arenaImage = await getImageByImageIdAction(a.imagesId);
+            return { ...a, arenaImage }; // Return new object with the image
+          }
+          return a; // Return unchanged if no need to fetch
+        }),
+      );
+
+      if (JSON.stringify(activities) != JSON.stringify(updatedActivities)) {
+        setActivities(updatedActivities);
+      }
+    };
+
+    fetchImages();
+  }, [activities]);
 
   return (
     <div

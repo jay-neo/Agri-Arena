@@ -1,11 +1,9 @@
-import { myenv } from "~/lib/myenv";
 import type { Metadata } from "next";
 import { isNumber } from "~/lib/utils";
 import ArenaDetails from "./ArenaDetails";
 import { redirect } from "next/navigation";
-import { getAssignedIoTs } from "~/app/server/iot";
-import { getArena, getArenaDataCount } from "~/app/server/arena";
-import { fakeAssignedIoTs, getFakeArenaDetails } from "~/test/data/faker";
+import { getAssignedIotsForArena } from "~/app/actions/iot";
+import { getArena, getArenaDataCount } from "~/app/actions/arena";
 
 export const metadata: Metadata = {
   title: "Arena",
@@ -17,26 +15,16 @@ export default async ({ params }: { params: { id: string } }) => {
   }
   const arenaIdx = parseFloat(params.id);
 
-  const arena: ArenaDetails =
-    myenv === "test"
-      ? await getFakeArenaDetails(arenaIdx)
-      : await getArena(arenaIdx);
+  const arena: ArenaDetails = await getArena(arenaIdx);
 
   if (!arena) {
     redirect(`/my/arena`);
   }
 
-  const assignedIoTsData: IotInfo[] =
-    myenv === "test" ? fakeAssignedIoTs : await getAssignedIoTs(arena.id);
-
-  const arenaDataCount: ArenaDataCount =
-    myenv === "test"
-      ? {
-          experiments: 1,
-          predictions: 1,
-          images: 1,
-        }
-      : await getArenaDataCount(arena.id);
+  const assignedIoTsData: IotInfo[] = await getAssignedIotsForArena(arena.id);
+  const arenaDataCount: ArenaSpecificActivity = await getArenaDataCount(
+    arena.id,
+  );
 
   // await new Promise((resolve) => setTimeout(resolve, 7000));
 
@@ -46,7 +34,7 @@ export default async ({ params }: { params: { id: string } }) => {
         arenaIdx={arenaIdx}
         arenaData={arena}
         assignedIoTsData={assignedIoTsData}
-        arenaDataCount={arenaDataCount}
+        arenaSpecificActivity={arenaDataCount}
       />
     </div>
   );

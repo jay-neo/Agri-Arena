@@ -1,6 +1,5 @@
 import { isNumber } from "~/lib/utils";
 import { redirect } from "next/navigation";
-import { getArena } from "~/app/server/arena";
 
 import { myenv } from "~/lib/myenv";
 import { getFakeIotDataOneYear } from "~/test/data/faker";
@@ -13,6 +12,7 @@ export const metadata: Metadata = {
 };
 
 import dynamic from "next/dynamic";
+import { getArena } from "~/app/actions/arena";
 
 const Analytics = dynamic(() => import("./Analytics"), {
   suspense: true,

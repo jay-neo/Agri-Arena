@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Images - Arena",
+  title: "Disease Dection - Arena",
 };
 
 export default async () => {

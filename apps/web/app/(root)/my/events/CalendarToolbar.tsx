@@ -1,71 +1,95 @@
-import React from "react";
-import { capitalize } from "~/lib/formatters";
+"use client";
 
-interface CustomToolbarProps {
+import { ToolbarProps } from "react-big-calendar";
+
+interface CalendarToolbarProps extends ToolbarProps {
   view?: string;
   prevView?: string;
   label?: string;
   navigate?: string;
   onView?: (view: "month" | "week" | "day") => void;
   onNavigate?: (action: "PREV" | "NEXT" | "TODAY") => void;
+  onAddEvent: () => void;
 }
 
-export const CalendarToolbar: React.FC<CustomToolbarProps> = ({
+const CalendarToolbar: React.FC<CalendarToolbarProps> = ({
   label,
   onNavigate,
   onView,
   prevView,
+  onAddEvent,
 }) => {
+  const handleViewChange = (newView: "month" | "week" | "day") => {
+    onView(newView);
+  };
+
   return (
-    <div className="flex justify-between items-center mb-4">
+    <div className="flex items-center justify-between mb-4">
       <div className="flex flex-col md:flex-row gap-2">
-        <NavigateButton navigate="prev" onNavigate={onNavigate} />
-        <NavigateButton navigate="today" onNavigate={onNavigate} />
-        <NavigateButton navigate="next" onNavigate={onNavigate} />
+        <button
+          onClick={() => onNavigate("PREV")}
+          className="px-4 py-2.5 bg-fuchsia-200 dark:bg-indigo-700 rounded hover:bg-fuchsia-300 hover:dark:bg-indigo-800"
+        >
+          Previous
+        </button>
+        <button
+          onClick={() => onNavigate("TODAY")}
+          className="px-4 py-2.5 bg-fuchsia-200 dark:bg-indigo-700 rounded hover:bg-fuchsia-300 hover:dark:bg-indigo-800"
+        >
+          Today
+        </button>
+        <button
+          onClick={() => onNavigate("NEXT")}
+          className="px-4 py-2.5 bg-fuchsia-200 dark:bg-indigo-700 rounded hover:bg-fuchsia-300 hover:dark:bg-indigo-800"
+        >
+          Next
+        </button>
       </div>
 
-      <span className="text-gray-900 dark:text-white font-bold">{label}</span>
+      <span className="text-lg font-semibold text-gray-900 dark:text-white">
+        {label}
+      </span>
 
       <div className="flex flex-col md:flex-row gap-2">
-        <ViewButton prevView={prevView} view="month" onView={onView} />
-        <ViewButton prevView={prevView} view="week" onView={onView} />
-        <ViewButton prevView={prevView} view="day" onView={onView} />
+        <button
+          onClick={() => handleViewChange("month")}
+          className={`px-4 py-2 rounded ${
+            prevView === "month"
+              ? "bg-fuchsia-200 dark:bg-indigo-800"
+              : "bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500"
+          }`}
+        >
+          Month
+        </button>
+        <button
+          onClick={() => handleViewChange("week")}
+          className={`px-4 py-2 rounded ${
+            prevView === "week"
+              ? "bg-fuchsia-200 dark:bg-indigo-800"
+              : "bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500"
+          }`}
+        >
+          Week
+        </button>
+        <button
+          onClick={() => handleViewChange("day")}
+          className={`px-4 py-2 rounded ${
+            prevView === "day"
+              ? "bg-fuchsia-200 dark:bg-indigo-800"
+              : "bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500"
+          }`}
+        >
+          Day
+        </button>
+        <button
+          onClick={onAddEvent}
+          className="text-3xl px-2 pb-2 bg-green-500 text-white rounded hover:bg-green-600"
+        >
+          +
+        </button>
       </div>
     </div>
   );
 };
 
-const ViewButton: React.FC<CustomToolbarProps> = ({
-  prevView,
-  view,
-  onView,
-}) => {
-  return (
-    <button
-      className={`w-24 py-2 border ${
-        prevView === view
-          ? "bg-gray-500 text-white"
-          : "bg-inherit text-gray-900 dark:text-white"
-      } hover:bg-gray-700 hover:text-white`}
-      onClick={() => onView(view as "month" | "week" | "day")}
-    >
-      {capitalize(view)}
-    </button>
-  );
-};
-
-const NavigateButton: React.FC<CustomToolbarProps> = ({
-  navigate,
-  onNavigate,
-}) => {
-  return (
-    <button
-      className="hover:text-white w-24 py-2 border bg-inherit text-gray-900 dark:text-white hover:bg-gray-700"
-      onClick={() =>
-        onNavigate(navigate.toUpperCase() as "PREV" | "NEXT" | "TODAY")
-      }
-    >
-      {capitalize(navigate)}
-    </button>
-  );
-};
+export default CalendarToolbar;

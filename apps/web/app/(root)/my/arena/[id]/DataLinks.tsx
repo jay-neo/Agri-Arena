@@ -5,7 +5,7 @@ export default async ({
   arenaDataCount,
 }: {
   arenaIdx: number;
-  arenaDataCount: ArenaDataCount;
+  arenaDataCount: ArenaSpecificActivity;
 }) => {
   return (
     <div className="mr-0.5">

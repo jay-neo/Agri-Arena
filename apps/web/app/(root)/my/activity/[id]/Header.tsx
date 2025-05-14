@@ -12,16 +12,19 @@ import {
 import Link from "next/link";
 import Image from "next/image";
 import { myUrl } from "~/lib/myenv";
-import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { neoFormAction } from "~/lib/hooks";
-import { ReactButton } from "~/lib/neo/button";
-import { createLink } from "~/app/server/share";
+import { createLink } from "~/app/actions/share";
+import { getArenaInfo } from "~/app/actions/arena";
+import { ReactButton } from "~/lib/neo/ReactButton";
 import { SharePopUp } from "~/components/SharePopUp";
-import { getArenasWithId } from "~/app/server/arena";
+import { Button } from "~/components/ui/form/button";
 import { Share, Edit, ExternalLink, Predict } from "~/lib/arena-icons";
-import { deleteActivity, updateActivity } from "~/app/server/activity/CRUD";
-import { cropPredictionModelActions } from "~/app/actions/ai-models/cropPredictionModelActions";
+import {
+  deleteActivityAction,
+  updateActivityAction,
+} from "~/app/actions/activity";
+import { cropPredictionModelAction } from "~/app/actions/ai-models/cropPredictionModelAction";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -62,14 +65,17 @@ export default ({ data, idx }: { data: ActivityHeader; idx: number }) => {
   });
 
   const [_statePredict, actionPredict] = neoFormAction(
-    cropPredictionModelActions
+    cropPredictionModelAction,
   );
-  const [_stateDelete, actionDelete] = neoFormAction(deleteActivity);
-  const [stateEdit, actionEdit] = neoFormAction(updateActivity, setIsEditing);
+  const [_stateDelete, actionDelete] = neoFormAction(deleteActivityAction);
+  const [stateEdit, actionEdit] = neoFormAction(
+    updateActivityAction,
+    setIsEditing,
+  );
   const [_stateShare, actionShare, sharingUrl] = neoFormAction(
     createLink,
     setShare,
-    false
+    false,
   );
 
   const [sharingLink, setSharingLink] = useState<string | null>(null);
@@ -85,7 +91,7 @@ export default ({ data, idx }: { data: ActivityHeader; idx: number }) => {
   useEffect(() => {
     (async () => {
       if (isEditing) {
-        setArenas(await getArenasWithId());
+        setArenas(await getArenaInfo());
       }
     })();
   }, [isEditing]);
@@ -132,10 +138,14 @@ export default ({ data, idx }: { data: ActivityHeader; idx: number }) => {
                   )}
                 </div>
               </div>
-              <ReactButton className="absolute top-1 right-2 py-1 px-4 bg-teal-500/50 rounded-md font-bold flex items-center justify-center" />
+              <ReactButton
+                onAction="Saving"
+                onStatic="Save"
+                className="absolute top-1 right-2 w-20 h-8 bg-teal-500/50 hover:bg-teal-500 rounded-md font-bold flex items-center justify-center"
+              />
             </form>
-            <button
-              className="absolute top-12 right-2 py-1 px-2.5 bg-orange-500/50 rounded-md font-bold flex items-center justify-center"
+            <Button
+              className="absolute top-12 right-2 w-18 h-8 bg-orange-500/50 hover:bg-orange-500 rounded-md font-bold flex items-center justify-center"
               type="button"
               onClick={(e) => {
                 e.preventDefault();
@@ -152,7 +162,7 @@ export default ({ data, idx }: { data: ActivityHeader; idx: number }) => {
               }}
             >
               {"Cancel"}
-            </button>
+            </Button>
             <form action={actionDelete}>
               <input
                 type="number"
@@ -161,8 +171,8 @@ export default ({ data, idx }: { data: ActivityHeader; idx: number }) => {
                 className="hidden"
               />
               <ReactButton
-                className="absolute top-24 right-2 py-1 px-3 bg-red-500/50 rounded-md font-bold flex items-center justify-center"
-                onAction="Deleting.."
+                className="absolute top-24 right-2 w-18 h-8 bg-red-500/50 hover:bg-red-500 rounded-md font-bold flex items-center justify-center"
+                onAction="Deleting"
                 onStatic="Delete"
               />
             </form>
@@ -174,7 +184,7 @@ export default ({ data, idx }: { data: ActivityHeader; idx: number }) => {
             </h2>
             <Tooltip disableFocusListener placement="left" title="Edit">
               <button
-                className="absolute top-1 right-2 p-1 bg-teal-500/50 rounded-md font-bold flex items-center justify-center"
+                className="absolute top-1 right-2 p-1 bg-teal-500/50 hover:bg-teal-500 rounded-md font-bold flex items-center justify-center"
                 type="button"
                 onClick={(e) => {
                   e.preventDefault();
@@ -277,7 +287,7 @@ export default ({ data, idx }: { data: ActivityHeader; idx: number }) => {
                 {data.isPredicted ? (
                   <Link
                     href={`/my/activity/${data.ref}`}
-                    className="flex items-center p-1.5 font-bold bg-blue-500/50 rounded-md"
+                    className="flex items-center p-1.5 font-bold bg-blue-500/50 rounded-md hover:bg-blue-500/70 transition-colors duration-200"
                   >
                     <Image
                       className="dark:invert"
@@ -306,34 +316,17 @@ export default ({ data, idx }: { data: ActivityHeader; idx: number }) => {
                       className="hidden"
                     />
                     <ReactButton
-                      className="flex items-center p-1.5 font-bold bg-fuchsia-500/50 rounded-md"
+                      className="w-7 h-7 flex items-center p-1.5 font-bold bg-fuchsia-500/50 rounded-md hover:bg-fuchsia-500/70 transition-colors duration-200"
                       onStatic={
                         <Image
                           className="dark:invert"
                           src={Predict}
+                          width={20}
+                          height={20}
                           alt="predict"
                         />
                       }
-                      onAction={
-                        <motion.div
-                          animate={{
-                            rotate: [0, 360],
-                            scale: [1, 1.2, 0.8, 1],
-                          }}
-                          transition={{
-                            repeat: Infinity,
-                            duration: 1,
-                            ease: "easeInOut",
-                            times: [0, 0.5, 0.8, 1],
-                          }}
-                        >
-                          <Image
-                            className="dark:invert"
-                            src={Predict}
-                            alt="predict"
-                          />
-                        </motion.div>
-                      }
+                      onAction={""}
                     />
                   </form>
                 )}
@@ -341,7 +334,7 @@ export default ({ data, idx }: { data: ActivityHeader; idx: number }) => {
             </div>
           )}
 
-          {!isEditing && (
+          {/* {!isEditing && (
             <div className="m-1 p-1">
               <Tooltip disableFocusListener placement="left" title="Share">
                 <form action={actionShare}>
@@ -366,7 +359,7 @@ export default ({ data, idx }: { data: ActivityHeader; idx: number }) => {
                 </form>
               </Tooltip>
             </div>
-          )}
+          )} */}
         </div>
       </div>
 
