@@ -1,12 +1,13 @@
 import bcrypt from "bcrypt";
 import { db } from "./lib/prisma";
 import { authConfig } from "./auth.config";
-import { neoUser } from "./app/server/user";
+import { neoUser } from "./app/actions/user";
 import { Adapter } from "next-auth/adapters";
 import Google from "next-auth/providers/google";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import NextAuth, { CredentialsSignin } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+// import NodeMailer from "next-auth/providers/nodemailer";
 
 export const { auth, handlers, signIn, signOut, unstable_update } = NextAuth({
   ...authConfig,

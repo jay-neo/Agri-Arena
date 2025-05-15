@@ -4,7 +4,7 @@ const isProd = process.env.NODE_ENV === "production";
 if (!isProd) {
   console.log(
     ">>>>--------------------- Development Profile ==================>>>>>>",
-    isApp ? "App" : "Web"
+    isApp ? "App" : "Web",
   );
 }
 
