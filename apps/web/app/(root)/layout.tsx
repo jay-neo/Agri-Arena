@@ -1,6 +1,6 @@
 import React from "react";
 import { Metadata } from "next";
-import { getUser } from "../server/user";
+import { getUser } from "../actions/user";
 import { Navbar } from "~/components/navbar";
 import Sidebar from "~/components/sidebar";
 import { MobileNavBar } from "~/components/navbar/MobileNavBar";

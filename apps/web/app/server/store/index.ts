@@ -1,1 +1,0 @@
-export { getProductsWithParams } from "./getProductsWithParams";
