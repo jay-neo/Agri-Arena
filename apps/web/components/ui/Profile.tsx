@@ -4,7 +4,7 @@ import { toast } from "sonner";
 import Image from "next/image";
 import { useFormState, useFormStatus } from "react-dom";
 import { Edit } from "~/lib/arena-icons";
-import { setProfile } from "~/app/server/user";
+import { setProfile } from "~/app/actions/user";
 import React, { useEffect, useState } from "react";
 
 export const ProfileForm = ({
@@ -31,7 +31,7 @@ export const ProfileForm = ({
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prevData) =>
-      prevData ? { ...prevData, [name]: value } : null
+      prevData ? { ...prevData, [name]: value } : null,
     );
   };
 
@@ -42,7 +42,7 @@ export const ProfileForm = ({
         setFormData((prevData) =>
           prevData
             ? { ...prevData, image: event.target?.result as string }
-            : null
+            : null,
         );
       };
       reader.readAsDataURL(e.target.files[0]);
@@ -56,7 +56,9 @@ export const ProfileForm = ({
           <div className="flex flex-col items-center">
             <label htmlFor="avatar-upload" className="relative cursor-pointer">
               {formData?.image && (
-                <img
+                <Image
+                  width={100}
+                  height={100}
                   src={
                     typeof formData.image === "string"
                       ? formData.image
@@ -88,7 +90,7 @@ export const ProfileForm = ({
         ) : (
           <div className="flex flex-col items-center">
             {formData?.image && (
-              <img
+              <Image
                 src={
                   typeof formData.image === "string"
                     ? formData.image
@@ -96,6 +98,8 @@ export const ProfileForm = ({
                 }
                 alt="Avatar"
                 className="rounded-full w-24 h-24 border-2 border-[#ff8c42]"
+                width={100}
+                height={100}
               />
             )}
             <span className="font-bold text-xl text-amber-700 mt-2">
@@ -147,7 +151,7 @@ export const ProfileForm = ({
                 )}
               </div>
             );
-          }
+          },
         )}
       </div>
 

@@ -6,9 +6,5 @@ export const metadata: Metadata = {
 };
 
 export default async () => {
-  return (
-    <div className="">
-      <ChatPage />
-    </div>
-  );
+  return <ChatPage />;
 };

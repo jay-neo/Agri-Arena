@@ -1,7 +1,7 @@
 import React from "react";
 import { myenv } from "~/lib/myenv";
 import type { Metadata } from "next";
-import { getIots } from "~/app/server/iot";
+import { getIots } from "~/app/actions/iot";
 import { IoTsTable } from "~/components/ui/iot";
 import { getFakeIoTDetails } from "~/test/data/faker";
 

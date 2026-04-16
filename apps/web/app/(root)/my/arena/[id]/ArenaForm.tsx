@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { ArenaFormState } from "~/app/server/arena/validation";
+import { ArenaFormState } from "~/app/actions/arena/arena.schema";
 
 type FormData<T> = T;
 
@@ -11,10 +11,10 @@ export default ({
   setArena,
   isEditing,
 }: {
-  arena: Arena;
+  arena: ArenaDetails;
   isEditing?: boolean;
   state?: FormData<ArenaFormState>;
-  setArena?: React.Dispatch<React.SetStateAction<Arena>>;
+  setArena?: React.Dispatch<React.SetStateAction<ArenaDetails>>;
 }) => {
   const placeholders = {
     title: "Enter your unique arena name",
@@ -23,7 +23,7 @@ export default ({
   };
 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
     setArena((prevValues) => ({

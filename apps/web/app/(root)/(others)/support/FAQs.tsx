@@ -16,7 +16,7 @@ export const FAQs = ({
   const dataLength = data.length;
 
   return (
-    <div >
+    <div>
       {data &&
         data.map((faq, index) => (
           <div
@@ -44,9 +44,7 @@ export const FAQs = ({
               </svg>
             </button>
             {openIndex === index && (
-              <div className="p-4 text-base">
-                {faq.answer}
-              </div>
+              <div className="p-4 text-base">{faq.answer}</div>
             )}
           </div>
         ))}

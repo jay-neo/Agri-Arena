@@ -5,9 +5,7 @@ const FOCUS_VISIBLE_OUTLINE = `focus:outline-none focus-visible:outline-none foc
 import clsx from "clsx";
 import Link from "next/link";
 
-
 import React, { ElementType } from "react";
-
 
 interface data {
   idx: number;
@@ -24,7 +22,6 @@ function getFormattedDate(date: Date): string {
 }
 
 export const MLPreview = ({ data }: Props) => {
-  
   return (
     <div className="">
       <ContentLink key={data.idx} href={`data/${data.idx}`}>
@@ -34,8 +31,6 @@ export const MLPreview = ({ data }: Props) => {
     </div>
   );
 };
-
-
 
 export function ContentLink({
   href,
@@ -49,7 +44,7 @@ export function ContentLink({
       href={href}
       className={clsx(
         "block mx-2 w-[22rem] rounded-2xl bg-yellow-400/80 dark:bg-white/5 p-2 shadow-surface-elevation-low transition duration-300 hover:bg-yellow-600 dark:hover:bg-white/10 dark:hover:shadow-surface-elevation-medium",
-        FOCUS_VISIBLE_OUTLINE
+        FOCUS_VISIBLE_OUTLINE,
       )}
     >
       {children}
@@ -73,21 +68,19 @@ function Icon(props: { icon: ElementType }) {
   );
 }
 
-
 function Text({ children }: { children: React.ReactNode }) {
   return (
-    <p className="mt-4 text-xs dark:text-rose-100/70 line-clamp-3">{children}</p>
+    <p className="mt-4 text-xs dark:text-rose-100/70 line-clamp-3">
+      {children}
+    </p>
   );
 }
-
 
 function Date(props: { children?: React.ReactNode; date: Date }) {
   return (
     <div className="flex flex-row-reverse">
       <p className="mt-4 text-xs dark:text-rose-100/70 line-clamp-3">
-        {props?.children}
-        {" "}
-        {getFormattedDate(props.date)}
+        {props?.children} {getFormattedDate(props.date)}
       </p>
     </div>
   );
@@ -106,4 +99,3 @@ ContentLink.Icon = Icon;
 ContentLink.Text = Text;
 ContentLink.Date = Date;
 ContentLink.Meta = Meta;
-

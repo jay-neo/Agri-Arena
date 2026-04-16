@@ -26,7 +26,7 @@ import { alpha } from "@mui/material/styles";
 import { fullFormatDate2 } from "~/lib/formatters/date";
 import { useFormState, useFormStatus } from "react-dom";
 import { toast } from "sonner";
-import { ExperimentFormState } from "~/app/server/experiments/validation";
+import { ExperimentFormState } from "~/app/actions/activity/iot-experiments/experiments.schema";
 import { redirect } from "next/navigation";
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
@@ -43,7 +43,7 @@ type Order = "asc" | "desc";
 
 function getComparator<Key extends keyof any>(
   order: Order,
-  orderBy: Key
+  orderBy: Key,
 ): (a: { [key in Key]: any }, b: { [key in Key]: any }) => number {
   return order === "desc"
     ? (a, b) => descendingComparator(a, b, orderBy)
@@ -52,7 +52,7 @@ function getComparator<Key extends keyof any>(
 
 function stableSort<T>(
   array: readonly T[],
-  comparator: (a: T, b: T) => number
+  comparator: (a: T, b: T) => number,
 ) {
   const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
   stabilizedThis.sort((a, b) => {
@@ -67,7 +67,7 @@ function stableSort<T>(
 
 interface HeadCell {
   disablePadding: boolean;
-  id: keyof Experiments_Data;
+  id: keyof ExperimentsData;
   label: string;
   numeric: boolean;
 }
@@ -112,7 +112,7 @@ interface EnhancedTableProps {
   numSelected: number;
   onRequestSort: (
     event: React.MouseEvent<unknown>,
-    property: keyof Experiments_Data
+    property: keyof ExperimentsData,
   ) => void;
   onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
   order: Order;
@@ -130,8 +130,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
     onRequestSort,
   } = props;
   const createSortHandler =
-    (property: keyof Experiments_Data) =>
-    (event: React.MouseEvent<unknown>) => {
+    (property: keyof ExperimentsData) => (event: React.MouseEvent<unknown>) => {
       onRequestSort(event, property);
     };
 
@@ -187,7 +186,7 @@ function EnhancedTableToolbar({
   data: string[];
   actionOnData: (
     state: ExperimentFormState,
-    formData: FormData
+    formData: FormData,
   ) => Promise<ExperimentFormState> | null;
   numSelected: number;
   startDate: string;
@@ -199,7 +198,7 @@ function EnhancedTableToolbar({
     if (state?.success) {
       toast.success(state.success);
       if (state?.redirect) {
-        redirect(`/activity`);
+        redirect(`/my/activity`);
       }
       setNumSelected([]);
     } else if (state?.error) {
@@ -227,7 +226,7 @@ function EnhancedTableToolbar({
           bgcolor: (theme) =>
             alpha(
               theme.palette.primary.main,
-              theme.palette.action.activatedOpacity
+              theme.palette.action.activatedOpacity,
             ),
         }),
       }}
@@ -286,18 +285,18 @@ export default function MainTable({
   endDate,
   actionOnData = null,
 }: {
-  data: Experiments_Data[];
+  data: ExperimentsData[];
   startDate: string;
   endDate: string;
   actionOnData?: (
     state: ExperimentFormState,
-    formData: FormData
+    formData: FormData,
   ) => Promise<ExperimentFormState>;
 }) {
   const isSmallScreen = useMediaQuery("(max-width: 1024px)");
   const [order, setOrder] = React.useState<Order>("desc");
   const [orderBy, setOrderBy] =
-    React.useState<keyof Experiments_Data>("createdAt");
+    React.useState<keyof ExperimentsData>("createdAt");
   const [selected, setSelected] = React.useState<string[]>([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(true);
@@ -305,7 +304,7 @@ export default function MainTable({
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
-    property: keyof Experiments_Data
+    property: keyof ExperimentsData,
   ) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
@@ -334,7 +333,7 @@ export default function MainTable({
     } else if (selectedIndex > 0) {
       newSelected = newSelected.concat(
         selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
+        selected.slice(selectedIndex + 1),
       );
     }
 
@@ -346,7 +345,7 @@ export default function MainTable({
   };
 
   const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
@@ -372,9 +371,18 @@ export default function MainTable({
         )}
         <TableContainer>
           <Table
-            sx={{ minWidth: isSmallScreen ? 200 : 750 }}
+            sx={{
+              minWidth: 200,
+              "& .MuiTableCell-root": {
+                padding: "3px 5px",
+                fontSize: "0.82rem",
+              },
+              "& .MuiTableRow-root": {
+                height: "32px",
+              },
+            }}
             aria-labelledby="tableTitle"
-            size={dense ? "small" : "medium"}
+            // size="small"
           >
             <EnhancedTableHead
               numSelected={selected.length}
@@ -421,15 +429,17 @@ export default function MainTable({
                         component="th"
                         id={labelId}
                         scope="row"
-                        align="left"
+                        align="center"
                       >
                         {row.nitrogen}
                       </TableCell>
-                      <TableCell align="left">{row.phosphorus}</TableCell>
-                      <TableCell align="left">{row.potassium}</TableCell>
-                      <TableCell align="left">{row.temperature}</TableCell>
-                      <TableCell align="left">{row.humidity}</TableCell>
-                      <TableCell align="left">{row.moisture}</TableCell>
+                      <TableCell align="center">{row.phosphorus}</TableCell>
+                      <TableCell align="center">{row.potassium}</TableCell>
+                      <TableCell align="center">
+                        {Math.round(row.temperature * 100) / 100}
+                      </TableCell>
+                      <TableCell align="center">{row.humidity}</TableCell>
+                      <TableCell align="center">{row.moisture}</TableCell>
                       <TableCell align="left">{row.ph}</TableCell>
                       <TableCell align="left">
                         {fullFormatDate2(row.createdAt)}
@@ -440,7 +450,7 @@ export default function MainTable({
               {emptyRows > 0 && (
                 <TableRow
                   style={{
-                    height: (dense ? 33 : 53) * emptyRows,
+                    height: 36 * emptyRows,
                   }}
                 >
                   <TableCell colSpan={6} />

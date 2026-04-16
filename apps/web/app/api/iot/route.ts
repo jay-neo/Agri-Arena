@@ -1,7 +1,10 @@
+import {
+  updateMonitorAction,
+  createActivityAction,
+} from "~/app/actions/activity";
 import { db } from "~/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
-import { createActivity, updateMonitor } from "~/app/server/activity";
 
 export async function POST(request: NextRequest) {
   try {
@@ -53,7 +56,7 @@ export async function POST(request: NextRequest) {
         device?.device,
         device?.title,
         device?.arenaId,
-        "Innovation Unleashed"
+        "Innovation Unleashed",
       );
     } else {
       const existedExperiments = await db.experiments.findUnique({
@@ -75,7 +78,7 @@ export async function POST(request: NextRequest) {
           device.device,
           device.title,
           device?.arenaId,
-          "Frontline Discoveries"
+          "Frontline Discoveries",
         );
       } else if (existedExperiments.isPredicted) {
         // console.log("Logic - 3")
@@ -84,7 +87,7 @@ export async function POST(request: NextRequest) {
           device.device,
           device.title,
           device?.arenaId,
-          "Stream Experiment"
+          "Stream Experiment",
         );
       } else if (
         isValidExperimentInterval(existedExperiments.createdAt, device.interval)
@@ -95,7 +98,7 @@ export async function POST(request: NextRequest) {
           device.device,
           device.title,
           device?.arenaId,
-          "Experiment Chronicles"
+          "Experiment Chronicles",
         );
       } else if (
         device?.arenaId &&
@@ -107,7 +110,7 @@ export async function POST(request: NextRequest) {
           device.device,
           device.title,
           device?.arenaId,
-          "Groundbreaking Experiments"
+          "Groundbreaking Experiments",
         );
       } else {
         // console.log("Logic - 6");
@@ -121,7 +124,7 @@ export async function POST(request: NextRequest) {
             },
           },
         });
-        const monitor = await updateMonitor(device.userId, "experiments");
+        const monitor = await updateMonitorAction(device.userId, "experiments");
         experiment = {
           experimentId: existedExperiments.id,
           activityIdx: monitor.activities,
@@ -144,22 +147,22 @@ export async function POST(request: NextRequest) {
         // createdAt: data.timestamp,
         createdAt: new Date(),
         ph: parseFloat(data?.ph),
-        nitrogen: parseFloat(data?.nitrogen),
-        humidity: parseFloat(data?.humidity),
-        moisture: parseFloat(data?.moisture),
-        potassium: parseFloat(data?.potassium),
-        phosphorus: parseFloat(data?.phosphorus),
-        temperature: parseFloat(data?.temperature),
+        nitrogen: Math.round(parseFloat(data?.nitrogen) * 100) / 100,
+        humidity: Math.round(parseFloat(data?.humidity) * 100) / 100,
+        moisture: Math.round(parseFloat(data?.moisture) * 100) / 100,
+        potassium: Math.round(parseFloat(data?.potassium) * 100) / 100,
+        phosphorus: Math.round(parseFloat(data?.phosphorus) * 100) / 100,
+        temperature: Math.round(parseFloat(data?.temperature) * 100) / 100,
         experimentsId: experiment.experimentId,
       },
     });
 
     if (isNewActivity) {
-      revalidatePath(`/activity`);
+      revalidatePath(`/my/activity`);
     }
 
     if (!isNewActivity && insertedData) {
-      revalidatePath(`/activity/${experiment.activityIdx}`);
+      revalidatePath(`/my/activity/${experiment.activityIdx}`);
     }
 
     return NextResponse.json({
@@ -174,7 +177,7 @@ export async function POST(request: NextRequest) {
 
 function isValidExperimentInterval(
   targetDate: Date,
-  intervalInDays: number
+  intervalInDays: number,
 ): boolean {
   const now = new Date();
   const differenceInMs = targetDate.getTime() - now.getTime();
@@ -187,7 +190,7 @@ const createExperiment = async (
   device: string,
   deviceTitle: string,
   arenaId?: string,
-  activityTitle?: string
+  activityTitle?: string,
 ) => {
   try {
     const experiment = await db.experiments.create({
@@ -202,11 +205,11 @@ const createExperiment = async (
       },
     });
 
-    const activity: number = await createActivity(
+    const activity: number = await createActivityAction(
       userId,
       "experiments",
       experiment.id,
-      activityTitle
+      activityTitle,
     );
 
     if (experiment && activity) {

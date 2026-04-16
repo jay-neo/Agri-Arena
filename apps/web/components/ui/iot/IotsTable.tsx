@@ -5,6 +5,7 @@ import {
   GridRowId,
   GridColDef,
   GridRowsProp,
+  GridToolbarProps,
   GridRowModesModel,
   GridActionsCellItem,
   GridToolbarContainer,
@@ -16,12 +17,17 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
 import { Add, Edit, Delete } from "~/lib/arena-icons";
-import { updateIot, deleteIot, createIot } from "~/app/server/iot";
+import {
+  createIotAction,
+  deleteIotAction,
+  updateIotAction,
+} from "~/app/actions/iot";
+import { isDate } from "moment";
 
-interface EditToolbarProps {
+interface EditToolbarProps extends GridToolbarProps {
   setRows: (newRows: (oldRows: GridRowsProp) => GridRowsProp) => void;
   setRowModesModel: (
-    newModel: (oldModel: GridRowModesModel) => GridRowModesModel
+    newModel: (oldModel: GridRowModesModel) => GridRowModesModel,
   ) => void;
 }
 
@@ -68,7 +74,7 @@ function EditToolbar(props: EditToolbarProps) {
       {isOpen && (
         <IoTForm
           formType="create"
-          action={createIot}
+          action={createIotAction}
           setNewRow={setRows}
           setIsOpen={setIsOpen}
         />
@@ -80,7 +86,7 @@ function EditToolbar(props: EditToolbarProps) {
 export const IoTsTable = ({ initialData }: { initialData: IoT[] }) => {
   const [rows, setRows] = React.useState<IoT[]>(initialData);
   const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>(
-    {}
+    {},
   );
 
   const [isEditing, setIsEditing] = React.useState<boolean>(false);
@@ -96,7 +102,7 @@ export const IoTsTable = ({ initialData }: { initialData: IoT[] }) => {
 
   const handleDeleteClick = (id: GridRowId) => async () => {
     try {
-      await deleteIot(id as string);
+      await deleteIotAction(id as string);
       setRows(rows.filter((row) => row.id !== id));
     } catch (error) {
       console.error("Error deleting row:", error);
@@ -112,7 +118,7 @@ export const IoTsTable = ({ initialData }: { initialData: IoT[] }) => {
       field: "title",
       headerName: "Name",
       headerClassName: "super-app-theme--header",
-      width: 120,
+      width: 90,
       editable: true,
     },
     {
@@ -120,7 +126,7 @@ export const IoTsTable = ({ initialData }: { initialData: IoT[] }) => {
       headerName: "Device ID",
       headerClassName: "super-app-theme--header",
       type: "string",
-      width: 150,
+      width: 100,
       align: "left",
       headerAlign: "left",
       editable: false,
@@ -130,8 +136,8 @@ export const IoTsTable = ({ initialData }: { initialData: IoT[] }) => {
       headerName: "Status",
       headerClassName: "super-app-theme--header",
       type: "string",
-      width: 120,
-      minWidth: 120,
+      width: 90,
+      minWidth: 90,
       editable: false,
       renderCell: (params) => (
         <StatusCell status={params.value as string}>{params.value}</StatusCell>
@@ -142,7 +148,7 @@ export const IoTsTable = ({ initialData }: { initialData: IoT[] }) => {
       headerName: "Interval (Days)",
       headerClassName: "super-app-theme--header",
       type: "number",
-      width: 110,
+      width: 80,
       editable: true,
     },
     {
@@ -150,7 +156,7 @@ export const IoTsTable = ({ initialData }: { initialData: IoT[] }) => {
       headerName: "Location",
       headerClassName: "super-app-theme--header",
       type: "string",
-      width: 105,
+      width: 80,
       editable: true,
     },
     {
@@ -158,7 +164,7 @@ export const IoTsTable = ({ initialData }: { initialData: IoT[] }) => {
       headerName: "Arena",
       headerClassName: "super-app-theme--header",
       type: "string",
-      width: 111,
+      width: 90,
       editable: true,
     },
     {
@@ -166,7 +172,7 @@ export const IoTsTable = ({ initialData }: { initialData: IoT[] }) => {
       headerName: "Arena Location",
       headerClassName: "super-app-theme--header",
       type: "string",
-      width: 130,
+      width: 90,
       editable: false,
     },
     {
@@ -178,12 +184,15 @@ export const IoTsTable = ({ initialData }: { initialData: IoT[] }) => {
       editable: false,
       type: "string", // date
       valueFormatter: (params) => {
-        const date = new Date(params);
-        const day = date.getDate().toString().padStart(2, "0");
-        const month = (date.getMonth() + 1).toString().padStart(2, "0");
-        const year = date.getFullYear().toString();
-
-        return `${day}/${month}/${year}`;
+        if (typeof params == "object") {
+          const date = new Date(params);
+          const day = date.getDate().toString().padStart(2, "0");
+          const month = (date.getMonth() + 1).toString().padStart(2, "0");
+          const year = date.getFullYear().toString();
+          return `${day}/${month}/${year}`;
+        } else {
+          return params;
+        }
       },
     },
     {
@@ -191,7 +200,7 @@ export const IoTsTable = ({ initialData }: { initialData: IoT[] }) => {
       headerName: "Description",
       headerClassName: "super-app-theme--header",
       type: "string",
-      width: 140,
+      width: 97,
       editable: true,
     },
     {
@@ -245,7 +254,13 @@ export const IoTsTable = ({ initialData }: { initialData: IoT[] }) => {
           width: "100%",
           overflowX: "hidden",
           "& .MuiDataGrid-cell": {
-            padding: "0 8px",
+            padding: "0 10px",
+          },
+          "& .MuiDataGrid-columnHeaders": {
+            backgroundColor: "inherit",
+          },
+          "& .MuiDataGrid-footerContainer": {
+            backgroundColor: "inherit",
           },
           backgroundColor: (theme) =>
             theme.palette.mode === "dark" ? "#2d2d61" : "#e0cee6",
@@ -265,10 +280,11 @@ export const IoTsTable = ({ initialData }: { initialData: IoT[] }) => {
           rowModesModel={rowModesModel}
           onRowModesModelChange={handleRowModesModelChange}
           slots={{
-            toolbar: EditToolbar,
+            toolbar:
+              EditToolbar as React.JSXElementConstructor<EditToolbarProps>,
           }}
           slotProps={{
-            toolbar: { setRows, setRowModesModel },
+            toolbar: { setRows, setRowModesModel } as EditToolbarProps,
           }}
         />
       </Box>
@@ -276,7 +292,7 @@ export const IoTsTable = ({ initialData }: { initialData: IoT[] }) => {
         <IoTForm
           formType="edit"
           setRows={setRows}
-          action={updateIot}
+          action={updateIotAction}
           data={editingData}
           setIsOpen={setIsEditing}
         />

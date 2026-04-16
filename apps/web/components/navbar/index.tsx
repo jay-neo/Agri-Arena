@@ -1,7 +1,7 @@
 "use server";
 
 import { NavBar } from "./NavBar";
-import { getUser } from "~/app/server/user";
+import { getUser } from "~/app/actions/user";
 
 export const Navbar: React.FC = async () => {
   const user = await getUser();

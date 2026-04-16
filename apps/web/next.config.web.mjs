@@ -17,7 +17,7 @@ const nextConfig = {
     ],
   },
   distDir: "out",
-  // crossOrigin: "anonymous",
+  crossOrigin: "anonymous",
   // async headers() {
   //   return [
   //     {

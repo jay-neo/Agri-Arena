@@ -4,8 +4,8 @@ import clsx from "clsx";
 import Link from "next/link";
 import Image from "next/image";
 import { isMobile } from "~/lib/utils";
+import { logout } from "~/app/actions/auth";
 import { usePathname } from "next/navigation";
-import { logout } from "~/app/server/next-auth-v5/logout";
 import { NavbarThemeToggleButton } from "./NavbarThemeToggleButton";
 import React, { useState, useEffect, useRef, MutableRefObject } from "react";
 

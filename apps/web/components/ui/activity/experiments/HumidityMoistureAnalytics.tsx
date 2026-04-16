@@ -1,5 +1,7 @@
 "use client";
 
+import * as React from "react";
+import { isMobile } from "~/lib/utils";
 import { LineChart } from "@mui/x-charts/LineChart";
 
 export default ({
@@ -14,12 +16,19 @@ export default ({
   dataLength: number;
 }) => {
   const isSameDay = data.every(
-    (item) => item.createdAt.toDateString() === data[0].createdAt.toDateString()
+    (item) =>
+      item.createdAt.toDateString() === data[0].createdAt.toDateString(),
   );
+
+  const [isMobileDevice, setIsMobileDevice] = React.useState(false);
+
+  React.useEffect(() => {
+    setIsMobileDevice(isMobile());
+  }, []);
 
   return (
     <div
-      className={`md:m-1 my-2 ${dataLength > 25 ? `md:w-full` : `md:w-1/2`}`}
+      className={`md:m-1 my-2 ${dataLength > 25 ? `md:w-full` : `md:w-1/2`} ${isMobileDevice ? "pointer-events-none touch-none" : ""}`}
     >
       <LineChart
         xAxis={[

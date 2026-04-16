@@ -1,4 +1,4 @@
-import { getProfile } from "~/app/server/user";
+import { getProfile } from "~/app/actions/user";
 import { ProfileForm } from "~/components/ui/Profile";
 
 export default async () => {

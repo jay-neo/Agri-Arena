@@ -3,7 +3,7 @@
 import { toast } from "sonner";
 import { useEffect, useState } from "react";
 import { useFormState, useFormStatus } from "react-dom";
-import { contactWithCompany } from "~/app/server/company";
+import { contactWithCompany } from "~/app/actions/company";
 
 export const ContactForm = ({
   name,
@@ -28,7 +28,7 @@ export const ContactForm = ({
       state.message = null;
     } else if (state?.success) {
       setFormData((prevData) =>
-        prevData ? { ...prevData, ["message"]: "" } : null
+        prevData ? { ...prevData, ["message"]: "" } : null,
       );
       toast.success(state.success);
       state.success = null;
@@ -36,11 +36,11 @@ export const ContactForm = ({
   }, [state?.error, state?.message, state?.success]);
 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
     setFormData((prevData) =>
-      prevData ? { ...prevData, [name]: value } : null
+      prevData ? { ...prevData, [name]: value } : null,
     );
   };
 

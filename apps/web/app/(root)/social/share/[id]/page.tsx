@@ -1,14 +1,12 @@
-import {
-  ImagesPage,
-  getActivity,
-  ExperimentsPage,
-  PredictionsPage,
-} from "~/app/server/activity";
-import { findShare } from "~/app/server/share";
+import { ExperimentsPage } from "~/app/(root)/my/activity/[id]/ExperimentsPage";
+import { ImagesPage } from "~/app/(root)/my/activity/[id]/ImagesPage";
+import { PredictionsPage } from "~/app/(root)/my/activity/[id]/PredictionsPage";
+import { getActivity } from "~/app/actions/activity";
+import { findShare } from "~/app/actions/share";
 
 export default async ({ params }: { params: { id: string } }) => {
   const share = await findShare(params.id);
-  const data: Activity_Header = await getActivity(share.idx, share.userId);
+  const data: ActivityHeader = await getActivity(share.idx, share.userId);
 
   if (!data) {
   }

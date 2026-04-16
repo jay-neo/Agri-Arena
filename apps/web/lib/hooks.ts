@@ -33,11 +33,11 @@ export function useDebounce<T>(value: T, delay: number): T {
 export function neoFormAction<T extends FormState>(
   formAction: (state: T, formData: FormData) => Promise<T>,
   editMode?: Dispatch<SetStateAction<boolean>>,
-  isRedirect: boolean = true
-): [state: Awaited<T>, dispatch: () => void, next: string] {
+  isRedirect: boolean = true,
+): [state: Awaited<T>, dispatch: () => void, next: string, isPending: boolean] {
   const [state, action, isPending] = useFormState(
     formAction as (state: Awaited<T>) => T | Promise<T>,
-    undefined
+    undefined,
   );
 
   useEffect(() => {
@@ -62,5 +62,5 @@ export function neoFormAction<T extends FormState>(
     }
   }, [state]);
 
-  return [state, action, state?.next];
+  return [state, action, state?.next, isPending];
 }

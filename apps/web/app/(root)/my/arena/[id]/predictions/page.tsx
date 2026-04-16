@@ -6,4 +6,4 @@ export const metadata: Metadata = {
 
 export default async () => {
   return <>Hello from prediction</>;
-}
+};

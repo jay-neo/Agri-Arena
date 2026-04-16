@@ -1,1 +1,0 @@
-export { getPredictionsData } from "./predictionsData";

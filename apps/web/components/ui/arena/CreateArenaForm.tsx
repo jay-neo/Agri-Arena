@@ -1,16 +1,75 @@
 "use client";
 
+import clsx from "clsx";
 import { toast } from "sonner";
 import { useEffect } from "react";
 import { useFormState } from "react-dom";
-import { ReactButton } from "~/lib/neo/button";
-import { createArena } from "~/app/server/arena";
+import { ReactButton } from "~/lib/neo/ReactButton";
+import { createArenaAction } from "~/app/actions/arena";
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import Typography from "@mui/material/Typography";
+import { ArrowDownIcon } from "lucide-react";
+import { ArenaFormField } from "./ArenaFormField";
 
-const LABEL = "flex w-full font-semibold text-black pb-1";
-const ERROR = "text-sm text-red-500 dark:text-yellow-400";
+const AdditionalInfoAccordion = ({ state }: { state: any }) => (
+  <div className="container mt-5">
+    <Accordion
+      sx={{
+        backgroundColor: "transparent",
+        boxShadow: "none", // removes the shadow if needed
+        "&:before": {
+          display: "none", // removes the default divider line
+        },
+      }}
+    >
+      <AccordionSummary
+        expandIcon={<ArrowDownIcon className="w-5 h-5" />}
+        aria-controls="panel2-content"
+        id="panel2-header"
+        sx={{
+          backgroundColor: "none",
+        }}
+      >
+        <Typography
+          component="span"
+          className="text-sm font-light"
+          sx={{ fontSize: 13 }}
+        >
+          Add more
+        </Typography>
+      </AccordionSummary>
+      <AccordionDetails
+        sx={{
+          backgroundColor: "none",
+        }}
+      >
+        <ArenaFormField
+          id="currentCrop"
+          name="currentCrop"
+          label="Current Crop"
+          errors={state?.errors?.currentCrop}
+        />
+        <ArenaFormField
+          id="area"
+          name="area"
+          label="Area (in acres)"
+          errors={state?.errors?.area}
+        />
+        <ArenaFormField
+          id="soilType"
+          name="soilType"
+          label="Soil Type"
+          errors={state?.errors?.soilType}
+        />
+      </AccordionDetails>
+    </Accordion>
+  </div>
+);
 
 export const CreateArenaForm = ({ onClose }: { onClose: () => void }) => {
-  const [state, action] = useFormState(createArena, undefined);
+  const [state, action] = useFormState(createArenaAction, undefined);
 
   useEffect(() => {
     if (state?.message) {
@@ -22,55 +81,41 @@ export const CreateArenaForm = ({ onClose }: { onClose: () => void }) => {
   }, [state, onClose]);
 
   return (
-    <form action={action} className="dark:bg-cyan-600 p-2 rounded-lg">
-      <div className="container">
-        <label className={LABEL}>Name</label>
-        <textarea
-          id="title"
-          name="title"
-          autoComplete="off"
-          placeholder={""}
-          rows={1}
-          className={`text-sm focus:ring-blue-500 focus:border-blue-500 block ps-3 p-2.5  bg-slate-300 dark:bg-sky-600/30 w-full border border-gray-300 dark:border-gray-600 rounded-md`}
-        />
-        {state?.errors?.title && <p className={ERROR}>{state.errors.title}</p>}
-      </div>
+    <form action={action} className="dark:bg-[#2f2f61] p-2 rounded-lg">
+      <ArenaFormField
+        id="title"
+        name="title"
+        label="Title"
+        errors={state?.errors?.title}
+        required
+      />
 
-      <div className="container mt-5">
-        <label className={LABEL}>Location</label>
-        <textarea
-          id="location"
-          name="location"
-          autoComplete="off"
-          placeholder={""}
-          rows={1}
-          className={`text-sm focus:ring-blue-500 focus:border-blue-500 block ps-3 p-2.5 bg-slate-300 dark:bg-sky-600/30 w-full border border-gray-300 dark:border-gray-600 rounded-md`}
-        />
-        {state?.errors?.location && (
-          <p className={ERROR}>{state.errors.location}</p>
-        )}
-      </div>
+      <ArenaFormField
+        id="location"
+        name="location"
+        label="Location"
+        errors={state?.errors?.location}
+        required
+      />
 
-      <div className="container mt-5">
-        <label className={LABEL}>Description:</label>
-        <div className="truncate">
-          <textarea
-            id="description"
-            name="description"
-            autoComplete="off"
-            placeholder={""}
-            className={`flex flex-col text-sm text-wrap focus:ring-blue-500 focus:border-blue-500  ps-3 p-2.5 h-24 bg-slate-300 dark:bg-sky-600/30 w-full border border-gray-300 dark:border-gray-600 rounded-md`}
-          />
-        </div>
-        {state?.errors?.description && (
-          <p className={ERROR}>{state.errors.description}</p>
-        )}
-      </div>
+      <ArenaFormField
+        id="description"
+        name="description"
+        label="Description"
+        rows={2}
+        errors={state?.errors?.description}
+      />
+
+      <AdditionalInfoAccordion state={state} />
+
       <div className="flex items-center justify-center mt-4">
         <ReactButton
           onStatic="Create"
           onAction="Creating..."
-          className="m-1 px-6 py-1.5 font-bold min-w-40 border border-2 rounded-3xl hover:bg-orange-400 hover:text-black hover:border-black"
+          className={clsx(
+            "m-1 px-6 py-1.5 min-w-24 text-white font-semibold rounded-lg transition duration-300 disabled:bg-rose-600/70",
+            "bg-purple-600/80 hover:bg-purple-600 dark:bg-rose-600/70 hover:dark:bg-rose-600",
+          )}
         />
       </div>
     </form>

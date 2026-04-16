@@ -1,61 +1,25 @@
-import { NextResponse } from "next/server";
-export async function GET(req: Request) {
-  const { searchParams } = new URL(req.url);
+import { NextRequest } from "next/server";
+
+export async function GET(request: NextRequest) {
+  const searchParams = request.nextUrl.searchParams;
   const url = searchParams.get("url");
 
-  if (!url) {
-    return NextResponse.json({ error: "URL is required" }, { status: 400 });
+  if (!url || typeof url !== "string") {
+    return Response.json({ error: "URL is required" });
   }
 
   try {
-    console.log(url);
-    const isYouTubeVideo = isYouTubeURL(url);
-    if (isYouTubeVideo) {
-      const videoId = extractYouTubeVideoId(url);
-      const videoThumbnail = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
-      const response = {
-        type: "video",
-        videoId: videoId,
-        videoThumbnail: videoThumbnail,
-      };
-      return NextResponse.json(response);
-    } else {
-      const data = await (await fetch(url)).text();
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(data, "text/html");
-      const title = doc.querySelector("title")?.textContent || "";
-      const description =
-        doc
-          .querySelector('meta[name="description"]')
-          ?.getAttribute("content") || "";
-      const image =
-        doc
-          .querySelector('meta[property="og:image"]')
-          ?.getAttribute("content") || "";
+    const apiKey = process.env.LINKPREVIEW_API_KEY;
+    const apiUrl = `https://api.linkpreview.net/?key=${apiKey}&q=${encodeURIComponent(url)}`;
 
-      const response = {
-        type: "webpage",
-        title: title,
-        description: description,
-        image: image,
-      };
-      return NextResponse.json(response);
-    }
-  } catch (error) {
-    return NextResponse.json(
-      { error: "Failed to fetch link preview" },
-      { status: 500 }
+    const response = await fetch(
+      `https://api.microlink.io/?url=${encodeURIComponent(url)}`,
     );
+    const data = await response.json();
+
+    return Response.json(data);
+  } catch (error) {
+    console.error("Error fetching link preview:", error);
+    return Response.json({ error: "Failed to fetch link preview" });
   }
 }
-
-const isYouTubeURL = (link: string) => {
-  return link.includes("youtube.com") || link.includes("youtu.be");
-};
-
-const extractYouTubeVideoId = (link: string) => {
-  const videoIdRegex =
-    /(?:\/embed\/|\/watch\?v=|\/(?:embed\/|v\/|watch\?.*v=|youtu\.be\/|embed\/|v=))([^&?#]+)/;
-  const match = link.match(videoIdRegex);
-  return match ? match[1] : "";
-};

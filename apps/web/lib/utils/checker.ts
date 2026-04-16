@@ -6,7 +6,7 @@ export function isNumber(value: string): boolean {
 export function isMobile(): boolean {
   const isMobile =
     /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-      navigator.userAgent
+      navigator.userAgent,
     );
 
   const isTouchDevice =

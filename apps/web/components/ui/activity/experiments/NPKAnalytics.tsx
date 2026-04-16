@@ -2,10 +2,29 @@
 
 import * as React from "react";
 import { PieChart } from "@mui/x-charts/PieChart";
+import { isMobile } from "~/lib/utils";
 
-export default ({ N, P, K, dataLength }: { N: number; P: number; K: number, dataLength: number }) => {
+export default ({
+  N,
+  P,
+  K,
+  dataLength,
+}: {
+  N: number;
+  P: number;
+  K: number;
+  dataLength: number;
+}) => {
+  const [isMobileDevice, setIsMobileDevice] = React.useState(false);
+
+  React.useEffect(() => {
+    setIsMobileDevice(isMobile());
+  }, []);
+
   return (
-    <div className={`md:m-1 my-2 content-center ${ dataLength > 25 ? `md:w-full` : `md:w-1/2`}`}>
+    <div
+      className={`md:m-1 my-2 content-center ${dataLength > 25 ? `md:w-full` : `md:w-1/2`} ${isMobileDevice ? "pointer-events-none touch-none" : ""}`}
+    >
       <PieChart
         series={[
           {

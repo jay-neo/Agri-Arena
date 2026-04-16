@@ -14,7 +14,7 @@ export const MuiThemeProvider = ({ children }) => {
 
   const theme = useMemo(
     () => (themeMode === "dark" ? darkTheme : lightTheme),
-    [themeMode]
+    [themeMode],
   );
 
   useEffect(() => {
